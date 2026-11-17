@@ -2,11 +2,11 @@
 
 Working code repository for team **Gradient Depression** in **More than a Hack 2027: Phase 1 — Ball Possession**, organised by Metrica Sports, FC Barcelona and Mobile World Capital Barcelona.
 
-**Delivered submission: retrained v11.** `gradient_depression.csv` (not committed; a prediction file) has SHA-256
-`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`.
+**Delivered submission: retrained v11, `grand` variant.** `gradient_depression.csv` (not committed; a prediction file) has SHA-256
+`cc5bf45fc040eead80a3d66e7e974192b3a600f29d80f58d5bbb489bafbca2a3`.
 The technical document is [`ENTREGA_FINAL_HACKATHON/gradient_depression.md`](ENTREGA_FINAL_HACKATHON/gradient_depression.md).
 In a fresh clone, the full registered chain regenerates this exact file from a declared, hash-checked set of
-local inputs; some of those inputs (PhysConformer folds, early TCN/BiGRU heads, D3 count streams) are retained
+local inputs; some of those inputs (PhysConformer folds, early TCN/BiGRU heads, count-variant streams) are retained
 predictions that retraining does not reproduce bit for bit, and model weights and predictions are not published.
 Details: [the clean-clone status](docs/v11_clean_clone_status.md).
 
@@ -103,7 +103,7 @@ and inference caches with those components, list them with their SHA-256 in a pr
 .venv311/bin/python scripts/v11_big_leap/run_v11_chain.py _local/v11_chain_inputs.json
 .venv311/bin/python evaluation/validate_submission.py _local/<output_dir>/gradient_depression.csv
 shasum -a 256 _local/<output_dir>/gradient_depression.csv
-# Expected SHA-256: b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5
+# Expected SHA-256: cc5bf45fc040eead80a3d66e7e974192b3a600f29d80f58d5bbb489bafbca2a3
 ```
 The chain never scores the public window. The historical `full-local` and `modal` modes upload data from
 `local_data/` and must not be run.

@@ -1,8 +1,9 @@
 # Retrained v11: clean-clone reconstruction status
 
-The delivery candidate is the retrained v11 CSV with SHA-256
-`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`
-(published second-half kickoff boundary applied). The pre-boundary candidate had
+The delivered file is the retrained v11 CSV, `grand` variant, with SHA-256
+`cc5bf45fc040eead80a3d66e7e974192b3a600f29d80f58d5bbb489bafbca2a3` (published second-half kickoff boundary applied).
+An earlier local export of the `d3` variant from the same synthesis had SHA-256
+`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`; it was not delivered. The pre-boundary candidate had
 SHA-256 `7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.
 The pre-boundary candidate's registered external gate is REJECT against the
 historical v11 reference; it is not an improvement. Nothing in this document
@@ -32,10 +33,13 @@ local driver) then ran, in order, `v85_candidates`, `v85_streams`,
 `v11_enriched_candidates`, `v11_local_synthesis` and
 `v11_official_kickoff_export`. The whole chain takes about six minutes on CPU.
 
-Three runs produced the same synthesis bundle
-(`73bd2b9d80d23b790ede3b47dd54d78e0c3941440309a37ddf49933a6d483067`) and the
-same CSV (`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`),
-which passed the official format validator. No public-window score was computed.
+Four runs produced the same synthesis bundle
+(`73bd2b9d80d23b790ede3b47dd54d78e0c3941440309a37ddf49933a6d483067`). The
+first three exported the `d3` variant (`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`); the fourth, with the committed
+runner and `variant` set to `grand`, exported the delivered file (`cc5bf45fc040eead80a3d66e7e974192b3a600f29d80f58d5bbb489bafbca2a3`).
+Both passed the official format validator. The external harness predictions of
+the two variants are identical; they differ only on the match. No public-window
+score was computed.
 
 ### Inputs rebuilt from data in clean clones
 
@@ -57,8 +61,8 @@ which passed the official format validator. No public-window score was computed.
 - Earlier neural heads (symmetric TCN and BiGRU, physics-v2 TCN/BiGRU) and their
   Metrica/match inference, originally trained on Apple MPS; no per-fold weights
   survive.
-- The D3 count-variant streams, built from those earlier heads on the
-  video-reteamed tracking.
+- The count-variant streams read by the synthesis step; they do not affect the
+  delivered `grand` variant.
 - Other earlier cached intermediates in `experiments/outputs/` (calibration and
   re-ranker summaries, W8 candidates) that the chain reads.
 

@@ -1,7 +1,7 @@
 # Source snapshot provenance
 
 This local release draft is a working-tree snapshot of commit
-`1e8b96ee493342537f17baf2826fd5920b543301` from the team's private
+`646ec99d80e39bcccd1eb60ac95cbc685027a33e` from the team's private
 `bcn-gradient-depression` repository. It intentionally does not include that
 repository's history or local data. The original repository and its history
 remain intact. This public snapshot is not evidence that the reproduction requirements

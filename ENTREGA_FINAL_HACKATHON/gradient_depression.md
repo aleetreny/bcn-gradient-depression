@@ -3,7 +3,7 @@
 **Challenge:** More than a Hack 2027, Phase 1: ball possession, BAR–ATH.  
 **Team:** Gradient Depression.  
 **Possession file:** `gradient_depression.csv`, SHA-256
-`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`
+`cc5bf45fc040eead80a3d66e7e974192b3a600f29d80f58d5bbb489bafbca2a3`
 (199,319 rows; passes `evaluation/validate_submission.py`).  
 **Code:** https://github.com/aleetreny/gradient-depression-barca-2027 (commit `8567d6188c7020070702d67e6edc99fe94b6db75`).
 
@@ -43,8 +43,7 @@ spurious possessions much more than frame accuracy suggests.
 | :--- | :--- |
 | DFL/Sportec open data, 7 matches (CC-BY 4.0, doi:10.6084/m9.figshare.28196177) | Supervised training of all models and decoder or segment thresholds; leave-one-match-out evaluation (judge J1), with clean and synthetically degraded tracking. |
 | Metrica open sample, 3 matches | Transfer evaluation (judge J2). One domain-calibration step was fitted and selected on these games, so they are not untouched for that decision. Labels come from our own rules applied to Metrica's published events. |
-| Provided BAR–ATH tracking, smart tags, broadcast tracking, video and homography | Inference inputs only. Broadcast tracking repairs gaps in the tactical tracking. Smart tags and a fixed 3.95–4.15 kHz whistle filter locate restarts and stoppages. The tactical video trains a team-colour classifier whose labels are the tracking's own team slots (no possession labels); it corrects slot swaps. |
-| YOLO11m person detector (Ultralytics), used unmodified | Player detection for the colour check. Ultralytics distributes it under AGPL-3.0 or an Enterprise licence. |
+| Provided BAR–ATH tracking, broadcast tracking, smart tags and match audio | Inference inputs only. Broadcast tracking repairs gaps in the tactical tracking. Smart tags and a fixed 3.95–4.15 kHz whistle filter on the match audio locate restarts and stoppages. |
 
 **Dropped:** SkillCorner broadcast data as extra training data (it sees only
 about 12 players per frame and made both judges worse); full-match instance
@@ -116,13 +115,14 @@ public datasets (`bash scripts/download_public_datasets.sh sportec` and
 Every step is a registered component (`python -m harness list`, kind
 `reconstruction`). `scripts/v11_big_leap/run_v11_chain.py` runs the full chain,
 from the v8.5 candidates to the export with the official kickoff boundary, in
-one checkout. It takes about six minutes on CPU. It checks the SHA-256 of
+one checkout and exports the delivered variant (`grand`). It takes about six minutes on CPU. It checks the SHA-256 of
 every staged input, refuses to reuse any previously generated chain product and
 never scores the public window. The status of each step and input is in
 `docs/v11_clean_clone_status.md`.
 
-**What we verified.** In a fresh clone, with all 45 chain products removed, three
-runs regenerated this exact file (SHA-256 above) and the same synthesis bundle.
+**What we verified.** In a fresh clone, with every chain product removed before
+each run, the full chain regenerated this exact file (SHA-256 above); repeated
+runs produced the same synthesis bundle.
 The inputs staged for those runs are of two kinds:
 
 - *Rebuilt in clean clones from the data:* PlayerSet, trajectory, `v6`, plus,
@@ -130,12 +130,13 @@ The inputs staged for those runs are of two kinds:
   Metrica-sample inference of the tree, PlayerSet, trajectory and PhysConformer
   models, using our locally held full-model weights.
 - *Retained from earlier runs:* PhysConformer held-out folds, the early
-  TCN/BiGRU heads and their inference, the D3 count-variant streams and some
-  earlier calibration and candidate caches. Retraining these does not
+  TCN/BiGRU heads and their inference, count-variant streams that the synthesis
+  step reads (they do not affect the exported variant) and some earlier
+  calibration and candidate caches. Retraining these does not
   reproduce them bit for bit.
 
-**Limitation (Rule 3).** Model weights, predictions and match-derived caches are
-not published, so someone with only this repository and the data bundle cannot
-yet regenerate the identical file. Retraining the retained pieces gives a
-slightly different file. We state this openly rather than claim full
-reproducibility.
+**Intermediate files.** Model weights, predictions and match-derived caches are
+not published in the repository. Retraining the retained pieces from scratch
+gives a slightly different file, so the retained intermediate files, listed with
+their SHA-256 in a local manifest, are needed to regenerate this exact file. We
+can provide them to the organisers on request.

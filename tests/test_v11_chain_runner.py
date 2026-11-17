@@ -49,3 +49,12 @@ def test_hash_mismatch_is_refused(tmp_path):
     with pytest.raises(ValueError):
         chain.verified({"path": str(source), "sha256": "0" * 64})
     assert chain.verified({"path": str(source), "sha256": chain.sha256(source)}) == source
+
+
+def test_rejects_unknown_variant(tmp_path):
+    with pytest.raises(ValueError):
+        chain.load_config(ROOT, _config(tmp_path, variant="video"))
+
+
+def test_accepts_grand_variant(tmp_path):
+    assert chain.load_config(ROOT, _config(tmp_path, variant="grand"))["variant"] == "grand"

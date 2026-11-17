@@ -17,6 +17,9 @@ match-derived files that must never be committed or uploaded) is a JSON object:
     Directory holding the count-variant streams listed in that manifest.
 ``output_dir``
     New directory under ``_local/`` for every chain output.
+``variant`` (optional)
+    Exported synthesis variant: ``grand`` (default; tracking, broadcast tracking and
+    smart tags), ``strict`` or ``d3``.
 ``expected`` (optional)
     ``{"synthesis_sha256": ..., "csv_sha256": ...}`` to compare at the end.
 
@@ -60,8 +63,10 @@ def sha256(path: Path) -> str:
 
 def load_config(root: Path, config_path: Path) -> dict:
     config = json.loads(Path(config_path).read_text(encoding="utf-8"))
-    if not isinstance(config, dict) or not REQUIRED <= set(config) or set(config) - REQUIRED - {"expected"}:
-        raise ValueError(f"configuration must contain exactly {sorted(REQUIRED)} and optional 'expected'")
+    if not isinstance(config, dict) or not REQUIRED <= set(config) or set(config) - REQUIRED - {"expected", "variant"}:
+        raise ValueError(f"configuration must contain exactly {sorted(REQUIRED)} and optional 'expected', 'variant'")
+    if config.get("variant", "grand") not in ("grand", "strict", "d3"):
+        raise ValueError("variant must be grand, strict or d3")
     out = (root / config["output_dir"]).resolve()
     if out.relative_to(root).parts[:1] != ("_local",):
         raise ValueError("output_dir must be under _local/")
@@ -92,7 +97,7 @@ def main(config_path: str) -> int:
     out = (root / config["output_dir"]).resolve()
     out.mkdir(parents=True)
     log = out / "chain.log"
-    record = {"inputs": {}, "steps": []}
+    record = {"inputs": {}, "steps": [], "variant": config.get("variant", "grand")}
 
     for target, entry in config["inputs"].items():
         source = verified(entry)
@@ -161,7 +166,7 @@ def main(config_path: str) -> int:
     write_private("v11_synthesis_inputs.json", {"v9": entry(v9), "candidates": entry(candidates),
                                                 "d3_streams": entry(d3_count)})
     synthesis = run("v11_local_synthesis", "v11-synthesis.pkl")
-    write_private("v11_export_inputs.json", {"synthesis": entry(synthesis), "variant": "d3"})
+    write_private("v11_export_inputs.json", {"synthesis": entry(synthesis), "variant": config.get("variant", "grand")})
     csv = run("v11_official_kickoff_export", "gradient_depression.csv")
 
     record["synthesis_sha256"] = sha256(synthesis)
