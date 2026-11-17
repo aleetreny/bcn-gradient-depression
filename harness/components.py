@@ -417,3 +417,17 @@ def rebuild_plus_public_fold(root, output_path):
     """Build one public Sportec plus-model fold required by the v11 chain."""
     from src.v9_swarm.rebuild_plus_oof import rebuild_plus_oof
     return rebuild_plus_oof(root, output_path)
+
+
+@register("reconstruction", "ghost_public_fold", requires=("src/v9_swarm/rebuild_ghost_oof.py",))
+def rebuild_ghost_public_fold(root, output_path):
+    """Build one public Sportec ghost-model fold required by the v11 chain."""
+    from src.v9_swarm.rebuild_ghost_oof import rebuild_ghost_oof
+    return rebuild_ghost_oof(root, output_path)
+
+
+@register("reconstruction", "v11_official_kickoff_export", requires=("src/v11_big_leap/export_official_kickoff.py",))
+def export_v11_official_kickoff(root, output_path):
+    """Export v11 using the organiser's published second-half timing boundary."""
+    from src.v11_big_leap.export_official_kickoff import export_official_kickoff
+    return export_official_kickoff(root, output_path)

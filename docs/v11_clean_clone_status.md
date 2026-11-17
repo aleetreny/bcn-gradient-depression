@@ -1,10 +1,13 @@
 # Retrained v11: clean-clone reconstruction status
 
-The retrained candidate is not yet reproducible from a clean clone. Its local CSV
-SHA-256 is `7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.
-This is a target for verification, not a claim that the historical submission or
-an independently trained model is identical. The candidate's registered external
-gate is REJECT; this document does not select a model using J3.
+The retrained candidate is not yet reproducible from a clean clone. After applying
+the published second-half kickoff boundary, its local CSV SHA-256 is
+`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`.
+The pre-boundary candidate had SHA-256
+`7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.
+These are targets for verification, not a claim that the historical submission
+or an independently trained model is identical. The pre-boundary candidate's
+registered external gate is REJECT; this document does not select a model using J3.
 
 ## Checked on the local clean clone
 
@@ -94,8 +97,13 @@ fresh dependency installation or a distributable model.
 With the retained PlayerSet models, CPU inference on the regenerated tensors
 was not bitwise identical to the prior local CPU inference. An isolated synthesis
 replay using the regenerated PlayerSet, trajectory, PhysConformer and tree
-inferences exported the same candidate SHA-256 shown above and passed the
+inferences exported the same pre-boundary SHA-256 shown above and passed the
 official format validator. This replay reused retained out-of-fold predictions,
 other historical intermediate caches and model weights. It therefore does not
 establish complete clean-clone reproducibility or a portable distribution. No
 score or model selection was performed by this replay.
+
+The new export component applies the organiser's published second-half timing
+boundary to the synthesis before writing a new CSV. Repeated exports from the
+same local synthesis match the current candidate hash; this does not remove the
+dependencies on local weights or earlier intermediate caches.

@@ -3,7 +3,7 @@
 Working code repository for team **Gradient Depression** in **More than a Hack 2027: Phase 1 — Ball Possession**, organised by Metrica Sports, FC Barcelona and Mobile World Capital Barcelona.
 
 **Current delivery candidate: retrained v11, not yet verified from a clean clone.**
-The local candidate CSV has SHA-256 `7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.
+The local candidate CSV has SHA-256 `b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`.
 Its draft report and external comparison are in [the candidate report](ENTREGA_FINAL_HACKATHON/gradient_depression_retrained_DRAFT.md);
 the precise reproduction limitations are in [the clean-clone status](docs/v11_clean_clone_status.md).
 The historical file and report described below have a different SHA-256 and must not be confused with this candidate.
@@ -66,7 +66,7 @@ Our pipeline solves possession segmentation (`H` = FC Barcelona in play, `A` = A
 
 ## 📊 External Validation Status
 
-The paired harness comparison of the retrained candidate against the historical reference is recorded in the candidate report and was `REJECT` on J1 and J2. The public-sample selection history and a clean-clone check remain outstanding. The Metrica calibration was fitted on and selected using those games, so they are not an untouched test set for that decision.
+The paired harness comparison of the retrained candidate before its published kickoff-boundary correction against the historical reference is recorded in the candidate report and was `REJECT` on J1 and J2. The public-sample selection history and a clean-clone check remain outstanding. The Metrica calibration was fitted on and selected using those games, so they are not an untouched test set for that decision.
 
 ---
 

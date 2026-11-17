@@ -2,7 +2,7 @@
 
 **Task:** More than a Hack 2027, Phase 1 possession segmentation for BAR–ATH.  
 **Candidate:** the locally generated retrained-v11 CSV with SHA-256
-`7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.  
+`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`.  
 **Repository:** to be completed with the public URL and exact commit.  
 **Status:** draft. Exact reproduction from a clean clone remains unverified; do
 not present this document as proof that the submission requirements are met.
@@ -28,16 +28,18 @@ full historical selection history remains under review.
 
 ## Validation and limitations
 
-The candidate was generated in local replays and passed the official
-submission-format validator. An additional replay using reconstructed inputs
-and the retained local models exported the same hash above; that replay also
-reused historical intermediate caches. In paired external evaluation against the historical v11 reference, the
-registered harness gate was:
+The candidate was produced by an automatic export using the published
+second-half timing boundary and passed the official submission-format validator.
+Two local exports from the same synthesis input produced the same hash above.
+The synthesis input was rebuilt using the retained local models and reused
+historical intermediate caches. The prior candidate, before applying the
+published timing boundary, was compared against the historical v11 reference;
+its registered harness gate was:
 
 - `J1 vs external_original_v11: REJECT delta -0.0062  90% CI [-0.0087, -0.0040]  folds improved 0/7 (need 5)`
 - `J2 vs external_original_v11: REJECT delta -0.0036  90% CI [-0.0047, -0.0026]  folds improved 0/3 (need 3)`
 
-These tests used fingerprinted external prediction bundles and are not a
+These tests refer to the prior candidate, used fingerprinted external prediction bundles and are not a
 clean-clone training or reproduction proof. The candidate should not be
 represented as an improvement over the reference. J2 is not fully independent
 of the calibration-selection decision described above.
