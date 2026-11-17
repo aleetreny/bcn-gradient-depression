@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Has the Ball?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a 1280x720 tactics board per slide. Words on the left, a chalk board on the right that the
+   coach draws live when the slide opens. The running main-exam score is crossed out and rewritten
+   chapter by chapter. A possession bar along the bottom is the slide navigator.
+   Deliberately single-theme: it is a chalkboard. */
+:root {
+  --slate: #1c2722;
+  --slate-raised: #222e29;
+  --tray: #141b18;
+  --frame: #5a635e;
+  --chalk: #eceee6;
+  --chalk-body: rgba(236, 238, 230, .86);
+  --chalk-soft: rgba(236, 238, 230, .66);
+  --chalk-line: rgba(236, 238, 230, .16);
+  --yellow: #eecc5c;
+  --blue: #8fbaf0;
+  --red: #f0918b;
+  --grey: #9aa69f;
+  --hand: "Kalam", "Comic Sans MS", cursive;
+  --sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: var(--tray); color: var(--chalk); font-family: var(--sans); overflow: hidden; -webkit-font-smoothing: antialiased; }
+
+#viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+#stage { width: 1280px; height: 720px; position: relative; transform-origin: center center; }
+.slide {
+  position: absolute; inset: 0;
+  background-color: var(--slate);
+  background-image: var(--grain), radial-gradient(120% 90% at 30% 20%, rgba(255,255,255,.035), transparent 60%), radial-gradient(90% 80% at 85% 90%, rgba(0,0,0,.25), transparent 70%);
+  border: 10px solid var(--frame);
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 18px 40px rgba(0,0,0,.45);
+  padding: 46px 60px 108px;
+  display: none;
+  overflow: hidden;
+}
+.slide.active { display: grid; }
+.split { grid-template-columns: 470px 1fr; gap: 44px; align-content: start; }
+.wide { grid-template-columns: 1fr; align-content: start; }
+.centre { align-content: center; }
+.slide > * { min-width: 0; }
+
+h1 { font-family: var(--hand); font-weight: 400; font-size: 92px; line-height: 1; color: var(--chalk); }
+h2 { font-family: var(--hand); font-weight: 400; font-size: 46px; line-height: 1.08; color: var(--chalk); margin-bottom: 20px; text-wrap: balance; }
+p, li { font-size: 21px; line-height: 1.5; color: var(--chalk-body); }
+p + p { margin-top: 14px; }
+ul { margin: 10px 0 0 22px; }
+strong { color: var(--chalk); font-weight: 600; }
+.hand { font-family: var(--hand); }
+.y { color: var(--yellow); } .b { color: var(--blue); } .r { color: var(--red); } .g { color: var(--grey); }
+.kicker { font-family: var(--hand); font-size: 20px; color: var(--chalk-soft); margin-bottom: 6px; }
+
+.facts { display: flex; gap: 30px; margin-top: 24px; flex-wrap: wrap; }
+.facts div { min-width: 0; }
+.facts .n { font-family: var(--cond); font-weight: 600; font-size: 44px; line-height: 1; color: var(--chalk); font-variant-numeric: tabular-nums; }
+.facts .l { font-size: 15px; color: var(--chalk-soft); margin-top: 4px; max-width: 170px; line-height: 1.35; }
+
+.board { position: relative; }
+.board canvas { display: block; width: 100%; height: auto; }
+.board .cap { font-family: var(--hand); font-size: 17px; color: var(--chalk-soft); margin-bottom: 4px; }
+
+/* The coach's running score: old values crossed out, the new one in yellow */
+.score { position: absolute; left: 574px; bottom: 116px; font-family: var(--hand); font-size: 30px; color: var(--chalk-soft); white-space: nowrap; }
+.score .lbl { font-size: 16px; display: block; margin-bottom: -2px; }
+.score s { text-decoration-thickness: 2px; text-decoration-color: rgba(236,238,230,.8); }
+.score .now { color: var(--yellow); font-size: 40px; }
+
+.source { position: absolute; left: 60px; right: 60px; bottom: 76px; font-size: 12.5px; color: var(--chalk-soft); }
+
+/* Possession bar navigator */
+.match { position: absolute; left: 60px; right: 60px; bottom: 26px; }
+.match .row { display: flex; gap: 4px; height: 12px; }
+.match button { flex: 1; border: 0; border-radius: 6px 3px 5px 2px; cursor: pointer; opacity: .28; padding: 0; transition: opacity .2s, transform .2s; }
+.match button.past { opacity: .6; }
+.match button.now { opacity: 1; transform: scaleY(1.45); }
+.match button:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+.match button.h { background: var(--blue); } .match button.a { background: var(--red); } .match button.d { background: var(--grey); }
+.match .cap { display: flex; justify-content: space-between; margin-top: 8px; font-size: 14px; color: var(--chalk-soft); font-variant-numeric: tabular-nums; }
+.match .cap b { font-family: var(--hand); font-weight: 400; font-size: 16px; color: var(--chalk); }
+
+/* Cross-outs on the dead-ends slide */
+.ends { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 56px; margin-top: 14px; }
+.ends h3 { font-family: var(--hand); font-weight: 400; font-size: 30px; color: var(--chalk); line-height: 1.15; }
+.ends h3 s { text-decoration-color: var(--red); text-decoration-thickness: 3px; }
+.ends p { font-size: 20px; line-height: 1.45; margin-top: 6px; }
+
+.big4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px; margin-top: 18px; }
+.big4 .n { font-family: var(--cond); font-weight: 600; font-size: 92px; line-height: .95; font-variant-numeric: tabular-nums; }
+.big4 .t { font-family: var(--hand); font-size: 24px; color: var(--chalk); margin-top: 6px; }
+.big4 p { font-size: 18px; line-height: 1.4; color: var(--chalk-soft); margin-top: 4px; }
+
+.tip { position: fixed; pointer-events: none; background: var(--chalk); color: var(--slate); font: 15px/1.4 var(--sans); padding: 8px 12px; border-radius: 4px; opacity: 0; transition: opacity .12s; max-width: 300px; z-index: 30; }
+.sr-table { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+#controls { position: fixed; right: 14px; bottom: 12px; display: flex; gap: 6px; z-index: 20; opacity: .4; transition: opacity .2s; }
+#controls:hover, #controls:focus-within { opacity: 1; }
+#controls button { border: 1px solid var(--chalk-line); background: var(--slate-raised); color: var(--chalk); height: 34px; min-width: 34px; padding: 0 10px; border-radius: 4px; font: 500 14px var(--sans); cursor: pointer; }
+#controls button:focus-visible { outline: 2px solid var(--yellow); }
+.notes { display: none; }
+#notes { position: fixed; left: 50%; bottom: 0; transform: translate(-50%, 100%); width: min(900px, 96vw); background: var(--chalk); color: var(--slate); padding: 16px 22px 20px; border-radius: 8px 8px 0 0; font: 17px/1.5 var(--sans); z-index: 25; transition: transform .25s; }
+#notes.open { transform: translate(-50%, 0); }
+#notes h4 { font: 400 15px var(--hand); opacity: .75; margin-bottom: 4px; }
+
+@media print {
+  @page { size: 1280px 720px; margin: 0; }
+  body { overflow: visible; }
+  #viewport { position: static; display: block; }
+  #stage { transform: none !important; width: auto; height: auto; }
+  .slide { display: grid !important; position: relative; width: 1280px; height: 720px; page-break-after: always; }
+  #controls, #notes, .tip { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<!-- 1 -->
+<section class="slide split centre" data-part="d" data-label="Kick-off" data-scene="title">
+  <div>
+    <h1>Who has the ball?</h1>
+    <p style="margin-top:22px;font-size:23px">How we taught a computer to follow possession through a full match, FC Barcelona vs Athletic Club, using only moving dots.</p>
+    <p class="hand" style="margin-top:26px;font-size:20px;color:var(--chalk-soft)">BCN Gradient Depression, More than a Hack 2027</p>
+    <p style="margin-top:18px;font-size:16px;color:var(--chalk-soft)">The bar below tells this talk as a match: <span class="b">blue</span> is progress, <span class="r">red</span> is traps and setbacks, <span class="g">grey</span> is a pause.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <aside class="notes">Open with the question every analyst asks first: who has the ball? Point at the board: O is Barça, X is Athletic, yellow is the ball. Then explain the bar at the bottom.</aside>
+</section>
+
+<!-- 2 -->
+<section class="slide split" data-part="d" data-label="The question" data-scene="question">
+  <div>
+    <h2>One question, asked 199,319 times</h2>
+    <p>The match is cut into 25 still pictures per second. For every one, a program has to say who has the ball:</p>
+    <ul>
+      <li><strong class="b">H</strong>: Barça, ball in play</li>
+      <li><strong class="r">A</strong>: Athletic, ball in play</li>
+      <li><strong class="g">D</strong>: dead ball (throw-ins, corners, fouls, half-time)</li>
+    </ul>
+    <p>The whole entry is one file with 199,319 answers, produced by a program. Nobody may fill it in by hand.</p>
+  </div>
+  <div class="board"><div class="cap">a few seconds of a match, as the answer file sees it</div><canvas></canvas></div>
+  <p class="source">Source: competition rules (OVERVIEW.md, RULES.md)</p>
+  <aside class="notes">Every picture gets exactly one letter. A run of the same letter is a possession, and that's what the judges score.</aside>
+</section>
+
+<!-- 3 -->
+<section class="slide split" data-part="d" data-label="The data" data-scene="dots">
+  <div>
+    <h2>The computer never watches the game</h2>
+    <p>It gets <strong>23 dots on a rectangle</strong>, 25 times a second: 11 Barça players, 11 Athletic players and the ball.</p>
+    <p>And the dots are messy:</p>
+    <ul>
+      <li>the ball is visible in only <strong>57%</strong> of moments</li>
+      <li>sometimes it "teleports" for a split second</li>
+      <li>players at the edge of the picture vanish</li>
+    </ul>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Ball visibility: OVERVIEW.md</p>
+  <aside class="notes">We see shirts, faces and the referee. The computer sees coordinates from automatic tracking on a TV-style camera, which is why they're noisy.</aside>
+</section>
+
+<!-- 4 -->
+<section class="slide split" data-part="a" data-label="Trap: the scoring" data-scene="scoring">
+  <div>
+    <h2>Why half a second of doubt ruins a whole possession</h2>
+    <p>The judges score <strong>whole possessions</strong>, not moments. A possession only counts if its start and end match the real one closely.</p>
+    <p><strong>Too jumpy</strong>, and one doubt splits a 30-second possession into three: the real one is missed and three wrong ones count against us.</p>
+    <p><strong>Too smooth</strong>, and a real one-second steal disappears, taking three possessions with it.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Scoring: EVALUATION.md and the official scorer</p>
+  <aside class="notes">This is the key slide. Per-moment accuracy can be about 95 while the possession score is far lower; that gap is the whole challenge. The skill we need: tell a real change of possession from a touch that doesn't count.</aside>
+</section>
+
+<!-- 5 -->
+<section class="slide split" data-part="a" data-label="Trap: only 5 minutes" data-scene="exam">
+  <div>
+    <h2>We were given the answers for only 5 minutes</h2>
+    <p>That's <strong>17 possessions</strong>. The secret 85 minutes decide the ranking, and tuning a system to 5 minutes makes it worse on the rest.</p>
+    <p>So we built our own exam from <strong>10 full matches</strong> with known answers. Every test is on a match the system never studied, and a change only goes in if no test gets worse.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <aside class="notes">Main exam: 7 German league matches, learn from 6 and test on the 7th, repeated for each. Broken ball: the same matches with the ball data damaged on purpose. New supplier: 3 matches from Metrica Sports. The public 5 minutes are only a sanity check.</aside>
+</section>
+
+<!-- 6 -->
+<section class="slide split" data-part="d" data-label="Starting point" data-scene="nearest">
+  <div>
+    <h2>Where we started: whoever is closest wins</h2>
+    <p>The organisers' example gives the ball to the team with the nearest player, then smooths over a couple of seconds.</p>
+    <p>It fails in exactly the ways from the scoring slide: every pass flips the answer as the ball flies past a rival, it can't tell when the ball is dead, and when the ball vanishes it has nothing to go on.</p>
+    <div class="facts"><div><div class="n">30</div><div class="l">main exam, out of 100</div></div><div><div class="n">33</div><div class="l">public 5 minutes</div></div></div>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">"Out of 100" is the official possession score × 100. Source: experiments/RESULTADOS.md</p>
+  <aside class="notes">Every score from here on is the official possession score times 100, on the main exam unless stated otherwise.</aside>
+</section>
+
+<!-- 7 -->
+<section class="slide split" data-part="h" data-label="Chapter 1: read the play" data-scene="smoother" data-score="30,67">
+  <div>
+    <div class="kicker">chapter 1</div>
+    <h2>Read the play, and remember that possessions last</h2>
+    <p><strong>160 clues</strong> a coach would use: who is near the ball, who runs towards it, how fast it travels, whether it's near the line. A learning program works out which matter.</p>
+    <p>Then a <strong>smoother that knows football</strong> turns flickering guesses into clean blocks, charging a cost for every change of team.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Versions v1 and v1.1 · Source: experiments/RESULTADOS.md</p>
+  <aside class="notes">We also trained on data deliberately damaged to look like TV tracking, so the system doesn't collapse when the ball goes missing. This one step more than doubled the score.</aside>
+</section>
+
+<!-- 8 -->
+<section class="slide split" data-part="h" data-label="Chapter 2: memory and space" data-scene="space" data-score="30,67,72">
+  <div>
+    <div class="kicker">chapter 2</div>
+    <h2>Look around each moment, and at who controls the space</h2>
+    <p>A <strong>model with memory</strong> reads seconds before and after, like rewinding the tape. A <strong>change detector</strong> answers one thing: is the ball changing hands right now?</p>
+    <p>And <strong>space control</strong>: which team could reach the ball first, not just who is nearest.</p>
+    <p>We froze this version as our <strong>safety net</strong>. Every later idea had to beat it.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Versions v2 to v4 (71.0, 71.5, about 72) · Sources: RESULTADOS.md, ENTREGA_FINAL_HACKATHON/LEEME_2</p>
+  <aside class="notes">Space control helped most on the new-supplier test, which told us it generalises beyond the German matches.</aside>
+</section>
+
+<!-- 9 -->
+<section class="slide split" data-part="h" data-label="Chapter 3: bad camera" data-scene="camera" data-score="30,67,72">
+  <div>
+    <div class="kicker">chapter 3</div>
+    <h2>Fix the impossible, and treat both teams the same</h2>
+    <p><strong>Teleporting ball:</strong> 40 metres in a tenth of a second is a camera error, not football. We spot those jumps and draw a sensible path.</p>
+    <p><strong>Mirror test:</strong> every moment is judged twice, the second time flipped with shirts swapped, then averaged. Home/away bias: <strong>exactly zero</strong>.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Waves 1–2 · Source: docs/PLAN_Y_RESULTADOS_EN_VIVO_W1_W8.md</p>
+  <aside class="notes">We also practised with "blurry glasses": the training matches came from clean stadium cameras, so we damaged them on purpose until they looked like ours. The system learned to read how all 22 players move when the ball can't be seen.</aside>
+</section>
+
+<!-- 10 -->
+<section class="slide split" data-part="h" data-label="Chapter 4: the committee" data-scene="committee" data-score="30,67,72,75">
+  <div>
+    <div class="kicker">chapter 4</div>
+    <h2>Six different experts vote on every moment</h2>
+    <p><strong>Three snapshot experts</strong> study one moment in detail. <strong>Two film experts</strong> read seconds of play forwards and backwards. <strong>One shape expert</strong> sees the 22 players as a flock, ignoring shirt numbers.</p>
+    <p>They make different mistakes, so together they make fewer.</p>
+  </div>
+  <div class="board"><div class="cap">one moment, six votes (illustration)</div><canvas></canvas></div>
+  <p class="source">Waves 3–7, version v7 · Source: docs/PLAN_Y_RESULTADOS_EN_VIVO_W1_W8.md · Vote shares are an illustration</p>
+  <aside class="notes">We also fixed fake stoppages: if Barça has the ball, the system briefly thinks it went out, and Barça still has it after, it was never a stoppage.</aside>
+</section>
+
+<!-- 11 -->
+<section class="slide split" data-part="h" data-label="Chapter 5: the autopsy" data-scene="throwin" data-score="30,67,72,75,76">
+  <div>
+    <div class="kicker">chapter 5</div>
+    <h2>Four seconds with the ball in the hands</h2>
+    <p>We studied every remaining mistake. <strong>More than half</strong> sat right next to a stoppage.</p>
+    <p>At a throw-in, the old system started the possession when the player <strong>picked the ball up</strong>, seconds too early. Now it waits for the ball to leave the hands.</p>
+    <p>Same idea elsewhere: a shin deflection isn't a steal, boundaries snap to the kick, and one-second interceptions are no longer smoothed away.</p>
+  </div>
+  <div class="board"><div class="cap">a throw-in, drawn (illustration)</div><canvas></canvas></div>
+  <p class="source">Waves 8A/8B and forensic study · Sources: docs/AUTOPSIA_FORENSE_V7.md, LEEME_2 · All 7 matches improved</p>
+  <aside class="notes">Every fix was checked on all four tests. Two of them first hurt the new-supplier test, so we added a safety check: they only act when the committee agrees.</aside>
+</section>
+
+<!-- 12 -->
+<section class="slide wide" data-part="a" data-label="Dead ends">
+  <h2>What we tried and crossed out</h2>
+  <div class="ends">
+    <div><h3><s>Guess where the hidden ball is</s></h3><p>It kept landing in midfield and invented possession changes. Guessing <em>who</em> has it works better than guessing <em>where</em> it is.</p></div>
+    <div><h3><s>Missing players means a hidden duel</s></h3><p>Players drop off the TV picture all the time. It invented 4–6 fake possessions per match.</p></div>
+    <div><h3><s>Trust the player list order</s></h3><p>Each supplier orders players differently. We sort by distance to the ball instead.</p></div>
+    <div><h3><s>Move every boundary to the nearest kick</s></h3><p>Better on German matches, worse on the new supplier. Kept only with the committee's agreement.</p></div>
+    <div><h3><s>Let the smoother learn team habits</s></h3><p>It started favouring the team that usually has more of the ball. Changes now cost the same for both.</p></div>
+    <div><h3><s>Learn from the public 5 minutes</s></h3><p>Never done. 17 possessions is far too few to trust.</p></div>
+  </div>
+  <p class="source">Sources: docs/GUIA_MAESTRA_HUMANO_Y_AGENTE.md §6.2, LEEME_3 §2.2</p>
+  <aside class="notes">These dead ends are why we trust what's left: each idea was measured on every test and dropped or fixed when it hurt any of them.</aside>
+</section>
+
+<!-- 13 -->
+<section class="slide wide" data-part="h" data-label="The climb" data-scene="climb">
+  <h2 style="margin-bottom:4px">The whole climb, on matches the system never studied</h2>
+  <div class="board"><canvas data-w="1140" data-h="440"></canvas></div>
+  <p class="source">Main exam, 7 German league matches · Sources: experiments/RESULTADOS.md (first four), ENTREGA_FINAL_HACKATHON/LEEME_2 (last three)</p>
+  <aside class="notes">The big jump is chapter 1. After that, every point is hard-won, and every step had to hold on all four tests.</aside>
+</section>
+
+<!-- 14 -->
+<section class="slide split" data-part="d" data-label="The public 5 minutes" data-scene="public">
+  <div>
+    <h2>A big number, read with care</h2>
+    <p>On the only Barça–Athletic minutes we can check, we went from <strong>33</strong> to <strong>89</strong>.</p>
+    <p>But it's 17 possessions. The shaded bars show where the true score could plausibly be, and they're wide.</p>
+    <p>So we never chose anything because of this number.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Ranges: 5–95% bootstrap intervals in the team's records · Sources: RESULTADOS.md, LEEME_2</p>
+  <aside class="notes">One possession more or less moves this score by several points. The main exam, with about 1,400 possessions, drove every decision.</aside>
+</section>
+
+<!-- 15 -->
+<section class="slide wide" data-part="h" data-label="Final results">
+  <h2>Where the final system stands</h2>
+  <div class="big4">
+    <div><div class="n b">75.9</div><div class="t">Main exam</div><p>7 German matches never studied. Up from 30, and all 7 improved on the previous version.</p></div>
+    <div><div class="n b">74.5</div><div class="t">Broken ball</div><p>Holds up when tracking is as messy as ours.</p></div>
+    <div><div class="n b">83.9</div><div class="t">New supplier</div><p>3 matches it never learned from.</p></div>
+    <div><div class="n y">88.8</div><div class="t">Public 5 minutes</div><p>Plausible range 72.5–97.5. Reported only.</p></div>
+  </div>
+  <div class="facts" style="margin-top:40px;gap:56px">
+    <div><div class="n">98.6</div><div class="l">spotting a dead ball, public 5 minutes</div></div>
+    <div><div class="n">0</div><div class="l">home/away bias</div></div>
+    <div><div class="n">199,319</div><div class="l">rows, all format checks pass</div></div>
+  </div>
+  <p class="source">Submitted system: v8.5 · Source: ENTREGA_FINAL_HACKATHON/LEEME_2 §1–2</p>
+  <aside class="notes">Lead with 75.9: it's measured on matches the system never saw. 88.8 is real but rests on 17 possessions.</aside>
+</section>
+
+<!-- 16 -->
+<section class="slide split" data-part="h" data-label="The secret 85 minutes" data-scene="secret">
+  <div>
+    <h2>The secret 85 minutes look like real football</h2>
+    <p>We can't score them, but we can check our answers behave like a real match.</p>
+    <div class="facts">
+      <div><div class="n">229</div><div class="l">possessions in play</div></div>
+      <div><div class="n">2.3</div><div class="l">changes a minute (early system: 2.9)</div></div>
+      <div><div class="n">8.5 s</div><div class="l">typical possession</div></div>
+      <div><div class="n">0</div><div class="l">impossible possessions under half a second</div></div>
+    </div>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <p class="source">Source: ENTREGA_FINAL_HACKATHON/LEEME_2 §3 and §5</p>
+  <aside class="notes">Our final changes touched only 0.38% of these moments, and we inspected each changed stretch by hand against the tracking data.</aside>
+</section>
+
+<!-- 17 -->
+<section class="slide split" data-part="a" data-label="Limits and next" data-scene="blind">
+  <div>
+    <h2>What we can't claim, and what's next</h2>
+    <p><strong>The final polish is small</strong> on the main exam: 75.1 to 75.9. Real, since all 7 matches rose, but most of the public-minutes jump comes from a handful of possessions.</p>
+    <p><strong>Blind spot:</strong> when players leave the TV picture and the ball sticks to one player, dots alone can't show the duel.</p>
+    <p><strong>Next:</strong> estimate where off-camera players are from how the visible ones move, and train directly on the official score.</p>
+  </div>
+  <div class="board"><div class="cap">the duel we can't see</div><canvas></canvas></div>
+  <p class="source">Source: ENTREGA_FINAL_HACKATHON/LEEME_3 §5</p>
+  <aside class="notes">Being upfront about limits is part of the method: we'd rather show a number we can defend than one that only looks good.</aside>
+</section>
+
+<!-- 18 -->
+<section class="slide split centre" data-part="d" data-label="Full time" data-scene="final">
+  <div>
+    <h2 style="font-size:50px">We didn't memorise 5 minutes. We taught the computer how the ball moves, how teams move together, and when play stops.</h2>
+    <p style="margin-top:10px"><strong>BCN Gradient Depression.</strong> Thank you.</p>
+  </div>
+  <div class="board"><canvas></canvas></div>
+  <aside class="notes">Close on the method, not the number. Then take questions.</aside>
+</section>
+
+</div></div>
+
+<div id="controls">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <button id="next" aria-label="Next slide">→</button>
+  <button id="replay" aria-label="Redraw the board" title="Redraw (R)">Redraw</button>
+  <button id="notesBtn" aria-label="Show presenter notes" title="Presenter notes (N)">Notes</button>
+</div>
+<div id="notes" role="region" aria-label="Presenter notes"><h4 id="notesTitle"></h4><div id="notesBody"></div></div>
+<div class="tip" id="tip"></div>
+
+<script>
+(function () {
+  const C = { chalk: '#eceee6', soft: 'rgba(236,238,230,.55)', faint: 'rgba(236,238,230,.22)', yellow: '#eecc5c', blue: '#8fbaf0', red: '#f0918b', grey: '#9aa69f' };
+  const HAND = '"Kalam", "Comic Sans MS", cursive';
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Chalk engine ----------
+  function rng(seed) { let s = seed % 2147483647 || 1; return () => (s = s * 16807 % 2147483647) / 2147483647; }
+
+  // A grain pattern used both as the slate texture and to knock speckles out of chalk strokes
+  const grain = document.createElement('canvas');
+  grain.width = grain.height = 160;
+  (function () {
+    const g = grain.getContext('2d'), img = g.createImageData(160, 160), r = rng(11);
+    for (let i = 0; i < img.data.length; i += 4) { const v = r(); img.data[i] = img.data[i + 1] = img.data[i + 2] = 255; img.data[i + 3] = v > .72 ? (v - .72) * 420 : 0; }
+    g.putImageData(img, 0, 0);
+  })();
+  const slateGrain = document.createElement('canvas');
+  slateGrain.width = slateGrain.height = 200;
+  (function () {
+    const g = slateGrain.getContext('2d'), img = g.createImageData(200, 200), r = rng(5);
+    for (let i = 0; i < img.data.length; i += 4) { const v = r(); img.data[i] = img.data[i + 1] = img.data[i + 2] = v > .5 ? 255 : 0; img.data[i + 3] = 7; }
+    g.putImageData(img, 0, 0);
+  })();
+  document.documentElement.style.setProperty('--grain', 'url(' + slateGrain.toDataURL() + ')');
+
+  class Board {
+    constructor(canvas, seed) {
+      this.cv = canvas; this.ops = []; this.r = rng(seed || 7);
+      this.W = +canvas.dataset.w || 640; this.H = +canvas.dataset.h || 430;
+    }
+    densify(pts, wob) {
+      const out = [];
+      for (let i = 0; i < pts.length - 1; i++) {
+        const [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+        const d = Math.hypot(x2 - x1, y2 - y1), n = Math.max(1, Math.round(d / 7));
+        const nx = -(y2 - y1) / (d || 1), ny = (x2 - x1) / (d || 1);
+        for (let k = 0; k < n; k++) {
+          const t = k / n, j = (this.r() - .5) * wob;
+          out.push([x1 + (x2 - x1) * t + nx * j, y1 + (y2 - y1) * t + ny * j]);
+        }
+      }
+      out.push(pts[pts.length - 1]);
+      return out;
+    }
+    path(pts, o = {}) {
+      this.ops.push({ k: 'p', pts: this.densify(pts, o.wobble ?? .9), col: o.col || C.chalk, w: o.w || 2.4, dash: o.dash, a: o.a ?? 1 });
+      return this;
+    }
+    line(x1, y1, x2, y2, o) { return this.path([[x1, y1], [x2, y2]], o); }
+    rect(x, y, w, h, o) { return this.path([[x, y], [x + w, y], [x + w, y + h], [x, y + h], [x, y + .5]], o); }
+    circle(cx, cy, r, o = {}) {
+      const n = Math.max(14, Math.round(r * 1.1)), a0 = this.r() * 6.28, pts = [];
+      for (let i = 0; i <= n; i++) { const a = a0 + i / n * 6.28 * 1.05; pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]); }
+      return this.path(pts, Object.assign({ wobble: .5 }, o));
+    }
+    arc(cx, cy, r, a1, a2, o) { const pts = []; for (let i = 0; i <= 20; i++) { const a = a1 + (a2 - a1) * i / 20; pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]); } return this.path(pts, o); }
+    curve(p0, p1, p2, o) { const pts = []; for (let i = 0; i <= 24; i++) { const t = i / 24, u = 1 - t; pts.push([u * u * p0[0] + 2 * u * t * p1[0] + t * t * p2[0], u * u * p0[1] + 2 * u * t * p1[1] + t * t * p2[1]]); } return this.path(pts, o); }
+    arrow(x1, y1, x2, y2, o = {}) {
+      this.line(x1, y1, x2, y2, o);
+      const a = Math.atan2(y2 - y1, x2 - x1), s = o.head || 11;
+      return this.path([[x2 - Math.cos(a - .45) * s, y2 - Math.sin(a - .45) * s], [x2, y2], [x2 - Math.cos(a + .45) * s, y2 - Math.sin(a + .45) * s]], o);
+    }
+    curveArrow(p0, p1, p2, o = {}) {
+      this.curve(p0, p1, p2, o);
+      const a = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]), s = o.head || 11;
+      return this.path([[p2[0] - Math.cos(a - .45) * s, p2[1] - Math.sin(a - .45) * s], p2, [p2[0] - Math.cos(a + .45) * s, p2[1] - Math.sin(a + .45) * s]], o);
+    }
+    O(x, y, o = {}) { return this.circle(x, y, o.r || 8, { col: o.col || C.blue, w: 2.4, a: o.a }); }
+    X(x, y, o = {}) { const s = o.r || 7, col = o.col || C.red; this.line(x - s, y - s, x + s, y + s, { col, w: 2.4, a: o.a }); return this.line(x + s, y - s, x - s, y + s, { col, w: 2.4, a: o.a }); }
+    ball(x, y, o = {}) { this.ops.push({ k: 'f', x, y, r: o.r || 5, col: o.col || C.yellow }); return this; }
+    text(s, x, y, o = {}) { this.ops.push({ k: 't', s, x, y, size: o.size || 19, col: o.col || C.chalk, align: o.align || 'left' }); return this; }
+    pitch(x = 14, y = 14, w = 612, h = 400, o = {}) {
+      const col = o.col || C.soft;
+      this.rect(x, y, w, h, { col, w: 2 });
+      this.line(x + w / 2, y, x + w / 2, y + h, { col, w: 2 });
+      this.circle(x + w / 2, y + h / 2, h * .14, { col, w: 2 });
+      const bh = h * .46, bw = w * .11;
+      this.rect(x, y + (h - bh) / 2, bw, bh, { col, w: 2 });
+      this.rect(x + w - bw, y + (h - bh) / 2, bw, bh, { col, w: 2 });
+      return this;
+    }
+    // Football layout helper: map pitch-relative 0..1 coordinates
+    teams(x, y, w, h, home, away, o = {}) {
+      home.forEach(([u, v], i) => this.O(x + u * w, y + v * h, { a: (o.fadeH || []).includes(i) ? .3 : 1 }));
+      away.forEach(([u, v], i) => this.X(x + u * w, y + v * h, { a: (o.fadeA || []).includes(i) ? .3 : 1 }));
+      return this;
+    }
+    lengths() { return this.ops.map(op => op.k === 'p' ? op.pts.reduce((s, p, i) => i ? s + Math.hypot(p[0] - op.pts[i - 1][0], p[1] - op.pts[i - 1][1]) : 0, 0) : op.k === 't' ? 70 : 12); }
+    setup() {
+      const scale = 2;
+      this.cv.width = this.W * scale; this.cv.height = this.H * scale;
+      this.ctx = this.cv.getContext('2d');
+      this.ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      this.lens = this.lengths();
+      this.total = this.lens.reduce((a, b) => a + b, 0);
+    }
+    draw(progress) {
+      const ctx = this.ctx; if (!ctx) return;
+      ctx.clearRect(0, 0, this.W, this.H);
+      let budget = progress * this.total;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for (let i = 0; i < this.ops.length && budget > 0; i++) {
+        const op = this.ops[i], L = this.lens[i], f = Math.min(1, budget / L);
+        budget -= L;
+        if (op.k === 'p') {
+          ctx.setLineDash(op.dash || []);
+          let left = f * L;
+          const pts = [op.pts[0]];
+          for (let k = 1; k < op.pts.length && left > 0; k++) {
+            const [ax, ay] = op.pts[k - 1], [bx, by] = op.pts[k], d = Math.hypot(bx - ax, by - ay);
+            if (d <= left) { pts.push(op.pts[k]); left -= d; } else { const t = left / d; pts.push([ax + (bx - ax) * t, ay + (by - ay) * t]); left = 0; }
+          }
+          for (const [dx, dy, al, ww] of [[0, 0, .92, 1], [.7, .5, .35, .55]]) {
+            ctx.globalAlpha = op.a * al; ctx.strokeStyle = op.col; ctx.lineWidth = op.w * ww;
+            ctx.beginPath(); pts.forEach(([x, y], k) => k ? ctx.lineTo(x + dx, y + dy) : ctx.moveTo(x + dx, y + dy)); ctx.stroke();
+          }
+          ctx.setLineDash([]);
+        } else if (op.k === 'f') {
+          ctx.globalAlpha = f; ctx.fillStyle = op.col; ctx.beginPath(); ctx.arc(op.x, op.y, op.r, 0, 6.29); ctx.fill();
+        } else {
+          ctx.globalAlpha = f; ctx.fillStyle = op.col; ctx.font = op.size + 'px ' + HAND; ctx.textAlign = op.align; ctx.fillText(op.s, op.x, op.y);
+        }
+      }
+      ctx.globalAlpha = 1;
+      // knock grain out of everything drawn, for a chalky edge
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = ctx.createPattern(grain, 'repeat');
+      ctx.fillRect(0, 0, this.W, this.H);
+      ctx.globalCompositeOperation = 'source-over';
+    }
+    animate(ms) {
+      cancelAnimationFrame(this.raf);
+      if (reduceMotion) return this.draw(1);
+      const t0 = performance.now();
+      const step = now => { const t = Math.min(1, (now - t0) / ms); this.draw(1 - Math.pow(1 - t, 2.2)); if (t < 1) this.raf = requestAnimationFrame(step); };
+      this.raf = requestAnimationFrame(step);
+    }
+  }
+
+  // ---------- Formations (pitch-relative) ----------
+  const HOME = [[.05, .5], [.2, .2], [.18, .42], [.19, .62], [.22, .85], [.38, .3], [.42, .55], [.36, .75], [.55, .2], [.6, .48], [.56, .8]];
+  const AWAY = [[.95, .5], [.8, .24], [.79, .45], [.8, .64], [.82, .86], [.66, .34], [.68, .6], [.5, .66], [.47, .38], [.45, .9], [.32, .12]];
+
+  // ---------- Scenes ----------
+  const scenes = {
+    title(b) {
+      b.pitch().teams(14, 14, 612, 400, HOME, AWAY);
+      b.curveArrow([14 + .6 * 612, 14 + .48 * 400], [450, 120], [14 + .8 * 612 - 40, 14 + .24 * 400 + 20], { col: C.yellow, w: 2, dash: [6, 7] });
+      b.ball(14 + .6 * 612 + 12, 14 + .48 * 400 + 2);
+      b.text('who has it?', 470, 64, { col: C.yellow, size: 22 });
+    },
+    question(b) {
+      const y0 = 70, segs = [['H', 150, C.blue], ['D', 50, C.grey], ['A', 110, C.red], ['H', 60, C.blue], ['A', 30, C.red], ['H', 140, C.blue]];
+      let x = 30;
+      segs.forEach(([k, w, col]) => { b.path([[x, y0], [x + w - 6, y0]], { col, w: 14, wobble: 1.2 }); b.text(k, x + (w - 6) / 2, y0 - 18, { col, size: 22, align: 'center' }); x += w; });
+      b.text('one letter per picture, 25 a second', 30, y0 + 46, { col: C.soft, size: 18 });
+      b.line(30, 170, 610, 170, { col: C.faint, w: 1.5 });
+      b.text('a run of the same letter', 30, 214, { size: 22 });
+      b.text('= one possession', 30, 244, { size: 22, col: C.yellow });
+      b.path([[30, 300], [262, 300]], { col: C.blue, w: 14 });
+      b.text('this is what gets scored', 284, 307, { col: C.soft, size: 18 });
+    },
+    dots(b) {
+      b.pitch().teams(14, 14, 612, 400, HOME, AWAY, { fadeA: [9, 10] });
+      b.ball(14 + .62 * 612, 14 + .5 * 400);
+      b.rect(14 + .62 * 612 - 16, 14 + .5 * 400 - 16, 32, 32, { col: C.yellow, w: 1.6, dash: [4, 5] });
+      b.text('ball seen 57% of the time', 330, 410 - 24, { col: C.yellow, size: 18 });
+      b.arrow(140, 72, 14 + .32 * 612 - 10, 14 + .12 * 400 + 2, { col: C.soft, w: 1.6 });
+      b.text('off camera', 60, 66, { col: C.soft, size: 17 });
+    },
+    scoring(b) {
+      const L = 40, R = 600;
+      b.text('what happened', L, 40, { col: C.soft, size: 18 });
+      b.path([[L, 62], [R, 62]], { col: C.blue, w: 10 });
+      b.text('Barça, 30 seconds', 320, 90, { size: 18, align: 'center' });
+      b.text('half a second of doubt', L, 140, { col: C.soft, size: 18 });
+      b.path([[L, 162], [306, 162]], { col: C.blue, w: 10 });
+      b.path([[314, 162], [326, 162]], { col: C.red, w: 10 });
+      b.path([[334, 162], [R, 162]], { col: C.blue, w: 10 });
+      b.X(175, 190, { col: C.red, r: 10 }); b.X(320, 190, { col: C.red, r: 10 }); b.X(465, 190, { col: C.red, r: 10 });
+      b.text('3 wrong, 1 missed', 320, 228, { col: C.red, size: 20, align: 'center' });
+      b.line(L, 258, R, 258, { col: C.faint, w: 1.2 });
+      b.text('a real one-second steal', L, 290, { col: C.soft, size: 18 });
+      b.path([[L, 312], [290, 312]], { col: C.blue, w: 10 });
+      b.path([[298, 312], [342, 312]], { col: C.red, w: 10 });
+      b.path([[350, 312], [R, 312]], { col: C.blue, w: 10 });
+      b.text('smoothed away', L, 358, { col: C.soft, size: 18 });
+      b.path([[L, 380], [R, 380]], { col: C.blue, w: 10 });
+      b.text('3 missed', 320, 414, { col: C.red, size: 20, align: 'center' });
+    },
+    exam(b) {
+      b.text('4 tests, 10 full matches', 40, 50, { size: 26 });
+      const rows = [['main exam: 7 German matches', C.blue], ['broken ball: the same 7, damaged', C.blue], ['new supplier: 3 Metrica matches', C.blue], ['public 5 minutes: check only', C.yellow]];
+      rows.forEach(([t, col], i) => {
+        const y = 118 + i * 72;
+        b.path([[44, y - 6], [54, y + 4], [74, y - 18]], { col, w: 3 });
+        b.text(t, 96, y, { size: 22, col: i === 3 ? C.yellow : C.chalk });
+      });
+      b.text('learn on some, test on one it never saw', 40, 408, { col: C.soft, size: 18 });
+    },
+    nearest(b) {
+      b.pitch();
+      const bx = 330, by = 200;
+      b.O(260, 230); b.O(170, 120); b.O(250, 330);
+      b.X(372, 176); b.X(450, 260); b.X(470, 110);
+      b.ball(bx, by);
+      b.arrow(bx, by, 268, 224, { col: C.soft, w: 1.6 });
+      b.arrow(bx, by, 364, 182, { col: C.soft, w: 1.6 });
+      b.text('who is closest?', 200, 60, { size: 22 });
+      b.curveArrow([262, 236], [330, 290], [455, 268], { col: C.yellow, w: 2, dash: [6, 7] });
+      b.text('pass flies past a rival', 300, 330, { col: C.yellow, size: 18 });
+      b.text('→ answer flips: false change', 300, 356, { col: C.red, size: 18 });
+    },
+    smoother(b) {
+      b.text('moment-by-moment guesses', 40, 44, { col: C.soft, size: 18 });
+      const r = rng(4); let x = 40;
+      while (x < 600) { const w = 8 + r() * 26, col = r() < .3 ? C.red : C.blue; b.path([[x, 76], [Math.min(600, x + w - 4), 76]], { col, w: 10, wobble: 1 }); x += w; }
+      b.arrow(320, 108, 320, 168, { col: C.yellow, w: 2 });
+      b.text('smoother: every change costs', 340, 146, { col: C.yellow, size: 18 });
+      b.text('clean possessions', 40, 214, { col: C.soft, size: 18 });
+      b.path([[40, 244], [330, 244]], { col: C.blue, w: 12 });
+      b.path([[338, 244], [470, 244]], { col: C.red, w: 12 });
+      b.path([[478, 244], [600, 244]], { col: C.blue, w: 12 });
+      b.line(40, 290, 600, 290, { col: C.faint, w: 1.2 });
+      b.text('160 clues per moment, like:', 40, 330, { size: 20 });
+      b.text('distance to ball · who runs to it · ball speed · near the line?', 40, 362, { col: C.soft, size: 17 });
+    },
+    space(b) {
+      b.pitch();
+      const bx = 380, by = 210;
+      b.O(300, 250); b.X(430, 150); b.O(240, 140); b.X(470, 300);
+      b.ball(bx, by);
+      b.circle(300, 250, 70, { col: C.blue, w: 1.6, dash: [5, 6] });
+      b.circle(430, 150, 52, { col: C.red, w: 1.6, dash: [5, 6] });
+      b.text('who gets there first?', 380, 400 - 12, { col: C.yellow, size: 20, align: 'center' });
+      b.curveArrow([150, 80], [210, 40], [290, 70], { col: C.soft, w: 1.6 });
+      b.text('rewind', 120, 66, { col: C.soft, size: 17 });
+      b.curveArrow([480, 70], [550, 40], [600, 90], { col: C.soft, w: 1.6 });
+      b.text('fast-forward', 470, 60, { col: C.soft, size: 17 });
+    },
+    camera(b) {
+      b.text('ball path over time', 30, 30, { col: C.soft, size: 17 });
+      b.path([[30, 150], [120, 140], [210, 125], [250, 120]], { col: C.blue, w: 3 });
+      b.path([[250, 120], [262, 36], [276, 118]], { col: C.red, w: 2.2, dash: [6, 6] });
+      b.path([[250, 120], [276, 117], [360, 108], [460, 92], [610, 78]], { col: C.blue, w: 3 });
+      b.text('40 m in 0.1 s', 284, 44, { col: C.red, size: 18 });
+      b.X(262, 44, { col: C.red, r: 9 });
+      b.line(30, 196, 610, 196, { col: C.faint, w: 1.2 });
+      const mini = (x, flip) => {
+        b.rect(x, 230, 240, 150, { col: C.soft, w: 1.8 });
+        b.line(x + 120, 230, x + 120, 380, { col: C.soft, w: 1.8 });
+        const P = [[.25, .3], [.3, .7], [.7, .45], [.75, .8]];
+        P.forEach(([u, v], i) => {
+          const px = x + (flip ? 1 - u : u) * 240, py = 230 + (flip ? 1 - v : v) * 150;
+          const home = (i < 2) !== flip;
+          home ? b.O(px, py) : b.X(px, py);
+        });
+        b.ball(x + (flip ? .62 : .38) * 240, 230 + (flip ? .42 : .58) * 150);
+      };
+      mini(30, false); mini(370, true);
+      b.arrow(282, 305, 360, 305, { col: C.yellow, w: 2 });
+      b.text('mirror', 321, 292, { col: C.yellow, size: 17, align: 'center' });
+      b.text('as it is', 30, 410, { col: C.soft, size: 17 });
+      b.text('flipped, shirts swapped', 370, 410, { col: C.soft, size: 17 });
+    },
+    committee(b) {
+      const votes = [['snapshot 1', 78], ['snapshot 2', 64], ['snapshot 3', 71], ['film 1', 86], ['film 2', 81], ['shape', 58]];
+      const x0 = 150, w = 380;
+      votes.forEach(([n, v], i) => {
+        const y = 40 + i * 50;
+        b.text(n, x0 - 14, y + 7, { col: C.soft, size: 18, align: 'right' });
+        b.path([[x0, y], [x0 + w * v / 100 - 4, y]], { col: C.blue, w: 12 });
+        b.path([[x0 + w * v / 100 + 4, y], [x0 + w, y]], { col: C.red, w: 12 });
+        b.text(v + '%', x0 + w + 14, y + 7, { col: C.soft, size: 17 });
+      });
+      b.line(40, 336, 600, 336, { col: C.faint, w: 1.2 });
+      const avg = Math.round(votes.reduce((s, v) => s + v[1], 0) / votes.length);
+      b.text('committee', x0 - 14, 380, { size: 22, align: 'right' });
+      b.path([[x0, 374], [x0 + w * avg / 100 - 4, 374]], { col: C.blue, w: 14 });
+      b.path([[x0 + w * avg / 100 + 4, 374], [x0 + w, 374]], { col: C.red, w: 14 });
+      b.text(avg + '% Barça', x0 + w + 14, 381, { col: C.yellow, size: 20 });
+    },
+    throwin(b) {
+      b.line(30, 40, 610, 40, { col: C.soft, w: 2.5 });
+      b.text('touchline', 30, 30, { col: C.soft, size: 16 });
+      b.O(220, 56); b.ball(220, 40, { r: 6 });
+      b.text('picks it up', 180, 96, { col: C.soft, size: 17 });
+      b.curveArrow([220, 50], [300, 70], [380, 120], { col: C.yellow, w: 2, dash: [6, 7] });
+      b.O(396, 128); b.X(470, 150); b.O(300, 170);
+      b.text('throws', 330, 74, { col: C.yellow, size: 17 });
+      const T = (y, label) => b.text(label, 30, y + 6, { col: C.soft, size: 17 });
+      const xs = 150, xr = 330, xe = 610;
+      T(240, 'real'); b.path([[xs, 240], [xr - 4, 240]], { col: C.grey, w: 12 }); b.path([[xr + 4, 240], [xe, 240]], { col: C.blue, w: 12 });
+      T(300, 'before'); b.path([[xs, 300], [196, 300]], { col: C.grey, w: 12 }); b.path([[204, 300], [xe, 300]], { col: C.blue, w: 12 });
+      b.path([[204, 318], [xr - 4, 318]], { col: C.red, w: 2.4 });
+      b.text('4 s too early', 210, 342, { col: C.red, size: 17 });
+      T(380, 'after'); b.path([[xs, 380], [xr - 4, 380]], { col: C.grey, w: 12 }); b.path([[xr + 4, 380], [xe, 380]], { col: C.blue, w: 12 });
+      b.line(xr, 220, xr, 400, { col: C.yellow, w: 1.6, dash: [4, 6] });
+      b.text('ball leaves the hands', xr + 8, 414, { col: C.yellow, size: 16 });
+    },
+    climb(b) {
+      const pts = [['example', 29.8], ['first system', 66.8], ['+ memory', 71.0], ['+ space', 71.5], ['safety net', 71.8], ['committee', 75.1], ['after autopsy', 75.9]];
+      const L = 60, R = b.W - 30, T = 30, B = 400;
+      const x = i => L + i * (R - L) / (pts.length - 1), y = v => T + (1 - v / 100) * (B - T);
+      [0, 25, 50, 75, 100].forEach(v => { b.line(L, y(v), R, y(v), { col: C.faint, w: 1 }); b.text(String(v), L - 12, y(v) + 6, { col: C.soft, size: 15, align: 'right' }); });
+      b.path(pts.map((p, i) => [x(i), y(p[1])]), { col: C.blue, w: 3, wobble: .5 });
+      pts.forEach((p, i) => {
+        b.ball(x(i), y(p[1]), { col: i === pts.length - 1 ? C.yellow : C.blue, r: i === pts.length - 1 ? 7 : 5 });
+        b.text(p[0], x(i), B + 28, { col: C.soft, size: 15, align: i === 0 ? 'left' : i === pts.length - 1 ? 'right' : 'center' });
+      });
+      [[0, 'left', 22], [1, 'center', -16], [4, 'center', -16], [6, 'right', -18]].forEach(([i, al, dy]) => b.text(pts[i][1].toFixed(1), x(i) + (i === 0 ? 10 : 0), y(pts[i][1]) + dy, { size: 21, align: al, col: i === 6 ? C.yellow : C.chalk }));
+      b.circle(x(6) - 2, y(75.9) - 24, 30, { col: C.yellow, w: 2 });
+    },
+    public(b) {
+      const rows = [['example', 32.6, 21.4, 44.7], ['first system', 51.9, 36.8, 66.0], ['safety net', 61.3, 38.8, 80.8], ['committee', 80.0, 59.4, 93.8], ['final', 88.8, 72.5, 97.5]];
+      const L = 150, R = 590, x = v => L + v / 100 * (R - L);
+      [0, 25, 50, 75, 100].forEach(v => { b.line(x(v), 20, x(v), 380, { col: C.faint, w: 1 }); b.text(String(v), x(v), 404, { col: C.soft, size: 15, align: 'center' }); });
+      rows.forEach(([n, s, lo, hi], i) => {
+        const yy = 50 + i * 72;
+        b.text(n, L - 14, yy + 6, { col: C.soft, size: 18, align: 'right' });
+        b.path([[x(lo), yy], [x(hi), yy]], { col: 'rgba(238,204,92,.38)', w: 16, wobble: .6 });
+        b.ball(x(s), yy, { r: 7 });
+        b.text(s.toFixed(1), x(s), yy - 16, { size: 17, align: 'center', col: C.yellow });
+      });
+    },
+    secret(b) {
+      b.text('share of live-ball time, 85 secret minutes', 30, 40, { col: C.soft, size: 18 });
+      b.path([[30, 90], [30 + 580 * .615 - 4, 90]], { col: C.blue, w: 26, wobble: 1.4 });
+      b.path([[30 + 580 * .615 + 4, 90], [610, 90]], { col: C.red, w: 26, wobble: 1.4 });
+      b.text('Barça 61.5%', 30, 140, { col: C.blue, size: 24 });
+      b.text('Athletic 38.5%', 610, 140, { col: C.red, size: 24, align: 'right' });
+      b.line(30, 190, 610, 190, { col: C.faint, w: 1.2 });
+      b.text('Barça leads in both halves:', 30, 236, { size: 20 });
+      b.text('64.5% first half, 57.6% second', 30, 268, { col: C.soft, size: 19 });
+      b.text('our last changes touched 0.38% of moments,', 30, 330, { col: C.soft, size: 18 });
+      b.text('and each one was checked by hand', 30, 358, { col: C.soft, size: 18 });
+    },
+    blind(b) {
+      b.pitch(14, 14, 612, 400, { col: C.faint });
+      b.rect(170, 60, 300, 230, { col: C.yellow, w: 2, dash: [8, 6] });
+      b.text('TV picture', 176, 52, { col: C.yellow, size: 17 });
+      b.O(260, 160); b.ball(272, 168); b.X(330, 210); b.O(390, 120); b.X(420, 250);
+      b.O(120, 330, { a: .35 }); b.X(540, 330, { a: .35 }); b.X(530, 90, { a: .35 });
+      b.text('?', 92, 316, { col: C.red, size: 34 }); b.text('?', 560, 316, { col: C.red, size: 34 });
+      b.text('players out of shot, ball stuck to one player:', 30, 372, { col: C.soft, size: 18 });
+      b.text('the dots can\'t show who won the duel', 30, 398, { col: C.red, size: 18 });
+    },
+    final(b) {
+      const vals = ['30', '67', '72', '75', '76'];
+      b.text('main exam, out of 100', 40, 60, { col: C.soft, size: 18 });
+      vals.forEach((v, i) => {
+        const x = 50 + i * 118, y = 150;
+        b.text(v, x, y, { size: i === 4 ? 64 : 46, col: i === 4 ? C.yellow : C.chalk });
+        if (i < 4) { b.line(x - 4, y - 16, x + 50, y - 12, { col: C.chalk, w: 2.4 }); b.text('→', x + 64, y - 8, { col: C.soft, size: 26 }); }
+      });
+      b.circle(50 + 4 * 118 + 36, 128, 54, { col: C.yellow, w: 2.4 });
+      b.circle(50 + 4 * 118 + 36, 128, 60, { col: C.yellow, w: 1.6 });
+      b.line(40, 230, 600, 230, { col: C.faint, w: 1.2 });
+      b.text('public 5 minutes: 33 → 89', 40, 290, { size: 26, col: C.chalk });
+      b.text('(17 possessions, reported only)', 40, 322, { col: C.soft, size: 18 });
+      b.text('matches never studied, every step checked on 4 tests', 40, 388, { col: C.soft, size: 18 });
+    }
+  };
+
+  // ---------- Deck ----------
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.getElementById('stage');
+  const boards = new Map();
+  let i = 0;
+
+  slides.forEach((s, k) => {
+    // running score, crossed out and rewritten
+    if (s.dataset.score) {
+      const h = s.dataset.score.split(',');
+      const d = document.createElement('div');
+      d.className = 'score';
+      d.innerHTML = '<span class="lbl">main exam</span>' + h.map((v, j) => j < h.length - 1 ? '<s>' + v + '</s> → ' : '<span class="now">' + v + '</span>').join('');
+      s.appendChild(d);
+    }
+    // possession-bar navigator
+    const m = document.createElement('nav');
+    m.className = 'match';
+    m.setAttribute('aria-label', 'Slides');
+    const row = document.createElement('div');
+    row.className = 'row';
+    slides.forEach((t, j) => {
+      const btn = document.createElement('button');
+      btn.className = t.dataset.part + (j < k ? ' past' : '') + (j === k ? ' now' : '');
+      btn.setAttribute('aria-label', 'Slide ' + (j + 1) + ': ' + t.dataset.label);
+      btn.title = t.dataset.label;
+      btn.onclick = () => show(j);
+      row.appendChild(btn);
+    });
+    const cap = document.createElement('div');
+    cap.className = 'cap';
+    cap.innerHTML = '<b>' + s.dataset.label + '</b><span>' + (k + 1) + ' / ' + slides.length + '</span>';
+    m.append(row, cap);
+    s.appendChild(m);
+  });
+
+  function buildBoards() {
+    slides.forEach((s, k) => {
+      const cv = s.querySelector('.board canvas');
+      if (!cv || !scenes[s.dataset.scene]) return;
+      const wasActive = s.classList.contains('active');
+      s.classList.add('active');
+      const b = new Board(cv, 3 + k * 17);
+      scenes[s.dataset.scene](b);
+      b.setup(); b.draw(1);
+      if (!wasActive) s.classList.remove('active');
+      boards.set(k, b);
+    });
+  }
+
+  function fit() {
+    const sc = Math.min(window.innerWidth / 1300, (window.innerHeight - 20) / 740);
+    stage.style.transform = 'scale(' + sc + ')';
+  }
+  const notes = document.getElementById('notes');
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((el, k) => el.classList.toggle('active', k === i));
+    const b = boards.get(i);
+    if (b) b.animate(1700);
+    const cur = slides[i];
+    document.getElementById('notesTitle').textContent = 'Notes, slide ' + (i + 1) + ': ' + cur.dataset.label;
+    const nt = cur.querySelector('.notes');
+    document.getElementById('notesBody').textContent = nt ? nt.textContent : '';
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  }
+  function toggleNotes() { notes.classList.toggle('open'); }
+  document.getElementById('prev').onclick = () => show(i - 1);
+  document.getElementById('next').onclick = () => show(i + 1);
+  document.getElementById('replay').onclick = () => { const b = boards.get(i); if (b) b.animate(1700); };
+  document.getElementById('notesBtn').onclick = toggleNotes;
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+    if (e.key === 'n' || e.key === 'N') toggleNotes();
+    if (e.key === 'r' || e.key === 'R') { const b = boards.get(i); if (b) b.animate(1700); }
+  });
+  let tx = null;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+    tx = null;
+  });
+
+  // Data tables for screen readers on the two chart slides
+  function table(sel, caption, head, rows) {
+    const host = document.querySelector(sel); if (!host) return;
+    const t = document.createElement('table'); t.className = 'sr-table';
+    t.innerHTML = '<caption>' + caption + '</caption><tr>' + head.map(h => '<th>' + h + '</th>').join('') + '</tr>' + rows.map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('');
+    host.appendChild(t);
+  }
+  table('[data-scene="climb"] .board', 'Main exam score by version', ['Version', 'Score / 100'], [['Example', 29.8], ['First system', 66.8], ['+ Memory', 71.0], ['+ Space', 71.5], ['Safety net', 71.8], ['Committee', 75.1], ['After autopsy', 75.9]]);
+  table('[data-scene="public"] .board', 'Public five-minute score with plausible range', ['Version', 'Score', 'Low', 'High'], [['Example', 32.6, 21.4, 44.7], ['First system', 51.9, 36.8, 66.0], ['Safety net', 61.3, 38.8, 80.8], ['Committee', 80.0, 59.4, 93.8], ['Final', 88.8, 72.5, 97.5]]);
+
+  window.addEventListener('resize', fit);
+  fit();
+  const start = parseInt((location.hash || '').slice(1), 10);
+  const go = () => { buildBoards(); show(isNaN(start) ? 0 : start - 1); };
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => document.fonts.load('20px Kalam')).then(go, go);
+})();
+</script>
+</body>
+</html>
