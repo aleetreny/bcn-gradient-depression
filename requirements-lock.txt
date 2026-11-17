@@ -1,0 +1,8 @@
+# Frozen reference environment for the baseline/scorer (Python 3.11).
+# Keep upstream requirements.txt unchanged for provenance.
+numpy==1.26.4
+pandas==2.2.3
+python-dateutil==2.9.0.post0
+pytz==2024.2
+tzdata==2024.2
+six==1.16.0

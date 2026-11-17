@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>De un ordenador ciego al 88.8% de precisión · FC Barcelona Challenge</title>
+  <meta name="description" content="Cómo enseñamos a una máquina a entender quién tiene el balón en el fútbol real pasando de un 61.2% a un 88.8% de precisión (+27.6 puntos) en el reto del FC Barcelona." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2214%22 fill=%22%231C2722%22/><circle cx=%2250%22 cy=%2250%22 r=%2224%22 fill=%22none%22 stroke=%22%23ECEEE6%22 stroke-width=%229%22/><circle cx=%2274%22 cy=%2226%22 r=%228%22 fill=%22%23EECC5C%22/></svg>" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preload" href="fonts/kalam-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin />
+  <style>
+    /* Self-hosted (SIL OFL, latin subset) so the chalk hand never falls back to a system face */
+    @font-face { font-family: "Kalam"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/kalam-400.woff2) format("woff2"); }
+    @font-face { font-family: "Barlow"; font-weight: 400; font-style: normal; font-display: swap; src: url(fonts/barlow-400.woff2) format("woff2"); }
+    @font-face { font-family: "Barlow"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/barlow-600.woff2) format("woff2"); }
+    @font-face { font-family: "Barlow Condensed"; font-weight: 500; font-style: normal; font-display: swap; src: url(fonts/barlow-condensed-500.woff2) format("woff2"); }
+    @font-face { font-family: "Barlow Condensed"; font-weight: 600; font-style: normal; font-display: swap; src: url(fonts/barlow-condensed-600.woff2) format("woff2"); }
+
+    /* The dressing-room tactics board. Three inks only: the slate, white chalk,
+       and one yellow chalk kept for the ball and the precision figure.
+       board.js paints the same values onto the canvas. */
+    :root {
+      --slate: #1C2722;
+      --slate-raised: #222E29;
+      --tray: #141B18;
+      --frame: #5A635E;
+      --chalk: #ECEEE6;
+      --chalk-body: rgba(236, 238, 230, 0.86);
+      --chalk-soft: rgba(236, 238, 230, 0.64);
+      --chalk-line: rgba(236, 238, 230, 0.16);
+      --yellow: #EECC5C;
+      --hand: "Kalam", "Comic Sans MS", cursive;
+      --sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
+      --cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+      --rail-h: 56px;
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html {
+      background: var(--slate);
+      color: var(--chalk);
+      -webkit-font-smoothing: antialiased;
+      scrollbar-color: #48524C var(--tray);
+      scrollbar-width: thin;
+    }
+    body { margin: 0; background: var(--slate); font-family: var(--sans); overflow-x: hidden; }
+    ::selection { background: rgba(238, 204, 92, 0.32); color: #fff; }
+    :focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
+    a { text-underline-offset: 3px; }
+
+    /* Lenis smooth-scroll housekeeping */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-stopped { overflow: hidden; }
+
+    html.sw-booting [data-sw-seo] {
+      position: fixed; top: 0; left: 0;
+      width: 1px; height: 1px; overflow: hidden;
+      clip: rect(0 0 0 0); clip-path: inset(50%);
+      white-space: nowrap; opacity: 0; pointer-events: none;
+    }
+    [data-sw-seo] {
+      color: var(--chalk-body);
+      font-family: var(--sans);
+      max-width: 68ch;
+      margin: 96px auto 40px;
+      padding: 0 22px;
+      line-height: 1.65;
+    }
+    [data-sw-seo] h1, [data-sw-seo] h2 { font-family: var(--hand); font-weight: 400; color: var(--chalk); }
+
+    /* ---------- the board ---------- */
+    .bd-canvas { position: fixed; inset: 0; z-index: 0; display: block; }
+    .bd-track { position: relative; z-index: 1; pointer-events: none; }
+
+    /* ---------- the chalk tray rail ---------- */
+    /* The aluminium ledge along the top of the board: a tray holding chalk sticks,
+       with one round magnet per chapter stuck along it. */
+    .bcn-topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--rail-h);
+      box-sizing: border-box;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 clamp(16px, 2.6vw, 36px);
+      background: var(--tray);
+      border-bottom: 4px solid var(--frame);
+      box-shadow: inset 0 -7px 0 #0E1311, 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+    .bcn-topbar::after {
+      /* two sticks of chalk lying in the tray, white and the one yellow */
+      content: "";
+      position: absolute;
+      right: calc(clamp(16px, 2.6vw, 36px) + 132px);
+      bottom: 3px;
+      width: 58px;
+      height: 7px;
+      border-radius: 3px;
+      background: var(--chalk);
+      box-shadow: 66px 0 0 -1px var(--yellow);
+      opacity: 0.85;
+      transform: rotate(-2deg);
+    }
+    .bcn-brand {
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 1.08rem;
+      letter-spacing: 0.01em;
+      color: var(--chalk);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .sw-step-pills { display: flex; align-items: center; gap: 7px; }
+    .sw-step-pill {
+      appearance: none;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--chalk-soft);
+      background: #2B3530;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 3px rgba(0, 0, 0, 0.55);
+      white-space: nowrap;
+      position: relative;
+      transition: color 0.2s ease, transform 0.2s var(--ease-out);
+    }
+    .sw-step-pill::after {
+      /* touch area taller than the magnet; neighbours stay separate */
+      content: "";
+      position: absolute;
+      inset: -7px -2px;
+    }
+    .sw-step-pill:hover { color: var(--chalk); transform: translateY(-1px); }
+    .sw-step-pill.is-past { color: var(--chalk-body); }
+    .sw-step-pill.is-active { color: var(--tray); background: var(--chalk); transition: none; }
+    .bcn-topbar-cta {
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--chalk);
+      text-decoration: none;
+      padding: 6px 14px 5px;
+      border: 1px solid rgba(236, 238, 230, 0.34);
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .bcn-topbar-cta:hover { background: rgba(236, 238, 230, 0.08); border-color: rgba(236, 238, 230, 0.6); }
+
+    /* ---------- the coach's notes, straight on the slate ---------- */
+    .nt-layer { position: fixed; inset: 0; z-index: 20; pointer-events: none; }
+    .nt {
+      position: absolute;
+      left: clamp(24px, 4vw, 64px);
+      top: calc(var(--rail-h) + clamp(28px, 6vh, 64px));
+      width: min(36vw, 520px);
+      visibility: hidden;
+    }
+    .nt-title {
+      margin: 0 0 0.55em;
+      font-family: var(--hand);
+      font-weight: 400;
+      font-size: clamp(1.9rem, 2.55vw, 2.7rem);
+      line-height: 1.14;
+      color: var(--chalk);
+      text-wrap: balance;
+    }
+    .nt-w { display: inline-block; }
+    .nt-prose p {
+      margin: 0 0 0.85em;
+      font-size: clamp(0.98rem, 1.06vw, 1.06rem);
+      line-height: 1.62;
+      color: var(--chalk-body);
+      max-width: 64ch;
+    }
+    .nt-prose strong { color: var(--chalk); font-weight: 600; }
+    .nt-figs {
+      list-style: none;
+      margin: 1.4em 0 0;
+      padding: 0.9em 0 0;
+      border-top: 1px dashed rgba(236, 238, 230, 0.28);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4em 1.6em;
+    }
+    .nt-figs li { display: flex; align-items: baseline; gap: 0.45em; }
+    .nt-figs b {
+      font-family: var(--hand);
+      font-weight: 400;
+      font-size: 1.32rem;
+      color: var(--chalk);
+      font-variant-numeric: tabular-nums;
+    }
+    .nt-figs span { font-size: 0.86rem; color: var(--chalk-soft); line-height: 1.3; }
+    .nt-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5em; }
+    .nt-btn {
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      color: var(--chalk);
+      padding: 9px 16px 8px;
+      border: 1px solid rgba(236, 238, 230, 0.4);
+      border-radius: 6px;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .nt-btn:hover { background: rgba(236, 238, 230, 0.08); border-color: rgba(236, 238, 230, 0.7); }
+    .nt-btn--primary {
+      border-color: rgba(236, 238, 230, 0.7);
+      text-decoration: underline;
+      text-decoration-color: var(--yellow);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 5px;
+    }
+    .nt-btn--primary:hover { background: rgba(236, 238, 230, 0.1); }
+
+    /* The same chalk grain as the canvas (board.js publishes --chalk-grain) */
+    .nt-title, .nt-figs b, .sw-exp-title, .sw-exp-card h4, [data-sw-seo] h1, [data-sw-seo] h2 {
+      -webkit-mask-image: var(--chalk-grain, none);
+      mask-image: var(--chalk-grain, none);
+      -webkit-mask-size: 96px 96px;
+      mask-size: 96px 96px;
+    }
+
+    /* ---------- summary sheet ---------- */
+    .sw-explorer-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(10, 14, 12, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 3vw, 40px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .sw-explorer-modal.is-open { display: flex; animation: bd-fade 0.25s ease both; }
+    .sw-explorer-modal.is-open .sw-explorer-dialog { animation: bd-rise 0.45s var(--ease-out) both; }
+    @keyframes bd-fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes bd-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    .sw-explorer-dialog {
+      width: min(1080px, 95vw);
+      max-height: 88vh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      box-sizing: border-box;
+      background: var(--slate-raised);
+      border: 3px solid var(--frame);
+      border-radius: 6px;
+      padding: clamp(22px, 3vw, 40px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      color: var(--chalk);
+    }
+    .sw-exp-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .sw-exp-top .sw-exp-badge { display: none; }
+    .sw-exp-title {
+      font-family: var(--hand);
+      font-weight: 400;
+      font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+      line-height: 1.15;
+      margin: 0;
+      color: var(--chalk);
+      text-wrap: balance;
+    }
+    .sw-exp-close {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--chalk);
+      background: transparent;
+      border: 1px solid rgba(236, 238, 230, 0.4);
+      border-radius: 6px;
+      padding: 7px 14px 6px;
+    }
+    .sw-exp-close:hover { background: rgba(236, 238, 230, 0.08); }
+    .sw-exp-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 22px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--chalk-line);
+    }
+    .sw-exp-tab {
+      appearance: none;
+      cursor: pointer;
+      font-family: var(--cond);
+      font-weight: 500;
+      font-size: 1.02rem;
+      color: var(--chalk-soft);
+      background: transparent;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      padding: 10px 0 8px;
+      margin-bottom: -1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .sw-exp-tab:hover { color: var(--chalk); }
+    .sw-exp-tab.is-active { color: var(--chalk); border-bottom-color: var(--chalk); font-weight: 600; }
+    .sw-exp-panel { display: none; }
+    .sw-exp-panel.is-active { display: block; animation: bd-fade 0.3s ease both; }
+    .sw-exp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 0 36px;
+    }
+    .sw-exp-card {
+      display: flex;
+      flex-direction: column;
+      padding: 18px 0 20px;
+      border-bottom: 1px dashed rgba(236, 238, 230, 0.2);
+    }
+    .sw-exp-card h4 {
+      order: 1;
+      margin: 0 0 4px;
+      font-family: var(--hand);
+      font-weight: 400;
+      font-size: 1.32rem;
+      line-height: 1.2;
+      color: var(--chalk);
+    }
+    .sw-exp-card .sw-exp-badge {
+      order: 2;
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+    .sw-exp-card p {
+      order: 3;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--chalk-body);
+    }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 1100px) {
+      .bcn-topbar::after { display: none; }
+    }
+    @media (max-width: 900px) {
+      .bcn-brand { display: none; }
+      .bcn-topbar { justify-content: center; gap: 12px; }
+    }
+    @media (max-width: 520px) {
+      .bcn-topbar { padding: 0 10px; gap: 8px; }
+      .sw-step-pills { gap: 3px; }
+      .sw-step-pill { width: 32px; height: 32px; font-size: 0.66rem; }
+      .sw-step-pill::after { inset: -6px -1.5px; }
+      .bcn-topbar-cta { font-size: 0.82rem; padding: 5px 8px 4px; }
+    }
+    @media (max-width: 859px) {
+      .nt {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        top: calc(var(--rail-h) + 10px);
+        box-sizing: border-box;
+        padding: 16px 18px 18px;
+        background: rgba(28, 39, 34, 0.94);
+        border: 1px solid rgba(236, 238, 230, 0.12);
+        border-radius: 6px;
+      }
+      .nt-title { font-size: clamp(1.45rem, 6.4vw, 1.8rem); }
+      .nt-prose p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.7em; }
+      .nt-figs { margin-top: 0.9em; padding-top: 0.7em; gap: 0.2em 1.1em; }
+      .nt-figs b { font-size: 1.12rem; }
+      .nt-figs span { font-size: 0.78rem; }
+      .nt-cta { margin-top: 1em; }
+      .nt-btn { font-size: 0.92rem; padding: 8px 12px 7px; }
+    }
+    @media (max-width: 859px) and (max-height: 760px) {
+      .nt { padding: 12px 14px 14px; }
+      .nt-title { font-size: 1.3rem; }
+      .nt-prose p { font-size: 0.8rem; line-height: 1.42; margin-bottom: 0.55em; }
+      .nt-figs span { font-size: 0.7rem; }
+      .nt-btn { font-size: 0.84rem; padding: 6px 10px 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sw-explorer-modal.is-open, .sw-explorer-modal.is-open .sw-explorer-dialog, .sw-exp-panel.is-active { animation: none; }
+    }
+  </style>
+  <script>
+    document.documentElement.className += ' sw-booting';
+    setTimeout(function () { document.documentElement.classList.remove('sw-booting'); }, 8000);
+  </script>
+</head>
+<body>
+  <!--
+    THESIS: The coach explains the match on the dressing-room tactics board; each chapter is drawn in chalk and wiped with the eraser for the next. Refuses the dark neon 3D "tech flight" and the white data-explainer default.
+    OWN-WORLD: Green-black slate, printed pitch lines, white chalk (Barça O, Athletic X), one yellow chalk for ball and precision. Kalam hand for everything the coach writes, Barlow for reading, Barlow Condensed for the chalk-tray rail.
+    STORY: The jury watches each failure drawn on the pitch, reads the fix beside it, and sees the coach cross out 61.2 and write each new figure until 88.8 is circled twice.
+    FIRST VIEWPORT: Notes column left (headline in chalk hand, prose, three figures); pitch right with 22 tokens and the ball; running score under the pitch; chapter magnets on the top rail, "Ver resumen" at its right end.
+    FORM: Pizarra táctica del vestuario, my #1 of 7 (chosen over the dealt #6, sticker album). Seed 7a29ea99.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+  -->
+  <div id="top"></div>
+
+  <!-- The chalk tray along the top of the board -->
+  <header class="bcn-topbar">
+    <a href="#top" class="bcn-brand">FC Barcelona · El reto de la posesión</a>
+    <nav class="sw-step-pills" aria-label="Capítulos">
+      <button type="button" class="sw-step-pill is-active" data-scene-index="0" aria-label="Capítulo 1: Inicio (61.2%)" title="Capítulo 1: Inicio (61.2%)">61.2</button>
+      <button type="button" class="sw-step-pill" data-scene-index="1" aria-label="Capítulo 2: La regla del 70%" title="Capítulo 2: La regla del 70%">Regla</button>
+      <button type="button" class="sw-step-pill" data-scene-index="2" aria-label="Paso 1: Física (73.1%)" title="Paso 1: Física (73.1%)">73.1</button>
+      <button type="button" class="sw-step-pill" data-scene-index="3" aria-label="Paso 2: 6 especialistas (80.0%)" title="Paso 2: 6 especialistas (80.0%)">80.0</button>
+      <button type="button" class="sw-step-pill" data-scene-index="4" aria-label="Paso 3: 4 jueces (81.3%)" title="Paso 3: 4 jueces (81.3%)">81.3</button>
+      <button type="button" class="sw-step-pill" data-scene-index="5" aria-label="Paso 4: Saque de banda (86.9%)" title="Paso 4: Saque de banda (86.9%)">86.9</button>
+      <button type="button" class="sw-step-pill" data-scene-index="6" aria-label="Paso 5: Robos cortos (88.8%)" title="Paso 5: Robos cortos (88.8%)">88.8</button>
+      <button type="button" class="sw-step-pill" data-scene-index="7" aria-label="Capítulo 8: Resultado final (88.8%)" title="Capítulo 8: Resultado final (88.8%)">Final</button>
+    </nav>
+    <a href="#explorar" class="bcn-topbar-cta">Ver resumen</a>
+  </header>
+
+  <!-- The board: canvas, scroll track and the chapter notes are mounted in here -->
+  <div id="world">
+    <section data-sw-seo>
+      <h1>De un ordenador ciego al 88.8% de precisión — Reto FC Barcelona</h1>
+      <h2>Capítulo 1 — El punto de partida (61.2%)</h2>
+      <p>Para un aficionado, el fútbol son camisetas, miradas y pases con intención. Para un ordenador, sin embargo, un partido son apenas veintidós puntos moviéndose sobre un plano oscuro veinticinco veces por segundo. Un programa convencional que solo mira quién está más cerca del balón en cada instante pierde el hilo en cuanto hay un pase largo y solo acierta el 61.2% de las jugadas.</p>
+      <h2>Capítulo 2 — Por qué un tropiezo mínimo arruina la nota (La regla del 70%)</h2>
+      <p>El jurado del torneo exige acertar al menos el 70% continuo de cada posesión de principio a fin. Si el Barcelona toca el balón durante treinta segundos y el ordenador duda apenas dos décimas de segundo en la mitad, parte la jugada en dos trozos del 49%: el sistema anota cero aciertos y dos fallos.</p>
+      <h2>Capítulo 3 — Paso 1: Limpiar las cámaras y entender la física (73.1%, +11.9 puntos)</h2>
+      <p>Las cámaras del estadio sufren reflejos ópticos que hacen que el balón parezca saltar a la grada a 150 km/h. Construimos un filtro físico que bloquea movimientos imposibles, reconstruye el vuelo natural de la pelota y mide 62 pistas sobre quién domina cada metro del césped, subiendo de golpe al 73.1%.</p>
+      <h2>Capítulo 4 — Paso 2: Seis especialistas y la ley del espejo (80.0%, +6.9 puntos)</h2>
+      <p>Reunimos a tres analistas de foto fija con tres directores de cine que leen treinta segundos hacia atrás y hacia adelante, obligándolos a ser matemáticamente imparciales al intercambiar las camisetas de ambos equipos. La precisión sube hasta el 80.0%.</p>
+      <h2>Capítulo 5 — Paso 3: Cuatro jueces en once partidos (81.3%, +1.3 puntos)</h2>
+      <p>Sometimos cada idea a cuatro exámenes simultáneos en once partidos distintos para descartar cualquier truco que no funcionara fuera de casa. Los siete partidos de prueba mejoraron de nota y ganamos +7.1 puntos en otro estadio sin reentrenar.</p>
+      <h2>Capítulo 6 — Paso 4: El reloj exacto del saque de banda (86.9%, +5.7 puntos)</h2>
+      <p>Enseñamos a la máquina que caminar cuatro segundos por la banda con el balón en las manos es tiempo muerto, y que la posesión real empieza en el fotograma exacto en que la pelota vuelve al césped. Este único descubrimiento aportó +5.7 puntos hasta el 86.9%.</p>
+      <h2>Capítulo 7 — Paso 5: Robos relámpago de 0.88 segundos (88.8%, +1.8 puntos)</h2>
+      <p>Por último, creamos un detector que identifica el frenazo en seco del balón cuando un defensa intercepta un pase durante menos de un segundo, rescatando las tres jugadas encadenadas sin provocar ni una sola falsa alarma en los noventa minutos.</p>
+      <h2>Capítulo 8 — El partido visto con ojos humanos (88.8% final)</h2>
+      <p>Pasamos del 61.2% inicial al 88.8% de precisión (+27.6 puntos), reconstruyendo las 197 posesiones reales del FC Barcelona (61.5%) frente al Athletic Club (38.5%) con un ritmo natural de fútbol.</p>
+    </section>
+  </div>
+
+  <!-- Summary sheet -->
+  <div id="sw-explorer-modal" class="sw-explorer-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="sw-exp-heading" data-lenis-prevent>
+    <div class="sw-explorer-dialog">
+      <div class="sw-exp-top">
+        <div>
+          <span class="sw-exp-badge">Resumen completo · FC Barcelona Challenge</span>
+          <h2 id="sw-exp-heading" class="sw-exp-title">Cómo pasamos de un 61.2% a un 88.8% de precisión (+27.6 puntos)</h2>
+        </div>
+        <button type="button" class="sw-exp-close" data-close-explorer>Cerrar</button>
+      </div>
+
+      <div class="sw-exp-tabs" role="tablist">
+        <button type="button" class="sw-exp-tab is-active" data-explorer-tab="escalera">1. Los cinco pasos de mejora</button>
+        <button type="button" class="sw-exp-tab" data-explorer-tab="jueces">2. Los cuatro exámenes y qué descartamos</button>
+        <button type="button" class="sw-exp-tab" data-explorer-tab="radiografia">3. Radiografía del Barça vs. Athletic (90')</button>
+      </div>
+
+      <div class="sw-exp-panel is-active" data-explorer-panel="escalera">
+        <div class="sw-exp-grid">
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Inicio · 61.2%</span>
+            <h4>El ordenador sin memoria</h4>
+            <p>Un programa básico solo pregunta quién tiene el balón más cerca de los pies en cada foto suelta. En cuanto hay un pase largo y la pelota viaja sola, pierde el hilo y rompe cuatro de cada diez jugadas.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Paso 1 · 73.1% (+11.9 pts)</span>
+            <h4>Limpiar la cámara y entender la física</h4>
+            <p>Corregimos los reflejos de las cámaras de televisión que hacían saltar el balón a la grada a 150 km/h y medimos 62 pistas físicas: hacia dónde corre cada jugador y quién domina cada metro del campo.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Paso 2 · 80.0% (+6.9 pts)</span>
+            <h4>Seis especialistas en simetría espejo</h4>
+            <p>Unimos tres analistas de foto fija con tres directores de cine que miran treinta segundos antes y después de cada pase, obligándolos a dar un veredicto idéntico si se intercambian las camisetas.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Paso 3 · 81.3% (+1.3 pts)</span>
+            <h4>Acuerdo validado en once partidos</h4>
+            <p>Ponderamos el voto de cada especialista exigiendo que la combinación funcionara simultáneamente en partidos limpios, con fallos de cámara y en estadios nuevos.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Paso 4 · 86.9% (+5.7 pts)</span>
+            <h4>El reloj exacto del saque de banda</h4>
+            <p>Nuestro mayor salto individual: enseñamos a la máquina que caminar cuatro segundos con el balón en las manos en la banda es tiempo muerto, y que la jugada empieza en el instante exacto en que el balón vuelve al césped.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Paso 5 · 88.8% (+1.8 pts)</span>
+            <h4>Robos cortos de 0.88 segundos</h4>
+            <p>Detectamos el frenazo en seco del balón (12 m/s²) cuando un rival mete la bota durante menos de un segundo en el mediocampo, salvando las tres jugadas encadenadas sin una sola falsa alarma.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sw-exp-panel" data-explorer-panel="jueces">
+        <div class="sw-exp-grid">
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Examen 1 · 7 partidos oficiales</span>
+            <h4>88.8% (los 7 partidos mejoran)</h4>
+            <p>Entrenamos siempre con seis partidos y examinamos en un séptimo partido desconocido para la máquina. Los siete encuentros subieron entre +24 y +30 puntos porcentuales sin excepción.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Examen 2 · Fallos ópticos</span>
+            <h4>80.5% bajo errores de cámara</h4>
+            <p>Simulamos pérdidas de señal, jugadores ocultos y saltos bruscos del balón como ocurre en las retransmisiones reales. La física del sistema mantuvo un 80.5% de fiabilidad.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Examen 3 · Otro estadio distinto</span>
+            <h4>+7.1 puntos sin reentrenar</h4>
+            <p>Probamos el sistema en tres partidos grabados en otro estadio con cámaras distintas. Mejoró +7.1 puntos a la primera, demostrando que entiende el juego y no memoriza un campo.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Honestidad científica</span>
+            <h4>Qué probamos y descartamos</h4>
+            <p>Descartamos ajustar los inicios de jugada con un solo especialista (-1.5 puntos) y adivinar robos cuando la cámara perdía jugadores (-0.7 puntos). Solo conservamos lo que superó los cuatro exámenes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sw-exp-panel" data-explorer-panel="radiografia">
+        <div class="sw-exp-grid">
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Dominio en el césped</span>
+            <h4>61.5% FC Barcelona vs. 38.5% Athletic</h4>
+            <p>El sistema reconstruye 121 posesiones limpias del FC Barcelona frente a 76 del Athletic Club (197 en total), reflejando con fidelidad el guion real de los noventa minutos.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Ritmo natural</span>
+            <h4>2.27 jugadas por minuto · 13.7s de media</h4>
+            <p>Desaparecen los cortes falsos de medio segundo. Cada posesión tiene la cadencia natural del fútbol humano, con un 98.6% de acierto distinguiendo el balón en juego de las pausas.</p>
+          </div>
+          <div class="sw-exp-card">
+            <span class="sw-exp-badge">Fiabilidad en 90 minutos</span>
+            <h4>Cero falsas alarmas en 199,319 fotogramas</h4>
+            <p>El detector de intercepciones rápidas recuperó los toques cortos del rival en el centro del campo sin inventar ni una sola interrupción falsa en todo el partido.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script>
+    // Inertial wheel scrolling so the chalk is drawn in one continuous gesture instead of notch by notch.
+    // Touch keeps the native scroll; reduced motion keeps the plain browser scroll.
+    (function () {
+      if (!window.Lenis || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true });
+      (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
+      // The scroll track is sized by board.js after Lenis measures the page
+      document.addEventListener('sw:layout', function () { lenis.resize(); });
+      window.bcnLenis = lenis;
+    })();
+  </script>
+  <script src="copy-layer.js"></script>
+  <script src="board.js"></script>
+  <script src="hud-and-explorer.js"></script>
+  <script>
+    var world = document.getElementById('world');
+
+    // Chapter notes: flowing prose ("mucha palabra") + only the key figures
+    var COPY = [
+      {
+        id: 'ciego',
+        accent: '#F3C33C',
+        stepLabel: 'Capítulo 1 de 8 · El punto de partida',
+        scoreBadge: '61.2% inicial',
+        progressPct: 22,
+        pos: { h: 'left', v: 'top' },
+        title: 'Un ordenador ciego ante *veintidós* puntos de luz',
+        paragraphs: [
+          'Cuando cualquier aficionado mira un partido del Barça, entiende al instante quién controla el juego: ve las camisetas, la postura del cuerpo y la intención de cada pase. Un ordenador, en cambio, está completamente ciego ante todo eso. Lo único que recibe son <strong>veintidós puntos moviéndose sobre un fondo oscuro</strong> veinticinco veces por segundo.',
+          'Los programas básicos intentan adivinar quién tiene la posesión haciendo una sola pregunta inocente en cada foto: <strong>«¿qué jugador está hoy más cerca de la pelota?»</strong>. Mientras el balón va pegado a la bota, aciertan. Pero en cuanto hay un pase largo y el balón viaja solo por el aire pasando cerca de un rival, el ordenador pierde el hilo, corta la jugada en pedazos falsos y falla casi cuatro de cada diez posesiones.'
+        ],
+        metrics: [
+          { value: '61.2%', label: 'Precisión del modelo base' },
+          { value: '199,319', label: 'Fotogramas en 90 minutos' },
+          { value: '4 de 10', label: 'Jugadas rotas al inicio' }
+        ]
+      },
+      {
+        id: 'trampa',
+        accent: '#F3C33C',
+        stepLabel: 'Capítulo 2 de 8 · Por qué era tan difícil subir de nota',
+        scoreBadge: 'Exige 70% continuo',
+        progressPct: 30,
+        pos: { h: 'right', v: 'upper' },
+        title: 'Por qué una duda de medio segundo *destruye* toda la jugada',
+        paragraphs: [
+          'Antes de escribir una sola línea de código estudiamos las reglas del jurado. A diferencia de otros retos donde basta con acertar fotograma a fotograma, aquí se evalúa cada jugada completa: para que una posesión cuente como válida, hay que acertar <strong>al menos el 70% continuo de su duración</strong> de principio a fin.',
+          'Esa regla esconde dos trampas letales. Si el Barça toca el balón durante treinta segundos pero la máquina duda apenas <strong>dos décimas de segundo en la mitad</strong>, parte la jugada en dos mitades del 49% que valen cero puntos. Y aún peor: si un defensa rival corta un pase durante un segundo y la máquina no se entera, fusiona dos jugadas separadas en una sola posesión falsa y arruina tres jugadas de golpe.'
+        ],
+        metrics: [
+          { value: '70%', label: 'Solapamiento mínimo exigido' },
+          { value: '0.2 s', label: 'Duda que rompe una jugada' },
+          { value: '3 fallos', label: 'Al ignorar un robo de 1 segundo' }
+        ]
+      },
+      {
+        id: 'fantasma',
+        accent: '#F3C33C',
+        stepLabel: 'Paso 1 de 5 · Limpiar la cámara y entender la física',
+        scoreBadge: '61.2% → 73.1% (+11.9 pts)',
+        progressPct: 52,
+        pos: { h: 'left', v: 'top' },
+        title: 'Cuando las cámaras mienten y el balón *salta* a la grada',
+        paragraphs: [
+          'Al inspeccionar por qué el ordenador dudaba tanto a mitad de los pases, descubrimos un culpable inesperado: las cámaras ópticas del estadio. A veces un foco o una valla publicitaria las confunde durante una fracción de segundo y anotan que <strong>el balón ha viajado cuarenta metros hasta la grada a 150 km/h</strong>, o bien la pelota desaparece cuando varios jugadores la tapan.',
+          'Nuestro primer paso fue enseñar física elemental a la máquina. Bloqueamos cualquier salto humanamente imposible, reconstruimos la curva natural del balón cuando queda oculto y medimos <strong>62 pistas físicas en cada instante</strong>: hacia dónde corre cada futbolista, a qué velocidad frena el balón y qué equipo domina el espacio alrededor.'
+        ],
+        metrics: [
+          { value: '73.1%', label: 'Nueva precisión alcanzada' },
+          { value: '+11.9 pts', label: 'Ganancia en el Paso 1' },
+          { value: '62 pistas', label: 'Medidas de física y espacio' }
+        ]
+      },
+      {
+        id: 'espejo',
+        accent: '#F3C33C',
+        stepLabel: 'Paso 2 de 5 · Trabajo en equipo e imparcialidad',
+        scoreBadge: '73.1% → 80.0% (+6.9 pts)',
+        progressPct: 68,
+        pos: { h: 'right', v: 'upper' },
+        title: 'Seis especialistas votando juntos y la ley del *espejo*',
+        paragraphs: [
+          'Con la física limpia llegamos al 73.1%, pero un único punto de vista seguía quedándose corto. Por eso reunimos un comité de <strong>seis especialistas divididos en dos familias complementarias</strong>: tres analistas de foto fija que examinan al milímetro las distancias y la presión en ese instante, y tres directores de cine que rebobinan y adelantan treinta segundos la película para recordar quién dio el pase.',
+          'Además, les impusimos una regla de honestidad que llamamos <strong>la ley del espejo</strong>. Obligamos matemáticamente al sistema a que, si intercambiamos las camisetas del FC Barcelona y del Athletic Club, su respuesta se invierta con cero milésimas de diferencia. Así eliminamos cualquier favoritismo oculto y dimos otro salto limpio de casi siete puntos.'
+        ],
+        metrics: [
+          { value: '80.0%', label: 'Precisión tras el Paso 2' },
+          { value: '+6.9 pts', label: 'Ganancia al unir los 6 cerebros' },
+          { value: '0.000000', label: 'Error al invertir los equipos' }
+        ]
+      },
+      {
+        id: 'tribunal',
+        accent: '#F3C33C',
+        stepLabel: 'Paso 3 de 5 · Rigor científico contra el autoengaño',
+        scoreBadge: '80.0% → 81.3% (+1.3 pts)',
+        progressPct: 76,
+        pos: { h: 'left', v: 'top' },
+        title: 'Cuatro exámenes en once partidos y el valor de saber *descartar*',
+        paragraphs: [
+          'Al superar la barrera del 80%, el mayor peligro en cualquier competición de datos es hacerse trampas al solitario: ajustar tuercas que suben la nota en un partido concreto pero fracasan en la vida real. Para impedirlo creamos un <strong>tribunal de cuatro exámenes simultáneos</strong> repartidos en once partidos distintos: estadios limpios, cámaras con fallos ópticos, otro estadio diferente y el propio encuentro del Barça.',
+          'Esa disciplina nos salvó de cometer errores caros. Tuvimos ideas que sobre el papel parecían brillantes —como afinar los inicios de jugada con un solo especialista o adivinar robos cuando la cámara perdía jugadores—, pero el tribunal demostró que en realidad <strong>restaban hasta 1.5 puntos</strong>. Las tiramos a la basura sin dudar y solo conservamos lo que mejoró los siete partidos de prueba a la vez.'
+        ],
+        metrics: [
+          { value: '81.3%', label: 'Precisión auditada (Paso 3)' },
+          { value: '7 de 7', label: 'Partidos que suben de nota' },
+          { value: '+7.1 pts', label: 'Mejora en un estadio nuevo' }
+        ]
+      },
+      {
+        id: 'banda',
+        accent: '#F3C33C',
+        stepLabel: 'Paso 4 de 5 · Nuestro mayor descubrimiento individual',
+        scoreBadge: '81.3% → 86.9% (+5.7 pts)',
+        progressPct: 91,
+        pos: { h: 'right', v: 'upper' },
+        title: 'Cuatro segundos con el balón en las manos y el *instante* exacto',
+        paragraphs: [
+          'Mirando con lupa dónde seguía perdiendo puntos nuestro sistema, encontramos una mina de oro a plena vista: <strong>los saques de banda</strong>. Cuando la pelota sale fuera, el lateral la recoge, camina por la línea y busca un compañero durante unos cuatro segundos con el balón en las manos. Como el jugador tiene la pelota pegada al cuerpo, todos los programas normales creen que la posesión ya ha empezado.',
+          'Ese adelanto de cuatro segundos arruinaba la cuenta del jurado en decenas de jugadas. Construimos entonces un <strong>detector de pies a manos</strong> que mantiene el reloj en pausa mientras el futbolista camina por la banda y activa la posesión en el fotograma exacto en que el balón sale despedido hacia el césped. Ese único gesto de sentido común futbolístico nos regaló 5.7 puntos de golpe.'
+        ],
+        metrics: [
+          { value: '86.9%', label: 'Precisión tras el Paso 4' },
+          { value: '+5.7 pts', label: 'Salto por el reloj de banda' },
+          { value: '98.6%', label: 'Acierto en juego vivo vs. pausa' }
+        ]
+      },
+      {
+        id: 'cazador',
+        accent: '#F3C33C',
+        stepLabel: 'Paso 5 de 5 · Precisión quirúrgica en el mediocampo',
+        scoreBadge: '86.9% → 88.8% (+1.8 pts)',
+        progressPct: 98,
+        pos: { h: 'left', v: 'top' },
+        title: 'El arte de detectar un robo de *0.88* segundos sin falsas alarmas',
+        paragraphs: [
+          'Ya en el 86.9%, solo nos quedaba desactivar la segunda trampa del reglamento: las intercepciones relámpago en el centro del campo. Para no dudar a mitad de un pase largo, nuestro sistema suavizaba el partido ignorando fluctuaciones breves; pero ese mismo escudo hacía que se tragara <strong>robos reales que duraban apenas 0.88 segundos</strong> (veintidós fotogramas) cuando un rival metía la bota.',
+          'En lugar de volver nervioso a todo el algoritmo, diseñamos un cazador quirúrgico que busca tres pruebas físicas simultáneas: que un defensa rival esté a menos de metro y medio, que el balón sufra un <strong>frenazo en seco de 12 m/s²</strong> al chocar con su bota y que la posesión cambie de manos. Así rescatamos las tres jugadas encadenadas sin provocar ni una sola falsa alarma en todo el partido.'
+        ],
+        metrics: [
+          { value: '88.8%', label: 'Precisión final alcanzada' },
+          { value: '+1.8 pts', label: 'Ganancia del cazador de robos' },
+          { value: '0', label: 'Falsas alarmas en 90 minutos' }
+        ]
+      },
+      {
+        id: 'finale',
+        accent: '#F3C33C',
+        stepLabel: 'Capítulo 8 de 8 · Resultado oficial del proyecto',
+        scoreBadge: '88.8% final (+27.6 pts)',
+        progressPct: 100,
+        pos: { h: 'right', v: 'upper' },
+        title: 'De 61.2% a *88.8%*: cuando la máquina por fin entiende el fútbol',
+        paragraphs: [
+          'Paso a paso, sin trucos oscuros ni atajos frágiles, transformamos una tabla ciega de coordenadas en un sistema que lee el partido con la misma naturalidad que un analista en la cabina del estadio. Escalamos desde el <strong>61.2% inicial hasta un 88.8% de precisión</strong> (+27.6 puntos de mejora), logrando que absolutamente todos los partidos de prueba subieran de nota.',
+          'Al aplicar nuestro algoritmo a los noventa minutos completos entre el <strong>FC Barcelona y el Athletic Club</strong>, emergen 197 posesiones limpias con un dominio azulgrana del 61.5% frente al 38.5% rival y una duración media de 13.7 segundos por jugada. Puedes abrir el resumen interactivo aquí debajo para explorar con calma cada paso, cada prueba y cada cifra.'
+        ],
+        metrics: [
+          { value: '+27.6 pts', label: 'Mejora sobre el modelo base' },
+          { value: '61.5%', label: 'Posesión real del FC Barcelona' },
+          { value: '7 de 7', label: 'Partidos mejorados sin excepción' }
+        ],
+        cta: {
+          primary:   { label: 'Explorar el resumen de los 5 pasos', href: '#explorar' },
+          secondary: { label: 'Ver exámenes y datos del partido', href: '#jueces' }
+        }
+      }
+    ];
+
+    // The notes column listens to sw:layout, so it mounts before the board
+    mountCopyLayer(world, { sections: COPY });
+
+    window.bcnWorld = mountBoard(world, {
+      sections: COPY.map(function (s, i) {
+        return { id: s.id, title: s.stepLabel, scroll: i === 0 ? 1.8 : (i === COPY.length - 1 ? 2.0 : 1.7) };
+      })
+    });
+  </script>
+</body>
+</html>

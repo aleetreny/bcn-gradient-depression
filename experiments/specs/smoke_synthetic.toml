@@ -1,0 +1,14 @@
+# CI smoke test: the whole harness on synthetic matches. Never a model-selection signal.
+id = "smoke_synthetic"
+owner = "harness"
+hypothesis = "The harness runs end to end: judge, predictor, contracts, scoring and gate."
+
+[predictor]
+name = "baseline"
+params = { window = 25 }
+
+[judges]
+use = ["J0"]
+
+[criteria]
+champion = "none"

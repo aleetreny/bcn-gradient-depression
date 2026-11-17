@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BCN Gradient Depression — De 61.2% a 88.8% · Interactive Scrollytelling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css?v=4">
+</head>
+<body data-preload>
+
+<!-- ================= 17 · PRELOADER (0 -> 100) ================= -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pl-panel p1"></div>
+  <div class="pl-panel p2"></div>
+  <div class="pl-meta">
+    <span>BCN GRADIENT DEPRESSION · RETO FC BARCELONA 🏆</span>
+    <span>199.319 INSTANTES · 25 HZ · 61.2% → 88.8%</span>
+  </div>
+  <div class="pl-count-wrap"><div class="pl-count" id="plCount">0</div></div>
+</div>
+
+<!-- ================= 16 · FILM GRAIN + 12 · MORPHING CURSOR ================= -->
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<!-- ================= 40/41 · NAV + SCROLLSPY PILL + FLOATING SCORE HUD ================= -->
+<header class="nav" id="nav">
+  <a href="#sec-intro" class="brand mag"><span><b></b>BCN GRADIENT DEPRESSION</span></a>
+  <nav class="nav-links" id="navLinks">
+    <div class="nav-pill" id="navPill"></div>
+    <a href="#sec-intro" data-spy="sec-intro" class="active">Intro</a>
+    <a href="#sec-cap1" data-spy="sec-cap1">01 · El Juez</a>
+    <a href="#sec-cap2" data-spy="sec-cap2">02 · Física TV</a>
+    <a href="#sec-cap3" data-spy="sec-cap3">03 · 6 Expertos</a>
+    <a href="#sec-cap4" data-spy="sec-cap4">04 · Lecciones</a>
+    <a href="#sec-cap5" data-spy="sec-cap5">05 · 4 Llaves</a>
+    <a href="#sec-cap6" data-spy="sec-cap6">06 · 90 Minutos</a>
+  </nav>
+  <div class="nav-right">
+    <div class="score-hud" id="scoreHud" title="Evolución de nuestra nota oficial en jugadas completas">
+      <div class="sh-meta">
+        <span class="sh-stage" id="shStage">Punto de Partida</span>
+        <span class="sh-delta" id="shDelta">Base · 61.2%</span>
+      </div>
+      <div class="sh-val" id="shVal">61.2%</div>
+      <div class="sh-bar-wrap"><div class="sh-bar" id="shBar"></div></div>
+    </div>
+    <button class="burger mag" id="burger" aria-label="Abrir índice de capítulos"><span></span></button>
+  </div>
+</header>
+
+<!-- ================= 39 · FULLSCREEN OVERLAY MENU ================= -->
+<aside class="omenu" id="omenu" aria-hidden="true">
+  <ul class="omenu-links" id="omenuLinks">
+    <li><a href="#sec-intro" data-kicker="INTRO · ZOOM-THROUGH (#08) + TEXT MASK (#04)" data-title="Enseñar a una máquina a ver el fútbol como un humano" data-desc="Atravesamos el círculo central del estadio hasta entrar en las 199.319 filas de coordenadas a 25 veces por segundo." data-score="61.2% → 88.8%"><span class="idx">00</span><span class="oml">Portada y Manifiesto</span></a></li>
+    <li><a href="#sec-cap1" data-kicker="CAPÍTULO 01 · CANVAS SEQUENCE SCRUB (#02)" data-title="El Ordenador Ciego y La Trampa del Juez" data-desc="23 puntitos en la oscuridad, 'La Grieta' (dudar medio segundo cuesta 3 fallos) y 'El Puente Ciego'." data-score="Base: 61.2%"><span class="idx">01</span><span class="oml">El Ordenador Ciego</span></a></li>
+    <li><a href="#sec-cap2" data-kicker="CAPÍTULO 02 · SPLIT-SCREEN STICKY STORY (#53)" data-title="Cámaras de TV que Mienten y Pelotas Fantasma" data-desc="Cuando la tele hace zoom, el balón desaparece o viaja a 150 km/h hacia una media blanca. Así lo reparamos." data-score="61.2% → 73.1%"><span class="idx">02</span><span class="oml">Pelotas Fantasma</span></a></li>
+    <li><a href="#sec-cap3" data-kicker="CAPÍTULO 03 · HORIZONTAL SCROLL SECTION (#03)" data-title="El Comité de los 6 Especialistas y Simetría Espejo" data-desc="3 expertos en foto fija, 2 en película de 8s, 1 en geometría de bandada, Simetría Espejo (0.000000 sesgo) y 4 Jueces." data-score="73.1% → 80.0%"><span class="idx">03</span><span class="oml">Los 6 Especialistas</span></a></li>
+    <li><a href="#sec-cap4" data-kicker="CAPÍTULO 04 · STICKY STACKING CARDS (#06)" data-title="Lo que Probamos y Falló vs. La Regla Ganadora" data-desc="3 ideas tentadoras que nos restaban puntos y la Regla de Oro: solo actuar cuando física y comité coinciden." data-score="Blindaje 80.0%"><span class="idx">04</span><span class="oml">Ideas Descartadas</span></a></li>
+    <li><a href="#sec-cap5" data-kicker="CAPÍTULO 05 · SVG LINE DRAW (#51) + COLOR MORPH (#52)" data-title="La Autopsia Forense y las 4 Llaves del 88.8%" data-desc="Amortiguador de ruido, Rebote vs Robo, el Reloj Exacto de los Saques de Banda (+5.7 pts) y el Cazador de Intercepciones (+1.8 pts)." data-score="80.0% → 88.8%"><span class="idx">05</span><span class="oml">Las 4 Llaves Maestras</span></a></li>
+    <li><a href="#sec-cap6" data-kicker="CAPÍTULO 06 · 3D FLY-THROUGH TUNNEL (#75) + STATS (#07)" data-title="El Vuelo de la Victoria por los 90 Minutos Completos" data-desc="Viaje 3D por el Barça vs Athletic completo: 88.8% en jugadas, 98.6% vivo vs parado y 2.27 posesiones por minuto." data-score="Campeón: 88.8% 🏆"><span class="idx">06</span><span class="oml">Vuelo 3D · 90 Minutos</span></a></li>
+  </ul>
+  <div class="omenu-right">
+    <div class="omenu-card">
+      <div class="oc-kicker" id="ocKicker">NAVEGACIÓN INTERACTIVA · EFFECTS LAB EDITION</div>
+      <div class="oc-title" id="ocTitle">De 61.2% a 88.8% sin jerga técnica</div>
+      <div class="oc-desc" id="ocDesc">Pasa el ratón por cualquier capítulo a la izquierda o haz clic para saltar directamente a su efecto interactivo.</div>
+      <div class="oc-score" id="ocScore">88.8% 🏆</div>
+    </div>
+  </div>
+</aside>
+
+<!-- =========================================================================================
+     INTRO + PORTADA — Effect #08 (Zoom-Through Scroll) + Effect #04 (Text Mask Reveal)
+     ========================================================================================= -->
+<section class="hero" id="sec-intro">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-kicker" id="heroKick">
+      <span class="dot"></span>
+      <span>PROYECTO GANADOR · RETO FC BARCELONA × LALIGA · CERO JERGA TÉCNICA</span>
+    </div>
+    <h1 class="hero-title" id="heroTitle">
+      <span class="hline"><span>Enseñar a una máquina</span></span>
+      <span class="hline"><span>a <em class="grad">ver el fútbol</em></span></span>
+      <span class="hline"><span>como un <em class="gold-em">humano.</em></span></span>
+    </h1>
+    <p class="hero-sub">
+      <strong>FC Barcelona vs Athletic Club:</strong> 22 futbolistas y 1 balón medidos <strong>25 veces por segundo</strong> (<code>199.319</code> instantes). Sin vídeo ni sonido: así subimos del <strong>61,2%</strong> al <strong>88,8% 🏆</strong>.
+    </p>
+
+    <div class="hero-kpis">
+      <div class="kpi-card tilt">
+        <div class="glare"></div>
+        <div class="kpi-lbl">01 · Punto de Partida</div>
+        <div class="kpi-val">61.2%</div>
+        <div class="kpi-bar"><i style="width:61%;background:rgba(255,255,255,.35)"></i></div>
+        <div class="kpi-sub">Ordenador ciego ante pases largos y zoom de TV.</div>
+      </div>
+      <div class="kpi-card tilt">
+        <div class="glare"></div>
+        <div class="kpi-lbl">02 · Física de Televisión</div>
+        <div class="kpi-val gold">73.1%</div>
+        <div class="kpi-bar"><i style="width:73%;background:var(--gold)"></i></div>
+        <div class="kpi-sub">Cero pelotas fantasma (&gt;150 km/h) + "gafas borrosas".</div>
+      </div>
+      <div class="kpi-card tilt">
+        <div class="glare"></div>
+        <div class="kpi-lbl">03 · 6 Expertos + Espejo</div>
+        <div class="kpi-val gold">80.0%</div>
+        <div class="kpi-bar"><i style="width:80%;background:linear-gradient(90deg,var(--gold),var(--lime))"></i></div>
+        <div class="kpi-sub">Foto fija + Película 8s + Bandada (<code>0.000000</code> sesgo).</div>
+      </div>
+      <div class="kpi-card tilt">
+        <div class="glare"></div>
+        <div class="kpi-lbl">04 · Autopsia Forense</div>
+        <div class="kpi-val win">88.8% 🏆</div>
+        <div class="kpi-bar"><i style="width:100%;background:linear-gradient(90deg,var(--bcn-red),var(--gold),var(--win))"></i></div>
+        <div class="kpi-sub">Latigazo de banda (<code>+5.7</code>) + Robos de 0,88s (<code>+1.8</code>).</div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#fx08" class="btn-primary mag"><span>Entrar al campo (Hacer Scroll) ↓</span></a>
+      <button class="btn-ghost mag" id="plReplay"><span>Repetir intro 0 → 100 ↻</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- EFFECT #08 · ZOOM-THROUGH SCROLL (DEL ESTADIO A LAS ENTRAÑAS DE LOS 199,319 INSTANTES) -->
+<section class="fx" id="fx08" data-name="00 · Intro — Zoom-Through del Estadio a los 199.319 Instantes (#fx08)" style="padding-top:36px">
+  <div class="wrap">
+    <div class="fx-head">
+      <div>
+        <span class="fx-num">EFECTO #08 · ZOOM-THROUGH SCROLL PORTAL</span>
+        <h3 class="fx-title">Del Estadio Visto desde el Cielo a las Entrañas de los Datos</h3>
+      </div>
+      <div class="fx-meta">
+        <span class="tag">Pin + Scale Portal</span>
+        <button class="pick" aria-label="Guardar en favoritos">♥</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage zoom-stage" id="zoomStage" data-cursor="view">
+    <div class="zoom-cap" id="zoomCap">
+      <span>HAZ SCROLL PARA ATRAVESAR EL CÍRCULO CENTRAL ↓</span>
+      <h4>Lo que tú ves en la tele vs. lo que recibe el ordenador</h4>
+    </div>
+
+    <!-- Aerial Tactical Stadium Frame -->
+    <div class="zoom-frame" id="zoomFrame">
+      <svg id="zoomPitchSvg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-label="Campo táctico FC Barcelona vs Athletic Club">
+        <defs>
+          <radialGradient id="pitchGlow" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="#192847"/>
+            <stop offset="65%" stop-color="#0b1220"/>
+            <stop offset="100%" stop-color="#060911"/>
+          </radialGradient>
+          <radialGradient id="portalGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(245,184,65,0.45)"/>
+            <stop offset="55%" stop-color="rgba(230,25,82,0.22)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+        </defs>
+        <rect width="800" height="500" fill="url(#pitchGlow)"/>
+        <g stroke="rgba(255,255,255,0.22)" stroke-width="2" fill="none">
+          <rect x="50" y="35" width="700" height="430" rx="8"/>
+          <line x1="400" y1="35" x2="400" y2="465"/>
+          <circle cx="400" cy="250" r="72" stroke="rgba(245,184,65,0.65)" stroke-width="2.5"/>
+          <circle cx="400" cy="250" r="108" stroke="rgba(255,255,255,0.1)" stroke-dasharray="6 6"/>
+          <rect x="50" y="125" width="115" height="250"/>
+          <rect x="635" y="125" width="115" height="250"/>
+          <rect x="50" y="185" width="42" height="130"/>
+          <rect x="708" y="185" width="42" height="130"/>
+        </g>
+        <circle cx="400" cy="250" r="95" fill="url(#portalGlow)"/>
+        <!-- 11 Barça dots (#e61952) -->
+        <g fill="#e61952" stroke="#ffffff" stroke-width="2">
+          <circle cx="88" cy="250" r="7"/><circle cx="195" cy="110" r="7"/><circle cx="180" cy="200" r="7"/>
+          <circle cx="182" cy="305" r="7"/><circle cx="205" cy="395" r="7"/><circle cx="315" cy="165" r="8"/>
+          <circle cx="355" cy="250" r="9"/><circle cx="325" cy="340" r="8"/><circle cx="465" cy="105" r="8"/>
+          <circle cx="490" cy="245" r="8"/><circle cx="460" cy="390" r="8"/>
+        </g>
+        <!-- 11 Athletic dots (#22b8ff) -->
+        <g fill="#22b8ff" stroke="#ffffff" stroke-width="1.8">
+          <circle cx="712" cy="250" r="7"/><circle cx="595" cy="120" r="7"/><circle cx="575" cy="205" r="7"/>
+          <circle cx="575" cy="295" r="7"/><circle cx="598" cy="380" r="7"/><circle cx="455" cy="175" r="7"/>
+          <circle cx="430" cy="255" r="8"/><circle cx="450" cy="330" r="7"/><circle cx="340" cy="130" r="7"/>
+          <circle cx="295" cy="255" r="7"/><circle cx="345" cy="375" r="7"/>
+        </g>
+        <!-- Center Ball -->
+        <circle cx="400" cy="250" r="8" fill="#f5b841" stroke="#fff" stroke-width="2.5"/>
+      </svg>
+    </div>
+
+    <!-- Revealed Interior Matrix once zoomed through the center circle -->
+    <div class="zoom-next" id="zoomNext">
+      <div class="zn-inner">
+        <span class="zn-kicker">DENTRO DEL CÍRCULO CENTRAL · LA MATRIZ PURA DEL PARTIDO</span>
+        <h4>199.319 Instantes · 25 Veces por Segundo</h4>
+        <p>
+          Sin césped ni vídeo: solo <strong>46 coordenadas (<code>X, Y</code>) por fila</strong> cada <strong>0,04 segundos</strong>.
+        </p>
+        <div class="zn-matrix">
+          <div class="zn-cell">
+            <b>INSTANTE EN CURSO</b>
+            <span id="znFrameCounter">14.250 / 199.319</span>
+          </div>
+          <div class="zn-cell">
+            <b>COORDENADA DEL BALÓN</b>
+            <span id="znBallCoord">X: +12.40m · Y: -4.15m</span>
+          </div>
+          <div class="zn-cell">
+            <b>BARÇA EN PANTALLA</b>
+            <span style="color:#ff8a93">11 puntos (X, Y)</span>
+          </div>
+          <div class="zn-cell">
+            <b>ATHLETIC EN PANTALLA</b>
+            <span style="color:#22b8ff">11 puntos (X, Y)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EFFECT #04 · TEXT MASK REVEAL + EFFECT #05 · PARALLAX LAYERS -->
+  <div class="wrap" style="margin-top:28px">
+    <div class="stage tmask-stage">
+      <p class="tmask">
+        Un humano ve veintidós futbolistas; la máquina solo recibe 46 números cada 0,04 segundos.
+      </p>
+    </div>
+
+    <div class="stage plax" id="plaxStage" style="margin-top:20px">
+      <div class="pl-layer pl-l1" data-speed="-0.12">25 HZ · 199.319</div>
+      <div class="pl-layer pl-card p1" data-speed="0.04">
+        <div>
+          <span>PREGUNTA 01 · JUEGO VIVO VS PARADO</span>
+          <div class="pl-metric" style="color:var(--win)">98.6%</div>
+          <h5>¿Está el balón en juego?</h5>
+        </div>
+        <p>Distinguir juego vivo de faltas, córners y saques de banda.</p>
+      </div>
+      <div class="pl-layer pl-card p2" data-speed="0.06">
+        <div>
+          <span>PREGUNTA 02 · CONTROL DEL BALÓN</span>
+          <div class="pl-metric" style="color:var(--gold)">94.8%</div>
+          <h5>¿De quién es el balón ahora?</h5>
+        </div>
+        <p>Incluso cuando la pelota vuela 30 metros por el aire sin que nadie la toque.</p>
+      </div>
+      <div class="pl-layer pl-card p3" data-speed="0.04">
+        <div>
+          <span>EL EXAMEN REAL · JUGADAS ENTERAS</span>
+          <div class="pl-metric" style="color:#ff5e8e">88.8% 🏆</div>
+          <h5>Clavar inicio y final exactos</h5>
+        </div>
+        <p>El juez exige acertar la barra entera de cada posesión de principio a fin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================================
+     CAPÍTULO 1 — El Ordenador Ciego y La Trampa del Juez · Effect #02 (Canvas Scrub)
+     ========================================================================================= -->
+<section class="fx" id="sec-cap1" data-name="01 · Cap 1 — El Ordenador Ciego y La Trampa del Juez (#fx02 Canvas Scrub)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-kicker"><span class="k-badge">CAPÍTULO 01</span> EFECTO #02 · INTERACTIVE CANVAS SEQUENCE SCRUB</span>
+        <h2>El Ordenador Ciego y La Doble Trampa del Juez</h2>
+      </div>
+      <p>
+        ¿Por qué un ordenador normal saca un pobre <strong>61,2%</strong> aunque acierte casi todos los segundos sueltos? Haz scroll sobre el simulador para ver las <strong>dos trampas mortales</strong> del reglamento.
+      </p>
+    </div>
+  </div>
+
+  <div class="stage seq-stage" id="seqStage" data-cursor="drag">
+    <div class="seq-top-bar">
+      <div class="seq-status">
+        <h4 id="seqTitle">1. Lo Único que Ve la Máquina: 23 Puntitos de Luz</h4>
+        <p id="seqSub">FOTOGRAMA 001 / 150 · HAZ SCROLL O PULSA UNA FASE</p>
+      </div>
+      <div class="seq-controls">
+        <button class="seq-tab active" data-phase="0">1 · Los 23 Puntitos</button>
+        <button class="seq-tab" data-phase="1">2 · "La Grieta" (3 Fallos)</button>
+        <button class="seq-tab" data-phase="2">3 · "El Puente Ciego"</button>
+      </div>
+    </div>
+    <canvas id="seqCanvas" width="1280" height="680"></canvas>
+  </div>
+</section>
+
+<!-- =========================================================================================
+     CAPÍTULO 2 — Cámaras de TV que Mienten y Pelotas Fantasma (61.2% -> 73.1%) · Split-Screen Sticky (#fx53)
+     ========================================================================================= -->
+<section class="fx" id="sec-cap2" data-name="02 · Cap 2 — Cámaras de TV y Pelotas Fantasma 61.2% → 73.1% (#fx53 Split-Screen)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-kicker"><span class="k-badge">CAPÍTULO 02 · 61.2% → 73.1%</span> EFECTO #53 · SPLIT-SCREEN STICKY STORY</span>
+        <h2>Cámaras de TV que Mienten y Pelotas Fantasma</h2>
+      </div>
+      <p>
+        Las coordenadas no venían de cámaras fijas en el techo del estadio, sino de <strong>la retransmisión de televisión</strong>. Al reparar sus 2 vicios físicos subimos <strong>+11,9 puntos de golpe</strong>.
+      </p>
+    </div>
+
+    <div class="stage split-stage" id="splitStage">
+      <!-- LEFT STICKY TACTICAL MONITOR -->
+      <div class="split-left">
+        <!-- VISUAL 01: TV ZOOM & MISSING BALL -->
+        <div class="sp-visual on">
+          <div class="sp-v-head">
+            <span>01 / 03 · ANOMALÍA DE TELEVISIÓN</span>
+            <b style="color:#ff8a93">SIN BALÓN EN EL 10% DEL PARTIDO</b>
+          </div>
+          <svg viewBox="0 0 600 350" aria-label="Efecto del zoom de televisión">
+            <rect x="20" y="16" width="560" height="295" rx="14" fill="#0d1526" stroke="rgba(255,255,255,0.16)"/>
+            <line x1="300" y1="16" x2="300" y2="311" stroke="rgba(255,255,255,0.12)"/>
+            <circle cx="300" cy="164" r="50" fill="none" stroke="rgba(255,255,255,0.12)"/>
+            <!-- Players outside TV camera frame -->
+            <g fill="rgba(230,25,82,0.22)" stroke="rgba(255,255,255,0.2)" stroke-dasharray="3 3">
+              <circle cx="85" cy="165" r="9"/><circle cx="145" cy="80" r="9"/><circle cx="150" cy="265" r="9"/>
+              <circle cx="485" cy="85" r="9"/><circle cx="515" cy="255" r="9"/>
+            </g>
+            <!-- TV Camera Zoom Box -->
+            <rect x="200" y="55" width="240" height="175" rx="10" fill="rgba(255,71,87,0.09)" stroke="#ff4757" stroke-width="2.5" stroke-dasharray="8 6"/>
+            <text x="320" y="80" text-anchor="middle" fill="#ff8a93" font-family="JetBrains Mono" font-size="11" font-weight="700">ENCUADRE CERRADO DE TV (ZOOM)</text>
+            <!-- Visible players inside zoom -->
+            <circle cx="260" cy="140" r="9" fill="#e61952" stroke="#fff" stroke-width="2"/>
+            <circle cx="350" cy="160" r="9" fill="#e61952" stroke="#fff" stroke-width="2"/>
+            <circle cx="310" cy="125" r="9" fill="#22b8ff" stroke="#fff" stroke-width="2"/>
+            <circle cx="385" cy="185" r="9" fill="#22b8ff" stroke="#fff" stroke-width="2"/>
+            <!-- Missing Ball Question Mark -->
+            <circle cx="322" cy="148" r="18" fill="rgba(245,184,65,0.2)" stroke="#f5b841" stroke-width="2" stroke-dasharray="4 4"/>
+            <text x="322" y="154" text-anchor="middle" fill="#f5b841" font-family="Space Grotesk" font-size="18" font-weight="700">?</text>
+            <text x="300" y="336" text-anchor="middle" fill="#9ca3b5" font-family="Inter" font-size="12.5">En primeros planos y repeticiones desaparecen hasta 14 jugadores y la pelota.</text>
+          </svg>
+          <div class="sp-v-foot">
+            <span>Causa: Primeros planos y repeticiones</span>
+            <span style="color:#ff8a93;font-family:var(--fm)">1 de cada 10 fotogramas a ciegas</span>
+          </div>
+        </div>
+
+        <!-- VISUAL 02: THE GHOST BALL (150 KM/H TELEPORT) -->
+        <div class="sp-visual">
+          <div class="sp-v-head">
+            <span>02 / 03 · LA PELOTA FANTASMA</span>
+            <b style="color:#f5b841">SALTO IMPOSIBLE A 150 KM/H</b>
+          </div>
+          <svg viewBox="0 0 600 350" aria-label="La Pelota Fantasma a 150 km/h">
+            <rect x="20" y="16" width="560" height="295" rx="14" fill="#0d1526" stroke="rgba(255,255,255,0.16)"/>
+            <rect x="45" y="24" width="510" height="30" rx="6" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)"/>
+            <text x="300" y="43" text-anchor="middle" fill="#cbd5e1" font-family="JetBrains Mono" font-size="11">VALLA PUBLICITARIA / MEDIA BLANCA A 40 METROS</text>
+            <path d="M 110 245 Q 290 230 470 245" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="6 6"/>
+            <text x="290" y="275" text-anchor="middle" fill="#10b981" font-family="Space Grotesk" font-size="13" font-weight="600">Pase real en el césped (12 m/s)</text>
+            <!-- Fake Ghost Spike -->
+            <path d="M 110 245 L 250 236 L 295 74 L 340 236 L 470 245" fill="none" stroke="#ff4757" stroke-width="3.5"/>
+            <circle cx="295" cy="74" r="12" fill="rgba(255,71,87,0.3)" stroke="#ff4757" stroke-width="2.5"/>
+            <circle cx="295" cy="74" r="4.5" fill="#fff"/>
+            <rect x="170" y="114" width="260" height="52" rx="10" fill="rgba(255,71,87,0.92)"/>
+            <text x="300" y="137" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-size="13" font-weight="700">⚡ SALTO FALSO DE 40m EN 0,04s</text>
+            <text x="300" y="155" text-anchor="middle" fill="#ffe2e5" font-family="JetBrains Mono" font-size="11">Velocidad aparente: &gt;150 km/h</text>
+            <circle cx="110" cy="245" r="9" fill="#e61952" stroke="#fff" stroke-width="2"/>
+            <circle cx="470" cy="245" r="9" fill="#e61952" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <div class="sp-v-foot">
+            <span>Causa: Cámara confunde media o cartel blanco</span>
+            <span style="color:#ff8a93;font-family:var(--fm)">Corta la jugada en dos</span>
+          </div>
+        </div>
+
+        <!-- VISUAL 03: PHYSICS REPAIR + BLURRY GLASSES (+11.9 PTS -> 73.1%) -->
+        <div class="sp-visual">
+          <div class="sp-v-head">
+            <span>03 / 03 · SOLUCIÓN FÍSICA (+11.9 PTS)</span>
+            <b id="repairStatusBadge" style="color:#10b981">✓ FILTRO FÍSICO ACTIVO (73.1%)</b>
+          </div>
+          <svg viewBox="0 0 600 350" aria-label="Reparación física de la trayectoria del balón">
+            <rect x="20" y="16" width="560" height="295" rx="14" fill="#0d1526" stroke="rgba(16,185,129,0.35)"/>
+            <path id="svgGhostSpike" d="M 95 230 L 240 220 L 295 45 L 350 220 L 505 230" fill="none" stroke="#ff4757" stroke-width="2.5" stroke-dasharray="5 5" style="opacity:0.22;transition:opacity .4s"/>
+            <path id="svgCleanCurve" d="M 95 230 C 210 212, 380 212, 505 230" fill="none" stroke="#10b981" stroke-width="5" style="opacity:1;transition:opacity .4s"/>
+            <g stroke="#22b8ff" stroke-width="2" opacity="0.8">
+              <line x1="210" y1="120" x2="265" y2="185"/><circle cx="210" cy="120" r="6" fill="#22b8ff"/>
+              <line x1="390" y1="115" x2="340" y2="185"/><circle cx="390" cy="115" r="6" fill="#22b8ff"/>
+            </g>
+            <g stroke="#e61952" stroke-width="2.5">
+              <line x1="170" y1="275" x2="250" y2="225"/><circle cx="170" cy="275" r="7" fill="#e61952"/>
+              <line x1="430" y1="275" x2="355" y2="225"/><circle cx="430" cy="275" r="7" fill="#e61952"/>
+            </g>
+            <circle cx="95" cy="230" r="9" fill="#e61952" stroke="#fff" stroke-width="2"/>
+            <circle cx="505" cy="230" r="9" fill="#e61952" stroke="#fff" stroke-width="2"/>
+            <circle cx="300" cy="217" r="8" fill="#f5b841" stroke="#fff" stroke-width="2.5"/>
+            <rect x="130" y="252" width="340" height="38" rx="9" fill="rgba(16,185,129,0.16)" stroke="rgba(16,185,129,0.55)"/>
+            <text x="300" y="276" text-anchor="middle" fill="#a7f3d0" font-family="Space Grotesk" font-size="13" font-weight="700">✓ Límite físico (42 m/s) + Inercia de los 22 jugadores</text>
+          </svg>
+          <div class="sp-v-foot">
+            <span>Salto: <strong style="color:var(--win)">61.2% → 73.1% (+11.9 pts)</strong></span>
+            <button id="toggleRepairBtn" style="font-size:11.5px;font-weight:700;padding:6px 14px;border-radius:99px;background:var(--gold);color:#07090e">Ver sin filtro →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SCROLLING CHAPTERS (CONCISE, VISUAL-FIRST) -->
+      <div class="split-right">
+        <article class="split-chap">
+          <div class="sc-kick">PROBLEMA 01 · EL BALÓN DESAPARECE</div>
+          <h4>Primeros planos y repeticiones dejan ciego al ordenador</h4>
+          <p>
+            En <strong>1 de cada 10 instantes</strong> la tele cierra el plano y el balón desaparece. Un modelo normal entra en pánico y parte la jugada en dos (<strong>"La Grieta"</strong>).
+          </p>
+          <div class="split-callout">
+            <strong>Síntoma visual:</strong> Desaparecen hasta 14 jugadores y la pelota en cada zoom de banda.
+          </div>
+        </article>
+
+        <article class="split-chap">
+          <div class="sc-kick">PROBLEMA 02 · LA PELOTA FANTASMA A 150 KM/H</div>
+          <h4>Una media blanca o un cartel engañan a la cámara</h4>
+          <p>
+            El sistema óptico confunde una bota blanca o una valla con el balón: la pelota "salta" <strong>40 metros a más de 150 km/h</strong> y vuelve en 0,04s, inventando un robo falso.
+          </p>
+          <div class="split-callout">
+            <strong>Ley física violada:</strong> Ningún balón viaja a 150 km/h a la grada y regresa al pie en 0,04s.
+          </div>
+        </article>
+
+        <article class="split-chap">
+          <div class="sc-kick">LA SOLUCIÓN · DE 61.2% A 73.1% (+11.9 PUNTOS)</div>
+          <h4>Filtro de Leyes Físicas y "Gafas Borrosas"</h4>
+          <p>
+            Borramos todo salto imposible (&gt;150 km/h) y entrenamos apagando el balón el 15% del tiempo (<strong>"gafas borrosas"</strong>) para leer hacia dónde corren los 22 jugadores.
+          </p>
+          <div class="split-callout" style="border-left-color:var(--win)">
+            <strong>Resultado:</strong> Salto directo de <strong>61,2% a 73,1%</strong> sin grietas por culpa de la cámara.
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================================
+     CAPÍTULO 3 — El Comité de los 6 Especialistas y Simetría Espejo (73.1% -> 80.0%) · Horizontal Scroll (#fx03)
+     ========================================================================================= -->
+<section class="fx" id="sec-cap3" data-name="03 · Cap 3 — Comité de 6 Especialistas y Simetría Espejo 73.1% → 80.0% (#fx03 Horizontal Scroll)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-kicker"><span class="k-badge">CAPÍTULO 03 · 73.1% → 80.0%</span> EFECTO #03 · HORIZONTAL SCROLL SECTION</span>
+        <h2>El Comité de los 6 Especialistas y Simetría Espejo</h2>
+      </div>
+      <p>
+        Reunimos <strong>6 cerebros complementarios</strong> (foto fija, película de 8s y bandada de 22 jugadores), eliminamos todo favoritismo con <strong>Simetría Espejo</strong> y validamos con <strong>4 Jueces Independientes</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="hwrap" id="hWrap" data-cursor="drag">
+    <div class="htrack" id="hTrack">
+
+      <!-- PANEL 1: 3 SNAPSHOT SPECIALISTS -->
+      <div class="hpanel">
+        <div class="hpanel-inner">
+          <div class="hpanel-copy">
+            <div class="hp-top">
+              <span class="hp-num">01</span>
+              <span class="hp-kicker">FAMILIA 1 · 3 EXPERTOS EN FOTO FIJA</span>
+            </div>
+            <h4>Los Maestros del Instante Exacto</h4>
+            <p>
+              <strong>95 pistas geométricas</strong> cada 0,04s: distancias al balón y rivales presionando en 3m, 5m y 10m.
+            </p>
+            <div class="hp-pills">
+              <span class="hp-pill">📏 Distancias al milímetro</span>
+              <span class="hp-pill">🛡️ Presión en 3m / 5m / 10m</span>
+              <span class="hp-pill">⚡ Velocidad y ángulo</span>
+            </div>
+          </div>
+          <div class="hpanel-vis">
+            <svg viewBox="0 0 460 280" aria-label="Especialistas en Fotografía Fija">
+              <rect x="10" y="10" width="440" height="260" rx="14" fill="#0d1322" stroke="rgba(230,25,82,0.4)"/>
+              <circle cx="230" cy="135" r="36" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-dasharray="4 4"/>
+              <circle cx="230" cy="135" r="78" fill="none" stroke="rgba(245,184,65,0.35)" stroke-dasharray="6 6"/>
+              <circle cx="230" cy="135" r="112" fill="none" stroke="rgba(255,255,255,0.1)"/>
+              <line x1="230" y1="135" x2="202" y2="118" stroke="#10b981" stroke-width="3"/>
+              <line x1="230" y1="135" x2="295" y2="102" stroke="#ff4757" stroke-width="2" stroke-dasharray="4 4"/>
+              <circle cx="202" cy="118" r="10" fill="#e61952" stroke="#fff" stroke-width="2"/>
+              <circle cx="295" cy="102" r="10" fill="#22b8ff" stroke="#fff" stroke-width="2"/>
+              <circle cx="155" cy="185" r="9" fill="#e61952" stroke="#fff" stroke-width="1.5"/>
+              <circle cx="230" cy="135" r="7" fill="#f5b841" stroke="#fff" stroke-width="2"/>
+              <text x="135" y="100" fill="#10b981" font-family="JetBrains Mono" font-size="11" font-weight="700">Barça #1: 0.9m</text>
+              <text x="275" y="86" fill="#22b8ff" font-family="JetBrains Mono" font-size="11">Rival #1: 3.4m</text>
+              <text x="230" y="252" text-anchor="middle" fill="#cbd5e1" font-family="Space Grotesk" font-size="12.5" font-weight="600">3 motores midiendo distancias y presión en 3m / 5m / 10m</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: 2 MOVIE SPECIALISTS (8-SECOND MEMORY) -->
+      <div class="hpanel">
+        <div class="hpanel-inner">
+          <div class="hpanel-copy">
+            <div class="hp-top">
+              <span class="hp-num">02</span>
+              <span class="hp-kicker">FAMILIA 2 · 2 EXPERTOS EN PELÍCULA (8s)</span>
+            </div>
+            <h4>Ver el Pasado y el Futuro de Cada Pase</h4>
+            <p>
+              Miran <strong>4s atrás</strong> (quién chutó) y <strong>4s adelante</strong> (quién recibe) para que un pase en el aire nunca se rompa.
+            </p>
+            <div class="hp-pills">
+              <span class="hp-pill">⏪ Memoria -4.0s (Pasador)</span>
+              <span class="hp-pill">⏩ Futuro +4.0s (Receptor)</span>
+              <span class="hp-pill">🌉 Cero grietas en pases largos</span>
+            </div>
+          </div>
+          <div class="hpanel-vis">
+            <svg viewBox="0 0 460 280" aria-label="Especialistas en Película de 8 segundos">
+              <rect x="10" y="10" width="440" height="260" rx="14" fill="#0d1322" stroke="rgba(34,184,255,0.4)"/>
+              <line x1="45" y1="145" x2="415" y2="145" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+              <circle cx="95" cy="145" r="24" fill="rgba(230,25,82,0.25)" stroke="#e61952" stroke-width="2.5"/>
+              <text x="95" y="149" text-anchor="middle" fill="#fff" font-family="JetBrains Mono" font-size="11" font-weight="700">-2.0s</text>
+              <text x="95" y="190" text-anchor="middle" fill="#ff8a93" font-family="Space Grotesk" font-size="12" font-weight="600">Chuta Barça</text>
+              <circle cx="230" cy="105" r="28" fill="rgba(245,184,65,0.22)" stroke="#f5b841" stroke-width="2.5"/>
+              <text x="230" y="109" text-anchor="middle" fill="#f5b841" font-family="JetBrains Mono" font-size="11" font-weight="700">VUELO</text>
+              <text x="230" y="60" text-anchor="middle" fill="#f5b841" font-family="Space Grotesk" font-size="12.5" font-weight="700">Balón en el aire (Nadie cerca)</text>
+              <circle cx="365" cy="145" r="24" fill="rgba(230,25,82,0.25)" stroke="#e61952" stroke-width="2.5"/>
+              <text x="365" y="149" text-anchor="middle" fill="#fff" font-family="JetBrains Mono" font-size="11" font-weight="700">+2.0s</text>
+              <text x="365" y="190" text-anchor="middle" fill="#ff8a93" font-family="Space Grotesk" font-size="12" font-weight="600">Recibe Barça</text>
+              <path d="M 95 121 Q 230 50 365 121" fill="none" stroke="#22b8ff" stroke-width="3" stroke-dasharray="6 4"/>
+              <rect x="55" y="216" width="350" height="36" rx="8" fill="rgba(34,184,255,0.14)" stroke="rgba(34,184,255,0.45)"/>
+              <text x="230" y="239" text-anchor="middle" fill="#e0f2fe" font-family="Space Grotesk" font-size="12.5" font-weight="600">✓ Ventana continua de 8 segundos sin parpadeos</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 3: 1 FLOCK GEOMETRY SPECIALIST -->
+      <div class="hpanel">
+        <div class="hpanel-inner">
+          <div class="hpanel-copy">
+            <div class="hp-top">
+              <span class="hp-num">03</span>
+              <span class="hp-kicker">FAMILIA 3 · 1 EXPERTO EN GEOMETRÍA DE BANDADA</span>
+            </div>
+            <h4>Los 22 Jugadores como un Bloque</h4>
+            <p>
+              Lee <strong>la figura geométrica colectiva de los 22 futbolistas</strong> basculando juntos, sin importar dorsales ni columnas.
+            </p>
+            <div class="hp-pills">
+              <span class="hp-pill">🦅 Lectura de bandada</span>
+              <span class="hp-pill">🔄 Inmune al orden de columnas</span>
+            </div>
+          </div>
+          <div class="hpanel-vis">
+            <svg viewBox="0 0 460 280" aria-label="Geometría de Bandada de los 22 jugadores">
+              <rect x="10" y="10" width="440" height="260" rx="14" fill="#0d1322" stroke="rgba(16,185,129,0.4)"/>
+              <polygon points="85,135 165,70 285,90 310,160 265,215 145,205" fill="rgba(230,25,82,0.16)" stroke="#e61952" stroke-width="2"/>
+              <polygon points="195,90 315,65 390,140 325,220 215,195" fill="rgba(34,184,255,0.14)" stroke="#22b8ff" stroke-width="2" stroke-dasharray="5 5"/>
+              <g fill="#e61952" stroke="#fff" stroke-width="1.5">
+                <circle cx="85" cy="135" r="7"/><circle cx="165" cy="70" r="7"/><circle cx="285" cy="90" r="7"/>
+                <circle cx="310" cy="160" r="7"/><circle cx="265" cy="215" r="7"/><circle cx="145" cy="205" r="7"/>
+                <circle cx="215" cy="145" r="8"/>
+              </g>
+              <g fill="#22b8ff" stroke="#fff" stroke-width="1.5">
+                <circle cx="195" cy="90" r="7"/><circle cx="315" cy="65" r="7"/><circle cx="390" cy="140" r="7"/>
+                <circle cx="325" cy="220" r="7"/><circle cx="215" cy="195" r="7"/>
+              </g>
+              <circle cx="255" cy="140" r="8" fill="#f5b841" stroke="#fff" stroke-width="2"/>
+              <text x="230" y="250" text-anchor="middle" fill="#a7f3d0" font-family="Space Grotesk" font-size="12.5" font-weight="600">Lee la basculación de los dos bloques sin importar dorsales</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 4: MIRROR SYMMETRY (0.000000 BIAS) -->
+      <div class="hpanel">
+        <div class="hpanel-inner">
+          <div class="hpanel-copy">
+            <div class="hp-top">
+              <span class="hp-num">04</span>
+              <span class="hp-kicker">JUSTICIA MATEMÁTICA · SIMETRÍA ESPEJO</span>
+            </div>
+            <h4>0.000000 de Favoritismo entre Equipos</h4>
+            <p>
+              Analizamos cada jugada <strong>al derecho y al revés</strong> (invirtiendo campo y camisetas) para eliminar todo sesgo hacia el Barça.
+            </p>
+            <button id="mirrorFlipBtn" class="btn-primary" style="margin-top:16px;padding:11px 20px;font-size:13px">
+              Invertir Campo y Equipos en Vivo ⇄
+            </button>
+          </div>
+          <div class="hpanel-vis">
+            <svg viewBox="0 0 460 240" aria-label="Simetría Espejo Interactiva">
+              <rect x="10" y="10" width="440" height="220" rx="14" fill="#0d1322" stroke="rgba(245,184,65,0.45)"/>
+              <line x1="230" y1="10" x2="230" y2="230" stroke="rgba(245,184,65,0.5)" stroke-dasharray="6 6"/>
+              <g id="mirrorPitchGroup">
+                <path d="M 90 120 L 330 120" stroke="#f5b841" stroke-width="4"/>
+                <polygon points="330,110 352,120 330,130" fill="#f5b841"/>
+                <circle cx="115" cy="85" r="11" fill="#e61952" stroke="#fff" stroke-width="2"/>
+                <circle cx="195" cy="120" r="11" fill="#e61952" stroke="#fff" stroke-width="2"/>
+                <circle cx="290" cy="155" r="11" fill="#22b8ff" stroke="#fff" stroke-width="2"/>
+                <circle cx="355" cy="95" r="11" fill="#22b8ff" stroke="#fff" stroke-width="2"/>
+                <circle cx="250" cy="120" r="8" fill="#f5b841" stroke="#fff" stroke-width="2"/>
+              </g>
+            </svg>
+            <div id="mirrorStateLabel" style="margin-top:10px;font-family:var(--fm);font-size:11px;color:var(--gold);text-align:center">
+              VISTA ORIGINAL · Favoritismo matemático: 0.000000
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 5: THE 4 INDEPENDENT JUDGES (11 FULL MATCHES) -->
+      <div class="hpanel">
+        <div class="hpanel-inner">
+          <div class="hpanel-copy">
+            <div class="hp-top">
+              <span class="hp-num">05</span>
+              <span class="hp-kicker">EL TRIBUNAL DE LOS 4 JUECES</span>
+            </div>
+            <h4>11 Partidos de 3 Empresas Distintas</h4>
+            <p>
+              Cada mejora tuvo que subir la nota simultáneamente en <strong>4 jueces independientes</strong> (11 partidos completos).
+            </p>
+            <div class="hp-pills">
+              <span class="hp-pill">✓ 11 Partidos Completos</span>
+              <span class="hp-pill">✓ 3 Sistemas de Cámaras</span>
+            </div>
+          </div>
+          <div class="hpanel-vis">
+            <div style="font-family:var(--fm);font-size:11px;color:var(--gold);letter-spacing:.14em;margin-bottom:8px">
+              PLENO UNÁNIME EN LOS 4 JUECES · SALTO A 80.0%
+            </div>
+            <div class="judges-grid">
+              <div class="j-box">
+                <div class="jb-top"><span class="jb-name">Juez 1 · Barça vs Ath</span><span class="jb-score">88.8%</span></div>
+                <p>5 bloques evaluados a ciegas. Sube de 61,2% a 88,8%.</p>
+              </div>
+              <div class="j-box">
+                <div class="jb-top"><span class="jb-name">Juez 2 · 7 Partidos Metrica</span><span class="jb-score">7 / 7 ↑</span></div>
+                <p>Mejora simultánea en los 7 partidos completos de prueba.</p>
+              </div>
+              <div class="j-box">
+                <div class="jb-top"><span class="jb-name">Juez 3 · 3 Partidos FIFA</span><span class="jb-score">+15.8 pts</span></div>
+                <p>3 estadios distintos a 25 Hz. Sube de 49,5% a 65,3%.</p>
+              </div>
+              <div class="j-box">
+                <div class="jb-top"><span class="jb-name">Juez 4 · 85 Min Secretos</span><span class="jb-score">2.27/min</span></div>
+                <p>61,5% Barça y 0 micro-parpadeos en el partido completo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================================
+     CAPÍTULO 4 — Lo que Probamos y Falló vs. Lo que Funcionó · Sticky Stacking Cards (#fx06)
+     ========================================================================================= -->
+<section class="fx" id="sec-cap4" data-name="04 · Cap 4 — Lo que Probamos y Falló vs. La Regla Ganadora (#fx06 Stacking Cards)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-kicker"><span class="k-badge">CAPÍTULO 04 · RIGOR CIENTÍFICO</span> EFECTO #06 · STICKY STACKING CARDS</span>
+        <h2>Lo que Probamos y Falló vs. La Regla Ganadora</h2>
+      </div>
+      <p>
+        Nuestro Tribunal de 4 Jueces nos salvó de <strong>3 ideas tentadoras que restaban puntos</strong> y nos enseñó la <strong>Regla de Oro</strong>.
+      </p>
+    </div>
+
+    <div class="stackzone" id="stackZone">
+
+      <!-- CARD 1 (RED DISCARDED) -->
+      <article class="stack-card discard sc1">
+        <div class="sc-left">
+          <span class="sc-tag">❌ IDEA DESCARTADA #01 · CASTIGO DE -5,5 PUNTOS</span>
+          <h4>Mover inicios de jugada sin permiso del comité</h4>
+          <p>
+            Alinear jugadas a ciegas al pico físico del balón <strong>falló</strong> por el desfase de décimas entre cámaras de TV.
+          </p>
+          <div class="sc-foot">
+            <span>VEREDICTO DEL JUEZ OFICIAL:</span>
+            <strong style="color:#ff9aa2">Caía de 80,0% a 74,5% · Descartado</strong>
+          </div>
+        </div>
+        <div class="sc-right">
+          <div style="font-family:var(--fm);font-size:11px;color:#ff9aa2;margin-bottom:6px">IMPACTO REAL</div>
+          <div style="font-family:var(--fd);font-size:42px;font-weight:700;color:#fff;margin-bottom:8px">-5.5 pts</div>
+          <p style="font-size:13px;color:rgba(255,255,255,.78)">
+            Física sin consenso del comité rompe jugadas sanas.
+          </p>
+        </div>
+      </article>
+
+      <!-- CARD 2 (RED DISCARDED) -->
+      <article class="stack-card discard sc2">
+        <div class="sc-left">
+          <span class="sc-tag">❌ IDEA DESCARTADA #02 · CASTIGO DE -1,4 PUNTOS</span>
+          <h4>Creer que cuando faltan jugadores siempre hay robo</h4>
+          <p>
+            <strong>Falló</strong> porque la tele hace zoom constantemente cuando un extremo conduce por la banda sin perder el balón.
+          </p>
+          <div class="sc-foot">
+            <span>VEREDICTO DEL JUEZ OFICIAL:</span>
+            <strong style="color:#ff9aa2">Falsas alarmas en cada primer plano · Descartado</strong>
+          </div>
+        </div>
+        <div class="sc-right">
+          <div style="font-family:var(--fm);font-size:11px;color:#ff9aa2;margin-bottom:6px">IMPACTO REAL</div>
+          <div style="font-family:var(--fd);font-size:38px;font-weight:700;color:#fff;margin-bottom:8px">Zoom ≠ Robo</div>
+          <p style="font-size:13px;color:rgba(255,255,255,.78)">
+            Un primer plano de Lamine o Pedri no cambia la posesión.
+          </p>
+        </div>
+      </article>
+
+      <!-- CARD 3 (RED DISCARDED) -->
+      <article class="stack-card discard sc3">
+        <div class="sc-left">
+          <span class="sc-tag">❌ IDEA DESCARTADA #03 · CASTIGO DE -0,2 PUNTOS</span>
+          <h4>Usar columna fija en vez de ordenar por cercanía</h4>
+          <p>
+            Al salir y entrar del plano de TV las columnas bailan; ordenamos siempre <strong>del jugador #1 más cercano al #11 más lejano</strong>.
+          </p>
+          <div class="sc-foot">
+            <span>VEREDICTO DEL JUEZ OFICIAL:</span>
+            <strong style="color:#ff9aa2">Peor en partidos nuevos · Descartado</strong>
+          </div>
+        </div>
+        <div class="sc-right">
+          <div style="font-family:var(--fm);font-size:11px;color:#ff9aa2;margin-bottom:6px">SOLUCIÓN GEOMÉTRICA</div>
+          <div style="font-family:var(--fd);font-size:32px;font-weight:700;color:#fff;margin-bottom:8px">Orden #1 → #11</div>
+          <p style="font-size:13px;color:rgba(255,255,255,.78)">
+            Un robo a 1m se ve igual lo haga el dorsal 6 o el 9.
+          </p>
+        </div>
+      </article>
+
+      <!-- CARD 4 (GREEN/GOLD WINNER) -->
+      <article class="stack-card winner sc4">
+        <div class="sc-left">
+          <span class="sc-tag">✅ LA REGLA DE ORO GANADORA · RUMBO AL 88,8%</span>
+          <h4>Doble Llave: Física del Balón + Consenso de los 6 Especialistas</h4>
+          <p>
+            Solo abrimos o cerramos posesión cuando <strong>la física en el césped</strong> (control &lt;1,5m, frenazo o latigazo) y <strong>los 6 expertos</strong> coinciden.
+          </p>
+          <div class="sc-foot">
+            <span>VEREDICTO EN LOS 4 JUECES:</span>
+            <strong style="color:var(--gold)">Cero falsas alarmas · De 80,0% a 88,8% 🏆</strong>
+          </div>
+        </div>
+        <div class="sc-right" style="border-color:rgba(245,184,65,.5)">
+          <div style="font-family:var(--fm);font-size:11px;color:var(--gold);margin-bottom:6px">DOBLE LLAVE ACTIVA</div>
+          <div style="font-family:var(--fd);font-size:40px;font-weight:700;color:var(--win);margin-bottom:8px">80% → 88.8%</div>
+          <p style="font-size:13px;color:rgba(255,255,255,.88)">
+            Puerta directa a las <strong>4 Llaves Forenses</strong>.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================================
+     CAPÍTULO 5 — La Autopsia Forense y las 4 Llaves del 80.0% -> 88.8% · SVG Line Draw (#fx51) + Color Morph (#fx52)
+     ========================================================================================= -->
+<section class="fx cmorph" id="sec-cap5" data-name="05 · Cap 5 — Autopsia Forense y las 4 Llaves del 80.0% → 88.8% (#fx51 SVG Line Draw + #fx52 Color Morph)">
+  <div id="cmorph">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="sec-kicker"><span class="k-badge">CAPÍTULO 05 · DE 80.0% A 88.8%</span> EFECTO #51 (SVG LINE DRAW) + EFECTO #52 (COLOR MORPH)</span>
+          <h2>La Autopsia Forense: Las 4 Llaves del 88,8%</h2>
+        </div>
+        <p>
+          Pusimos bajo el microscopio los únicos fallos que quedaban en el partido y creamos <strong>4 llaves quirúrgicas basadas en las reglas reales del fútbol</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="forensic-grid" id="forensicGrid">
+      <!-- LEFT STICKY SVG LINE DRAW STAGE (#fx51) -->
+      <aside class="ldraw-sticky">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-family:var(--fm);font-size:11px;color:var(--gold);letter-spacing:.16em">RUTA FORENSE</span>
+          <strong id="ldrawLiveScore" style="font-family:var(--fd);font-size:24px;color:var(--win)">80.0%</strong>
+        </div>
+        <h5>Las 4 Llaves hacia el 88,8%</h5>
+        <p>El balón recorre cada llave al ritmo de tu scroll:</p>
+        <div class="ldraw-stage" id="ldrawStage">
+          <svg viewBox="0 0 280 400" aria-label="Línea táctica de las 4 llaves">
+            <defs>
+              <linearGradient id="keyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#e61952"/>
+                <stop offset="50%" stop-color="#f5b841"/>
+                <stop offset="100%" stop-color="#10b981"/>
+              </linearGradient>
+            </defs>
+            <path class="ld-ghost" d="M 55 35 C 215 55, 215 115, 65 140 C -15 170, 235 220, 190 265 C 140 310, 45 330, 135 375"/>
+            <path id="ldrawPath" d="M 55 35 C 215 55, 215 115, 65 140 C -15 170, 235 220, 190 265 C 140 310, 45 330, 135 375"/>
+            <g font-family="JetBrains Mono" font-size="10.5" font-weight="700">
+              <circle cx="55" cy="35" r="8" fill="#131826" stroke="#e61952" stroke-width="2.5"/>
+              <text x="73" y="39" fill="#f4f6fb">LLAVE 1 · 81.3% (+1.3)</text>
+
+              <circle cx="65" cy="140" r="8" fill="#131826" stroke="#22b8ff" stroke-width="2.5"/>
+              <text x="83" y="144" fill="#f4f6fb">LLAVE 2 · 82.7% (+1.4)</text>
+
+              <circle cx="190" cy="265" r="9" fill="#131826" stroke="#f5b841" stroke-width="2.5"/>
+              <text x="38" y="269" fill="#f5b841">LLAVE 3 · 86.9% (+5.7)</text>
+
+              <circle cx="135" cy="375" r="10" fill="#131826" stroke="#10b981" stroke-width="3"/>
+              <text x="153" y="379" fill="#10b981">LLAVE 4 · 88.8% 🏆</text>
+            </g>
+            <circle id="ldrawDot" cx="55" cy="35" r="9"/>
+          </svg>
+        </div>
+      </aside>
+
+      <!-- RIGHT KEYS LIST WITH SECTION COLOR MORPH (#fx52) -->
+      <div class="keys-list">
+
+        <!-- LLAVE 1 -->
+        <article class="cm-sec" data-bg="#0f1526">
+          <div class="key-head">
+            <span class="key-badge">LLAVE 01 · AMORTIGUADOR DE TEMBLOR DE CÁMARA</span>
+            <span class="key-gain">+1.3 pts → 81.3%</span>
+          </div>
+          <h4>Medir segundo a segundo la nitidez de la cámara</h4>
+          <p>
+            Con plano abierto responde al instante; si la cámara hace zoom o tiembla, <strong>exige el doble de consenso</strong>.
+          </p>
+          <div class="key-diagram">
+            <svg viewBox="0 0 600 68" style="width:100%;height:auto">
+              <rect x="8" y="8" width="275" height="52" rx="8" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.4)"/>
+              <text x="145" y="30" text-anchor="middle" fill="#10b981" font-family="JetBrains Mono" font-size="11" font-weight="700">SEÑAL LIMPIA (PLANO ABIERTO)</text>
+              <text x="145" y="48" text-anchor="middle" fill="#e2e8f0" font-family="Space Grotesk" font-size="12">Respuesta ágil a toques rápidos</text>
+              <rect x="315" y="8" width="275" height="52" rx="8" fill="rgba(245,184,65,0.12)" stroke="rgba(245,184,65,0.4)"/>
+              <text x="452" y="30" text-anchor="middle" fill="#f5b841" font-family="JetBrains Mono" font-size="11" font-weight="700">CÁMARA CON ZOOM / RUIDO</text>
+              <text x="452" y="48" text-anchor="middle" fill="#e2e8f0" font-family="Space Grotesk" font-size="12">Amortiguador x2 activado</text>
+            </svg>
+          </div>
+        </article>
+
+        <!-- LLAVE 2 -->
+        <article class="cm-sec" data-bg="#121e2b">
+          <div class="key-head">
+            <span class="key-badge">LLAVE 02 · REBOTE CASUAL VS. ROBO REAL</span>
+            <span class="key-gain">+1.4 pts → 82.7%</span>
+          </div>
+          <h4>Un balonazo en la espinilla no es recuperar el balón</h4>
+          <p>
+            Para contar como robo a menos de <strong>1,5m</strong>, el rival debe <strong>frenar la pelota o girar su dirección</strong> (si sigue a 18 m/s, es rebote).
+          </p>
+          <div class="key-diagram">
+            <svg viewBox="0 0 600 68" style="width:100%;height:auto">
+              <rect x="8" y="8" width="275" height="52" rx="8" fill="rgba(255,71,87,0.12)" stroke="rgba(255,71,87,0.4)"/>
+              <text x="145" y="30" text-anchor="middle" fill="#ff8a93" font-family="JetBrains Mono" font-size="11" font-weight="700">❌ REBOTE A 18 m/s SIN FRENAR</text>
+              <text x="145" y="48" text-anchor="middle" fill="#e2e8f0" font-family="Space Grotesk" font-size="12">Ignorado · Sigue la jugada del Barça</text>
+              <rect x="315" y="8" width="275" height="52" rx="8" fill="rgba(34,184,255,0.14)" stroke="rgba(34,184,255,0.45)"/>
+              <text x="452" y="30" text-anchor="middle" fill="#22b8ff" font-family="JetBrains Mono" font-size="11" font-weight="700">✓ CONTROL EN EL PIE (&lt;1.5m)</text>
+              <text x="452" y="48" text-anchor="middle" fill="#e2e8f0" font-family="Space Grotesk" font-size="12">Frena el balón · Robo Real validado</text>
+            </svg>
+          </div>
+        </article>
+
+        <!-- LLAVE 3 (+5.7 POINTS BREAKTHROUGH!) -->
+        <article class="cm-sec" data-bg="#231815" style="border-color:rgba(245,184,65,.55)">
+          <div class="key-head">
+            <span class="key-badge">LLAVE 03 · EL RELOJ EXACTO DE LOS SAQUES DE BANDA</span>
+            <span class="key-gain" style="font-size:19px;background:rgba(245,184,65,.2);color:var(--gold);border-color:var(--gold)">¡+5.7 PUNTOS DE GOLPE! → 86.9%</span>
+          </div>
+          <h4>Esperar al latigazo exacto en que el balón sale de las manos</h4>
+          <p>
+            Ignoramos los 4s con la pelota en las manos y abrimos la jugada en el <strong>latigazo exacto al césped</strong> (<code>&gt; 4.5 m/s</code>).
+          </p>
+          <div class="key-diagram" style="border-color:rgba(245,184,65,.45)">
+            <svg viewBox="0 0 600 84" style="width:100%;height:auto">
+              <rect x="10" y="12" width="205" height="28" rx="6" fill="rgba(255,71,87,0.35)" stroke="#ff4757"/>
+              <text x="112" y="30" text-anchor="middle" fill="#fff" font-family="Space Grotesk" font-size="11.5" font-weight="600">4.0s en las manos (JUEGO PARADO)</text>
+              <rect x="222" y="12" width="368" height="28" rx="6" fill="#10b981"/>
+              <text x="406" y="30" text-anchor="middle" fill="#04130d" font-family="Space Grotesk" font-size="12" font-weight="700">🚀 LATIGAZO (&gt;4.5 m/s) → INICIO EXACTO DE LA JUGADA</text>
+              <text x="300" y="68" text-anchor="middle" fill="#f5b841" font-family="Space Grotesk" font-size="13" font-weight="700">✓ Clava al fotograma los saques de banda, córners y faltas (+5,7 puntos de golpe)</text>
+            </svg>
+          </div>
+        </article>
+
+        <!-- LLAVE 4 -->
+        <article class="cm-sec" data-bg="#0d231d">
+          <div class="key-head">
+            <span class="key-badge">LLAVE 04 · CAZADOR DE INTERCEPCIONES RELÁMPAGO</span>
+            <span class="key-gain">+1.8 pts → 88.8% 🏆</span>
+          </div>
+          <h4>Rescatar un robo de 0,88 segundos con cero falsas alarmas</h4>
+          <p>
+            Exigimos <strong>triple cerradura</strong>: control a menos de <code>1.35m</code>, frenazo físico real y acuerdo de los 6 especialistas.
+          </p>
+          <div class="key-diagram" style="border-color:rgba(16,185,129,.5)">
+            <svg viewBox="0 0 600 58" style="width:100%;height:auto">
+              <rect x="10" y="8" width="182" height="42" rx="8" fill="rgba(16,185,129,0.14)" stroke="rgba(16,185,129,0.45)"/>
+              <text x="101" y="33" text-anchor="middle" fill="#a7f3d0" font-family="JetBrains Mono" font-size="11" font-weight="700">🔒 1. Control &lt; 1.35m</text>
+              <rect x="208" y="8" width="182" height="42" rx="8" fill="rgba(16,185,129,0.14)" stroke="rgba(16,185,129,0.45)"/>
+              <text x="299" y="33" text-anchor="middle" fill="#a7f3d0" font-family="JetBrains Mono" font-size="11" font-weight="700">🔒 2. Frenazo Físico</text>
+              <rect x="406" y="8" width="184" height="42" rx="8" fill="rgba(245,184,65,0.18)" stroke="rgba(245,184,65,0.55)"/>
+              <text x="498" y="33" text-anchor="middle" fill="#f5b841" font-family="JetBrains Mono" font-size="11" font-weight="700">🏆 88.8% (0 Falsas)</text>
+            </svg>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================================================
+     CAPÍTULO 6 — El Vuelo de la Victoria por los 90 Minutos Completos · 3D Tunnel (#fx75) + Stat Count-Ups (#fx07)
+     ========================================================================================= -->
+<section class="fx" id="sec-cap6" data-name="06 · Cap 6 — Vuelo 3D por los 90 Minutos y Marcador Final 88.8% (#fx75 3D Tunnel + #fx07 Stats)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-kicker"><span class="k-badge">CAPÍTULO 06 · MARCADOR FINAL 88.8% 🏆</span> EFECTO #75 (3D TUNNEL) + EFECTO #07 (STAT COUNT-UPS)</span>
+        <h2>El Vuelo de la Victoria por los 90 Minutos Completos</h2>
+      </div>
+      <p>
+        Vuela en 3D a través de los hitos de los <strong>90 minutos completos (<code>199.319</code> instantes) del Barça vs Athletic</strong> hasta el marcador final.
+      </p>
+    </div>
+  </div>
+
+  <!-- 3D FLY-THROUGH TUNNEL STAGE (#fx75) -->
+  <div class="stage tunnel-stage" id="tunnelStage" data-cursor="drag">
+    <div class="tunnel-cam" id="tunnelCam"></div>
+    <div class="tunnel-beat" id="tunnelBeat">01 / 04 · Pitido Inicial y Filtro Físico de TV</div>
+    <div class="tunnel-hud">
+      <span id="tunnelPct">MIN 00:00</span>
+      <i><span id="tunnelBar"></span></i>
+    </div>
+  </div>
+
+  <!-- EFFECT #07 · SCROLL-TRIGGERED STAT COUNT-UPS -->
+  <div class="wrap" style="margin-top:56px">
+    <div class="fx-head">
+      <div>
+        <span class="fx-num">EFECTO #07 · CONTADORES ANIMADOS AL ENTRAR EN PANTALLA</span>
+        <h3 class="fx-title">Los Números Finales de Nuestra Solución Campeona</h3>
+      </div>
+      <div class="fx-meta">
+        <span class="tag">ScrollTrigger Count-Up</span>
+      </div>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat">
+        <div class="num"><span data-count="88.8" data-decimals="1">88.8</span><i class="win">%</i></div>
+        <div class="lbl">Precisión en Jugadas Completas</div>
+        <div class="sub-lbl">Subiendo desde el 61,2% inicial (+27,6 puntos, nota exacta <code>0.8875</code>).</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span data-count="98.6" data-decimals="1">98.6</span><i>%</i></div>
+        <div class="lbl">Juego Vivo vs. Juego Parado</div>
+        <div class="sub-lbl">Casi perfección humana detectando cuándo el balón está en juego.</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span data-count="94.8" data-decimals="1">94.8</span><i>%</i></div>
+        <div class="lbl">Acierto Segundo a Segundo</div>
+        <div class="sub-lbl">9,5 de cada 10 fotogramas clasificados con el equipo exacto.</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span data-count="7" data-decimals="0">7</span><i class="win"> / 7</i></div>
+        <div class="lbl">Partidos de Prueba Mejorados</div>
+        <div class="sub-lbl">Pleno simultáneo en todos los partidos independientes del tribunal.</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span data-count="61.5" data-decimals="1">61.5</span><i>%</i></div>
+        <div class="lbl">Posesión Real del FC Barcelona</div>
+        <div class="sub-lbl">64,5% en la 1ª parte y 57,6% en la 2ª frente al 38,5% del Athletic.</div>
+      </div>
+      <div class="stat">
+        <div class="num"><span data-count="2.27" data-decimals="2">2.27</span><i class="win">/min</i></div>
+        <div class="lbl">Ritmo Biológico del Partido</div>
+        <div class="sub-lbl">229 posesiones vivas en los 85 min secretos con <strong>0 parpadeos absurdos</strong>.</div>
+      </div>
+    </div>
+
+    <!-- EFFECT #54 · SPOTLIGHT BORDER GRID (85 SECRET MINUTES AUDIT) -->
+    <div style="margin-top:48px">
+      <span class="fx-num">EFECTO #54 · CURSOR-TRACKING SPOTLIGHT GRID</span>
+      <h3 class="fx-title" style="margin-top:4px">La Prueba de Fuego: Auditoría de los 85 Minutos Secretos</h3>
+      <div class="sg2" id="sg2">
+        <div class="sg2-card">
+          <div class="sg2-kicker">COHERENCIA TÁCTICA · 1ª VS 2ª PARTE</div>
+          <h5>64,5% Barça (1ª) → 57,6% Barça (2ª)</h5>
+          <p>
+            Dominio azulgrana en el primer tiempo y presión alta del Athletic tras el descanso, clavando el <strong>61,5% global</strong> de LaLiga.
+          </p>
+        </div>
+        <div class="sg2-card">
+          <div class="sg2-kicker">CERO PARPADEOS ARTIFICIALES</div>
+          <h5>0 Jugadas de Menos de Medio Segundo</h5>
+          <p>
+            <strong>229 posesiones limpias</strong> con una duración mediana de <strong>9,8 segundos</strong> y cero micro-parpadeos durante los pases largos.
+          </p>
+        </div>
+        <div class="sg2-card">
+          <div class="sg2-kicker">JUSTICIA MATEMÁTICA</div>
+          <h5>0.000000 de Favoritismo</h5>
+          <p>
+            La Simetría Espejo garantiza que el sistema mide exactamente igual un ataque del Barça que un contragolpe del Athletic.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPLETE SCORE EVOLUTION TABLE -->
+    <div class="evo-table-wrap">
+      <table class="evo-table">
+        <thead>
+          <tr>
+            <th>Etapa</th>
+            <th>Qué le enseñamos a la máquina (Sin jerga técnica)</th>
+            <th>Por Segundo</th>
+            <th>Jugadas Completas</th>
+            <th>Salto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>0. Punto de Partida</strong></td>
+            <td>Ordenador básico mirando fotogramas sueltos sin filtro físico de TV</td>
+            <td>88.9%</td>
+            <td class="td-score">61.2%</td>
+            <td>Base</td>
+          </tr>
+          <tr>
+            <td><strong>1. Física de TV + Gafas Borrosas</strong></td>
+            <td>Filtro de Pelotas Fantasma (&gt;150 km/h) + entrenamiento sin balón</td>
+            <td>91.8%</td>
+            <td class="td-score">73.1%</td>
+            <td>+11.9 pts</td>
+          </tr>
+          <tr>
+            <td><strong>2. Comité de 6 Expertos + Espejo</strong></td>
+            <td>3 en foto fija + 2 en película de 8s + 1 en bandada + Simetría Espejo</td>
+            <td>93.6%</td>
+            <td class="td-score">80.0%</td>
+            <td>+6.9 pts</td>
+          </tr>
+          <tr>
+            <td><strong>3. Amortiguador + Rebote vs Robo</strong></td>
+            <td>Adaptación al temblor de cámara y filtro de rebotes sin control</td>
+            <td>94.2%</td>
+            <td class="td-score">82.7%</td>
+            <td>+2.7 pts</td>
+          </tr>
+          <tr>
+            <td><strong>4. El Reloj de Saques de Banda</strong></td>
+            <td>Esperar al latigazo exacto en que el balón sale lanzado al césped</td>
+            <td>94.8%</td>
+            <td class="td-score">86.9%</td>
+            <td>+5.7 pts</td>
+          </tr>
+          <tr>
+            <td><strong>5. Cazador de Robos Relámpago 🏆</strong></td>
+            <td>Rescate de intercepciones de 0,88s con frenazo físico y consenso</td>
+            <td><strong>94.8%</strong></td>
+            <td class="td-score">88.8% 🏆</td>
+            <td><strong>+27.6 pts</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- EPILOGUE BANNER -->
+    <div class="epilogue-banner">
+      <blockquote>
+        "Le enseñamos a la máquina cuándo miente la cámara de televisión, cómo se mueven los 22 jugadores cuando el balón desaparece y en qué milisegundo exacto un saque de banda sale de las manos. Así pasamos del 61,2% al 88,8%."
+      </blockquote>
+      <cite>EQUIPO BCN GRADIENT DEPRESSION · PROYECTO GANADOR DEL RETO FC BARCELONA</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PICKS TRAY (EFFECTS LAB SIGNATURE SHORTLIST) ================= -->
+<button class="tray-btn mag" id="trayBtn">
+  <span>♥ Capítulos Favoritos</span>
+  <span class="tb-n" id="trayCount">0</span>
+</button>
+<div class="tray" id="tray">
+  <h5>Tus Efectos y Capítulos Favoritos</h5>
+  <div class="tr-sub">Inspirado en Effects Lab (`effects-lab.com/scroll`)</div>
+  <ul id="trayList"></ul>
+  <button class="tr-copy" id="trayCopy">Copiar resumen de capítulos →</button>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><b>BCN GRADIENT DEPRESSION · DE 61.2% A 88.8%</b> — Experiencia interactiva inspirada en <b>Effects Lab</b> (GSAP 3.12.5 + ScrollTrigger + Flip) · Cero jerga técnica.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+<script src="lab-core.js?v=4"></script>
+<script src="lab-effects.js?v=4"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# First staged pipeline through the harness: v1 features -> TwoHeadGBM -> semi-Markov decoder with
+# the S2.4 plateau parameters. Close to registry row 019 (no control features, one training seed).
+id = "h001_v1_gbm_hsmm"
+owner = "harness"
+hypothesis = """
+A learned per-frame model plus the semi-Markov decoder beats the nearest-player baseline by a wide
+margin on J1 (registry 018-019: about +0.35 LOMO spellF1).
+"""
+
+[predictor]
+name = "staged"
+params = { features = "v1", model = "gbm", decoder = "hsmm", decoder_params = { config = "configs/decoder_v1.json" } }
+
+[judges]
+use = ["J1", "J2", "J3"]
+
+[criteria]
+champion = "h000_baseline_smooth50"
+min_delta = 0.01
+min_folds_improved = 0.7

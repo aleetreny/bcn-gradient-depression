@@ -1,0 +1,5 @@
+---
+description: Team harness rules (mandatory for every task)
+alwaysApply: true
+---
+Read and follow AGENTS.md in the repository root before doing anything else. It is mandatory.

@@ -1,0 +1,13 @@
+id = "j3_original_report"
+owner = "ale"
+hypothesis = "Report-only evaluation of the fixed original CSV on the public correctness sample; never use for selection or tuning."
+
+[predictor]
+name = "public_csv_report"
+params = { which = "original", sha256 = "03a637f62c23510d7900bb1a4895a21f11a5afc9ed2790f4679ba49fa275bc15" }
+
+[judges]
+use = ["J3"]
+
+[criteria]
+champion = "none"

@@ -1,0 +1,63 @@
+name: Public benchmark smoke tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  official-public-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install scorer dependencies
+        run: python -m pip install -r requirements-lock.txt
+      - name: Verify imported public GT, baseline CSVs and scorer
+        run: python scripts/check_official.py
+
+  harness:
+    # Leak guard, definition-of-done check, then the whole harness end to end on synthetic matches (J0).
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements-lock.txt numba==0.60.0 pyarrow==25.0.0 pyflakes==4.0.3 pytest==9.1.1
+      - name: Harness tests (safety everywhere; experiment layer where src/ exists)
+        run: python -m pytest -q tests/test_harness_safety.py tests/test_harness.py
+      - name: Leak guard (no gated, private or heavy files in git)
+        run: python -m harness guard
+      - name: Definition of done (REVIEW = protected files changed; shown, a human approves the PR)
+        run: |
+          code=0
+          python -m harness check --fast --base "origin/${{ github.base_ref || 'main' }}" || code=$?
+          if [ "$code" = 3 ]; then echo "::warning::protected files changed: needs human approval"; exit 0; fi
+          exit $code
+      - name: Harness smoke run on synthetic data
+        run: python -m harness run experiments/specs/smoke_synthetic.toml --no-write
+
+  research-unit-tests:
+    # Synthetic data only: the tests never read competition data or data_external/.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install test dependencies
+        run: python -m pip install -r requirements-lock.txt pytest==9.1.1 pyflakes==4.0.3 numba==0.60.0 pyarrow==25.0.0 scipy==1.17.1 scikit-learn==1.9.1 torch==2.14.1 lightgbm==4.7.0 optuna==5.0.0
+      - name: Lint research code
+        run: python -m pyflakes src tests scripts/report_s0_*.py
+      - name: Unit tests
+        run: python -m pytest -q tests
+
+# Never fetch or upload competition-gated tracking/videos/secrets in CI.

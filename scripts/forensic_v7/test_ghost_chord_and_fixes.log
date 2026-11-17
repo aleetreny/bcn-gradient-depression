@@ -1,0 +1,27 @@
+
+=====================================================================================
+Y->X->Y GHOST-CHORD & FEATURE AUDIT: J1A (Sportec v3)
+=====================================================================================
+  Total Y->X->Y (L<=160): 807 | Should Absorb (False Blip): 103 (Oracle=+0.0262) | Should Keep (True Turnover): 703
+  Should Absorb (False Blip) means: L=49.4, mean_pX=0.710, max_pX=0.800, b4d=0.545, mean_wg=0.002, mean_anewt=0.869, min_d1_x=3.99, contact_f=16.5
+  Should Keep   (True Turn)  means: L=76.5, mean_pX=0.847, max_pX=0.926, b4d=0.708, mean_wg=0.003, mean_anewt=0.832, min_d1_x=2.18, contact_f=26.8
+  [Ghost/Non-Newtonian Subset (mean_wg>0.08 or mean_anewt<0.70)]:
+    False Blips in Ghost Subset = 10/103 (9.7%) | True Turnovers in Ghost Subset = 103/703 (14.7%)
+
+=====================================================================================
+Y->X->Y GHOST-CHORD & FEATURE AUDIT: J1B-Std (Sportec v6)
+=====================================================================================
+  Total Y->X->Y (L<=160): 814 | Should Absorb (False Blip): 114 (Oracle=+0.0297) | Should Keep (True Turnover): 700
+  Should Absorb (False Blip) means: L=48.9, mean_pX=0.704, max_pX=0.804, b4d=0.522, mean_wg=0.005, mean_anewt=0.301, min_d1_x=2.90, contact_f=13.9
+  Should Keep   (True Turn)  means: L=77.0, mean_pX=0.823, max_pX=0.916, b4d=0.612, mean_wg=0.006, mean_anewt=0.199, min_d1_x=2.32, contact_f=21.1
+  [Ghost/Non-Newtonian Subset (mean_wg>0.08 or mean_anewt<0.70)]:
+    False Blips in Ghost Subset = 86/114 (75.4%) | True Turnovers in Ghost Subset = 598/700 (85.4%)
+
+=====================================================================================
+Y->X->Y GHOST-CHORD & FEATURE AUDIT: J1B-Gen (Sportec v6 Native)
+=====================================================================================
+  Total Y->X->Y (L<=160): 1023 | Should Absorb (False Blip): 316 (Oracle=+0.0748) | Should Keep (True Turnover): 707
+  Should Absorb (False Blip) means: L=42.6, mean_pX=0.690, max_pX=0.796, b4d=0.485, mean_wg=0.004, mean_anewt=0.188, min_d1_x=1.77, contact_f=12.8
+  Should Keep   (True Turn)  means: L=76.8, mean_pX=0.816, max_pX=0.916, b4d=0.627, mean_wg=0.006, mean_anewt=0.204, min_d1_x=2.21, contact_f=22.2
+  [Ghost/Non-Newtonian Subset (mean_wg>0.08 or mean_anewt<0.70)]:
+    False Blips in Ghost Subset = 276/316 (87.3%) | True Turnovers in Ghost Subset = 599/707 (84.7%)

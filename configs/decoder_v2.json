@@ -1,0 +1,9 @@
+{
+  "lam_ha": 1.5980571469606832,
+  "lam_ld": 1.3778855195612834,
+  "lam_dl": 31.498274937919213,
+  "dmin_team": 9,
+  "dmin_dead": 126,
+  "beta_ha": 5.911978679259808,
+  "_provenance": "s3_1b: plateau centre on the 7 nested outer predictions; proba=mean, change=mean, degradation degrade_v3; mean spellF1 on the 7 (in-sample, not a score) 0.7144"
+}

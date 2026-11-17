@@ -1,0 +1,13 @@
+id = "j3_retrained_report"
+owner = "ale"
+hypothesis = "Report-only evaluation of the fixed retrained CSV on the public correctness sample; never use for selection or tuning."
+
+[predictor]
+name = "public_csv_report"
+params = { which = "retrained", sha256 = "7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d" }
+
+[judges]
+use = ["J3"]
+
+[criteria]
+champion = "none"

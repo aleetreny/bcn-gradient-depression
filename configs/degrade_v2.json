@@ -1,0 +1,51 @@
+{
+  "smooth_window": 9,
+  "absence_rate": 0.0001834516265768508,
+  "absence_median_s": 4.0,
+  "episode_rate": 0.0003129244872298635,
+  "episode_players": [
+    2,
+    5
+  ],
+  "episode_len_s": [
+    2.0,
+    15.0
+  ],
+  "cut_rate": 7.175116928056146e-05,
+  "dup_prob": 0.7010008282670535,
+  "dup_len_s": [
+    1.0,
+    14.698326294044262
+  ],
+  "dup_offset_m": [
+    1.0,
+    4.0
+  ],
+  "gap_rate_moving": 2.8240548471831832e-05,
+  "gap_rate_slow": 0.0001364496360925941,
+  "gap_len_scale": 1.352519818257289,
+  "min_visible_s": 1.0,
+  "static_speed": 0.5,
+  "static_min_s": 0.7982777097099711,
+  "static_hide_prob": 0.7967578893537015,
+  "handled_ball": true,
+  "handled_offset_m": 0.6,
+  "handled_noise_m": 0.15,
+  "blackouts_per_90": 3.0,
+  "blackout_len_s": [
+    35.0,
+    65.0
+  ],
+  "pool_slots": [
+    24,
+    22
+  ],
+  "components": [
+    "smooth",
+    "absences",
+    "fragments",
+    "duplicates",
+    "ball",
+    "blackouts"
+  ]
+}

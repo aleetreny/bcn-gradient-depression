@@ -1,0 +1,17 @@
+# The official baseline, re-run through the harness: the reference every later spec is gated against
+# until a better champion is promoted. Matches registry rows 006 / 013 in spirit (nearest player + vote).
+id = "h000_baseline_smooth50"
+owner = "harness"
+hypothesis = """
+Reference point. The official nearest-player + 50-frame majority baseline on the harness judges.
+"""
+
+[predictor]
+name = "baseline"
+params = { window = 50 }
+
+[judges]
+use = ["J1", "J2", "J3"]
+
+[criteria]
+champion = "none"

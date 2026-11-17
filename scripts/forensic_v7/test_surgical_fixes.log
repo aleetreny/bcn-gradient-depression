@@ -1,0 +1,30 @@
+=====================================================================================
+TEST 1: J1B-GEN (100% NATIVE-V6) LOCAL-NEWTON GATING & GHOST-ROBUST FALLBACK
+=====================================================================================
+  [Standalone Native-v6 Model Audit on Sportec v6 (7-Fold LOMO)]:
+    g_pl_on_v6   (SymGBM_Plus_352)      : spell_f1_mean = 0.6340
+    g_p2_v6      (SymGBM_PhysV2_481)    : spell_f1_mean = 0.6475
+    cb_p2_v6     (SymCatBoost_481)      : spell_f1_mean = 0.6333
+    xgb_p2_v6    (SymXGB_481)           : spell_f1_mean = 0.6364
+    g_v6_on_v6   (GhostGBM_244)         : spell_f1_mean = 0.6558
+    tcn_p2_v6    (SymTCN_481)           : spell_f1_mean = 0.6627
+    gru_p2_v6    (SymBiGRU_481)         : spell_f1_mean = 0.6427
+    pset_v6      (SymPlayerSetNet)      : spell_f1_mean = 0.6608
+  v7 Baseline J1B-Gen (alpha_p2=1.0 hardcoded)                            : spell_f1_mean = 0.6903
+  v7 Fixed J1B-Gen (Local-Newton gated -> pset_v6 + g_v6_on_v6 fallback)  : spell_f1_mean = 0.6941
+
+=====================================================================================
+TEST 2: ANATOMY OF Y->X->D, D->X->Y, D->X->D CANDIDATES IN J1A (Sportec v3)
+=====================================================================================
+
+  Topology Y_X_D: Total Candidates (L<=120) = 355 | Should Absorb = 88 (Sum +Delta F1/7 = +0.0146) | Should Keep = 267
+    Should Absorb (False X): mean_L=43.8, mean_pX=0.658, max_pX=0.753, mean_pD=0.085, b4d_in=0.518, min_d1_x=10.73
+    Should Keep   (True  X): mean_L=47.8, mean_pX=0.761, max_pX=0.846, mean_pD=0.031, b4d_in=0.687, min_d1_x=2.30
+
+  Topology D_X_Y: Total Candidates (L<=120) = 279 | Should Absorb = 29 (Sum +Delta F1/7 = +0.0046) | Should Keep = 250
+    Should Absorb (False X): mean_L=57.6, mean_pX=0.801, max_pX=0.893, mean_pD=0.036, b4d_in=0.007, min_d1_x=10.93
+    Should Keep   (True  X): mean_L=68.3, mean_pX=0.894, max_pX=0.959, mean_pD=0.023, b4d_in=0.008, min_d1_x=5.92
+
+  Topology D_X_D: Total Candidates (L<=120) = 34 | Should Absorb = 7 (Sum +Delta F1/7 = +0.0007) | Should Keep = 27
+    Should Absorb (False X): mean_L=73.6, mean_pX=0.743, max_pX=0.870, mean_pD=0.116, b4d_in=0.001, min_d1_x=15.39
+    Should Keep   (True  X): mean_L=82.9, mean_pX=0.846, max_pX=0.951, mean_pD=0.039, b4d_in=0.003, min_d1_x=5.88

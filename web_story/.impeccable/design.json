@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-25T23:30:00Z",
+  "title": "Design System: Pizarra táctica del vestuario",
+  "extensions": {
+    "colorMeta": {
+      "slate": {
+        "role": "neutral",
+        "displayName": "Dressing-Room Slate",
+        "canonical": "#1C2722",
+        "tonalRamp": [
+          "oklch(15% 0.02 160)",
+          "oklch(25% 0.02 160)",
+          "oklch(35% 0.02 160)",
+          "oklch(45% 0.02 160)",
+          "oklch(58% 0.02 160)",
+          "oklch(70% 0.02 160)",
+          "oklch(82% 0.02 160)",
+          "oklch(95% 0.02 160)"
+        ]
+      },
+      "slate-raised": {
+        "role": "neutral",
+        "displayName": "Raised Slate",
+        "canonical": "#222E29",
+        "tonalRamp": [
+          "oklch(15% 0.018 160)",
+          "oklch(25% 0.018 160)",
+          "oklch(35% 0.018 160)",
+          "oklch(45% 0.018 160)",
+          "oklch(58% 0.018 160)",
+          "oklch(70% 0.018 160)",
+          "oklch(82% 0.018 160)",
+          "oklch(95% 0.018 160)"
+        ]
+      },
+      "tray": {
+        "role": "neutral",
+        "displayName": "Chalk-Tray Black",
+        "canonical": "#141B18",
+        "tonalRamp": [
+          "oklch(15% 0.012 160)",
+          "oklch(25% 0.012 160)",
+          "oklch(35% 0.012 160)",
+          "oklch(45% 0.012 160)",
+          "oklch(58% 0.012 160)",
+          "oklch(70% 0.012 160)",
+          "oklch(82% 0.012 160)",
+          "oklch(95% 0.012 160)"
+        ]
+      },
+      "frame": {
+        "role": "neutral",
+        "displayName": "Aluminium Frame",
+        "canonical": "#5A635E",
+        "tonalRamp": [
+          "oklch(15% 0.01 155)",
+          "oklch(25% 0.01 155)",
+          "oklch(35% 0.01 155)",
+          "oklch(45% 0.01 155)",
+          "oklch(58% 0.01 155)",
+          "oklch(70% 0.01 155)",
+          "oklch(82% 0.01 155)",
+          "oklch(95% 0.01 155)"
+        ]
+      },
+      "chalk": {
+        "role": "neutral",
+        "displayName": "White Chalk",
+        "canonical": "#ECEEE6",
+        "tonalRamp": [
+          "oklch(15% 0.01 115)",
+          "oklch(25% 0.01 115)",
+          "oklch(35% 0.01 115)",
+          "oklch(45% 0.01 115)",
+          "oklch(58% 0.01 115)",
+          "oklch(70% 0.01 115)",
+          "oklch(82% 0.01 115)",
+          "oklch(95% 0.01 115)"
+        ]
+      },
+      "chalk-body": {
+        "role": "neutral",
+        "displayName": "Chalk Body (86%)",
+        "canonical": "rgba(236, 238, 230, 0.86)"
+      },
+      "chalk-soft": {
+        "role": "neutral",
+        "displayName": "Soft Chalk (64%)",
+        "canonical": "rgba(236, 238, 230, 0.64)"
+      },
+      "chalk-line": {
+        "role": "neutral",
+        "displayName": "Chalk Line (16%)",
+        "canonical": "rgba(236, 238, 230, 0.16)"
+      },
+      "yellow-chalk": {
+        "role": "primary",
+        "displayName": "Yellow Chalk",
+        "canonical": "#EECC5C",
+        "tonalRamp": [
+          "oklch(15% 0.13 92)",
+          "oklch(25% 0.13 92)",
+          "oklch(35% 0.13 92)",
+          "oklch(45% 0.13 92)",
+          "oklch(58% 0.13 92)",
+          "oklch(70% 0.13 92)",
+          "oklch(82% 0.13 92)",
+          "oklch(95% 0.13 92)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Chalk Headline",
+        "purpose": "Chapter headline in the notes column, written word by word, chalk-grain masked."
+      },
+      "headline": {
+        "displayName": "Sheet Title",
+        "purpose": "Summary sheet title."
+      },
+      "title": {
+        "displayName": "Chalk Figure",
+        "purpose": "Key figures under prose and summary card headings; tabular numerals."
+      },
+      "body": {
+        "displayName": "Reading Prose",
+        "purpose": "Chapter and sheet prose, max 64ch."
+      },
+      "body-small": {
+        "displayName": "Caption",
+        "purpose": "Caption beside a Kalam figure, in soft chalk."
+      },
+      "label": {
+        "displayName": "Tray Label",
+        "purpose": "Rail brand, magnet numerals, buttons, tabs, figure badges. Never uppercase."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tray-ledge",
+        "value": "inset 0 -7px 0 #0E1311, 0 6px 16px rgba(0, 0, 0, 0.4)",
+        "purpose": "The chalk-tray rail's lip and its shadow on the slate."
+      },
+      {
+        "name": "magnet",
+        "value": "inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 3px rgba(0, 0, 0, 0.55)",
+        "purpose": "Round chapter magnet sitting proud of the tray."
+      },
+      {
+        "name": "sheet-lift",
+        "value": "0 24px 60px rgba(0, 0, 0, 0.55)",
+        "purpose": "Summary sheet lifted over a rgba(10,14,12,0.78) scrim."
+      },
+      {
+        "name": "eraser",
+        "value": "canvas: offset 5px 12px, blur 18px, rgba(0,0,0,0.5)",
+        "purpose": "Felt eraser held against the board during a wipe."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Sheet rise and magnet lift."
+      },
+      {
+        "name": "state",
+        "value": "0.2s ease",
+        "purpose": "Hover/colour changes on buttons, tabs, magnets."
+      },
+      {
+        "name": "sheet-rise",
+        "value": "0.45s ease-out, translateY(16px) to 0, with 0.25s scrim fade",
+        "purpose": "Opening the summary sheet."
+      },
+      {
+        "name": "draw-and-wipe",
+        "value": "scroll-driven: eraser passes over [S-0.58vh, S-0.06vh]; drawing over [S-0.06vh, S+0.84vh]; notes write-in over 0.42vh",
+        "purpose": "Chapter transition grammar. Reduced motion shows finished states."
+      },
+      {
+        "name": "jump",
+        "value": "Lenis scrollTo, 1.8s",
+        "purpose": "Magnet click jumps to a chapter."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "rail-compact",
+        "value": "1100px"
+      },
+      {
+        "name": "rail-no-brand",
+        "value": "900px"
+      },
+      {
+        "name": "phone-board",
+        "value": "860px"
+      },
+      {
+        "name": "phone-short",
+        "value": "760px (height)"
+      },
+      {
+        "name": "rail-small",
+        "value": "520px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Chalk Button",
+      "kind": "button",
+      "refersTo": "button-chalk",
+      "description": "Default outlined chalk button.",
+      "html": "<a class=\"ds-btn-chalk\" href=\"#\">Ver el capítulo</a>",
+      "css": ".ds-btn-chalk{display:inline-block;font-family:\"Barlow Condensed\",\"Arial Narrow\",sans-serif;font-weight:600;font-size:1rem;color:#ECEEE6;background:#1C2722;text-decoration:none;padding:9px 16px 8px;border:1px solid rgba(236,238,230,0.4);border-radius:6px;transition:background-color .2s ease,border-color .2s ease}.ds-btn-chalk:hover{background:#2a3530;border-color:rgba(236,238,230,0.7)}.ds-btn-chalk:focus-visible{outline:2px solid #EECC5C;outline-offset:3px}"
+    },
+    {
+      "name": "Chalk Button, Primary",
+      "kind": "button",
+      "refersTo": "button-chalk-primary",
+      "description": "Finale call to action: brighter outline and a yellow chalk underline.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Ver resumen completo</a>",
+      "css": ".ds-btn-primary{display:inline-block;font-family:\"Barlow Condensed\",\"Arial Narrow\",sans-serif;font-weight:600;font-size:1rem;color:#ECEEE6;background:#1C2722;padding:9px 16px 8px;border:1px solid rgba(236,238,230,0.7);border-radius:6px;text-decoration:underline;text-decoration-color:#EECC5C;text-decoration-thickness:2px;text-underline-offset:5px;transition:background-color .2s ease}.ds-btn-primary:hover{background:#2c3732}.ds-btn-primary:focus-visible{outline:2px solid #EECC5C;outline-offset:3px}"
+    },
+    {
+      "name": "Chalk-Tray Rail",
+      "kind": "nav",
+      "refersTo": "chalk-tray-rail",
+      "description": "Top rail with brand, chapter magnets and the summary link.",
+      "html": "<header class=\"ds-rail\"><span class=\"ds-rail-brand\">FC Barcelona · El reto de la posesión</span><nav class=\"ds-mags\"><button class=\"ds-mag ds-mag--past\">61.2</button><button class=\"ds-mag ds-mag--on\" aria-current=\"step\">73.1</button><button class=\"ds-mag\">80.0</button></nav><a class=\"ds-rail-cta\" href=\"#\">Ver resumen</a></header>",
+      "css": ".ds-rail{display:flex;align-items:center;justify-content:space-between;gap:16px;height:56px;box-sizing:border-box;padding:0 24px;background:#141B18;border-bottom:4px solid #5A635E;box-shadow:inset 0 -7px 0 #0E1311,0 6px 16px rgba(0,0,0,.4)}.ds-rail-brand{font-family:\"Barlow Condensed\",sans-serif;font-weight:600;font-size:1.08rem;color:#ECEEE6}.ds-mags{display:flex;gap:7px}.ds-mag{appearance:none;cursor:pointer;width:40px;height:40px;border:0;border-radius:50%;font-family:\"Barlow Condensed\",sans-serif;font-weight:600;font-size:.8rem;color:rgba(236,238,230,.64);background:#2B3530;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 2px 3px rgba(0,0,0,.55);transition:color .2s ease,transform .2s cubic-bezier(.16,1,.3,1)}.ds-mag:hover{color:#ECEEE6;transform:translateY(-1px)}.ds-mag--past{color:rgba(236,238,230,.86)}.ds-mag--on{color:#141B18;background:#ECEEE6}.ds-mag:focus-visible,.ds-rail-cta:focus-visible{outline:2px solid #EECC5C;outline-offset:3px}.ds-rail-cta{font-family:\"Barlow Condensed\",sans-serif;font-weight:600;font-size:.95rem;color:#ECEEE6;text-decoration:none;padding:6px 14px 5px;border:1px solid rgba(236,238,230,.34);border-radius:6px}.ds-rail-cta:hover{background:rgba(236,238,230,.08);border-color:rgba(236,238,230,.6)}"
+    },
+    {
+      "name": "Sheet Tabs",
+      "kind": "nav",
+      "refersTo": "sheet-tab",
+      "description": "Text tabs on a chalk hairline; active tab white chalk.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab ds-tab--on\">1. Los cinco pasos</button><button class=\"ds-tab\">2. Los cuatro exámenes</button></div>",
+      "css": ".ds-tabs{display:flex;gap:4px 22px;border-bottom:1px solid rgba(236,238,230,.16);background:#222E29;padding:0 16px}.ds-tab{appearance:none;cursor:pointer;font-family:\"Barlow Condensed\",sans-serif;font-weight:500;font-size:1.02rem;color:rgba(236,238,230,.64);background:transparent;border:0;border-bottom:2px solid transparent;padding:10px 0 8px;margin-bottom:-1px;transition:color .2s ease,border-color .2s ease}.ds-tab:hover{color:#ECEEE6}.ds-tab--on{color:#ECEEE6;border-bottom-color:#ECEEE6;font-weight:600}.ds-tab:focus-visible{outline:2px solid #EECC5C;outline-offset:3px}"
+    },
+    {
+      "name": "Summary Card",
+      "kind": "card",
+      "refersTo": "summary-sheet",
+      "description": "Boxless card on the raised slate: chalk heading, yellow figure badge, prose, dashed rule.",
+      "html": "<div class=\"ds-sheet\"><div class=\"ds-card\"><h4>Física</h4><span class=\"ds-badge\">73.1% · +11.9 pts</span><p>Un filtro físico bloquea movimientos imposibles del balón.</p></div></div>",
+      "css": ".ds-sheet{background:#222E29;border:3px solid #5A635E;border-radius:6px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.55);color:#ECEEE6}.ds-card{display:flex;flex-direction:column;padding:18px 0 20px;border-bottom:1px dashed rgba(236,238,230,.2)}.ds-card h4{margin:0 0 4px;font-family:Kalam,cursive;font-weight:400;font-size:1.32rem;line-height:1.2;color:#ECEEE6}.ds-badge{font-family:\"Barlow Condensed\",sans-serif;font-weight:600;font-size:.92rem;color:#EECC5C;margin-bottom:8px}.ds-card p{margin:0;font-family:Barlow,sans-serif;font-size:.95rem;line-height:1.6;color:rgba(236,238,230,.86)}"
+    },
+    {
+      "name": "Notes Column",
+      "kind": "custom",
+      "description": "Chapter notes straight on the slate: Kalam headline, Barlow prose, Kalam figures under a dashed chalk rule.",
+      "html": "<article class=\"ds-nt\"><h2>El ordenador mira quién está más cerca</h2><p>Un programa convencional pierde el hilo en cuanto hay un pase largo y solo acierta el <strong>61.2%</strong> de las jugadas.</p><ul><li><b>61.2%</b><span>precisión de partida</span></li><li><b>197</b><span>posesiones</span></li></ul></article>",
+      "css": ".ds-nt{background:#1C2722;padding:24px;max-width:520px}.ds-nt h2{margin:0 0 .55em;font-family:Kalam,cursive;font-weight:400;font-size:2.2rem;line-height:1.14;color:#ECEEE6}.ds-nt p{margin:0 0 .85em;font-family:Barlow,sans-serif;font-size:1.02rem;line-height:1.62;color:rgba(236,238,230,.86);max-width:64ch}.ds-nt strong{color:#ECEEE6;font-weight:600}.ds-nt ul{list-style:none;margin:1.4em 0 0;padding:.9em 0 0;border-top:1px dashed rgba(236,238,230,.28);display:flex;flex-wrap:wrap;gap:.4em 1.6em}.ds-nt li{display:flex;align-items:baseline;gap:.45em}.ds-nt b{font-family:Kalam,cursive;font-weight:400;font-size:1.32rem;color:#ECEEE6;font-variant-numeric:tabular-nums}.ds-nt span{font-family:Barlow,sans-serif;font-size:.86rem;color:rgba(236,238,230,.64)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Coach's Board at Half-Time",
+    "overview": "The whole surface is one green-black slate in a dressing room. The pitch is printed on it, thin and permanent; everything the coach adds is chalk, grainy and hand-wobbled, written stroke by stroke as the reader scrolls and wiped with a felt eraser before the next chapter. Notes sit straight on the slate to the left of the pitch, the running score is chalked under it, and the chapter magnets are stuck along the aluminium chalk tray at the top. Nothing floats, glows or tilts in 3D: depth exists only where a physical object on a real board has it (the tray, the magnets, the eraser).\n\nThe palette is three inks and nothing else: the slate, white chalk, and one stick of yellow chalk reserved for the ball and for precision. Type splits by who is \"speaking\": the coach's hand (Kalam) for anything written on the board, Barlow for the reading prose, Barlow Condensed for the hardware of the tray. Density is calm and one-thing-at-a-time: one chapter is on the board at once, and the previous one survives only as the faint ghost a wiped board keeps.\n\nConfirmed rejections: the dark neon 3D \"tech flight\", the white data-explainer page, glowing tech looks, many colours, and generic AI palettes (cream + serif + terracotta, near-black + neon).",
+    "keyCharacteristics": [
+      "One canvas board (fixed, full viewport) with a DOM notes column and rail over it.",
+      "Three inks: slate, white chalk, one yellow chalk.",
+      "Chalk grain masks the hand-lettered DOM text so notes and drawing are the same material.",
+      "Draw-on and erase are the motion grammar; no fades-for-decoration, no parallax, no glow.",
+      "Barça drawn as O, Athletic as X, both in white chalk; the ball always yellow."
+    ],
+    "rules": [
+      {
+        "name": "The One Yellow Stick Rule",
+        "body": "Yellow means the ball or precision, nothing else. A new element earns yellow only if it is the ball, a figure of the precision climb, or the focus ring. Decoration, headings and states of navigation stay white.",
+        "section": "colors"
+      },
+      {
+        "name": "The White Magnet Rule",
+        "body": "The active chapter magnet turns white chalk (`chalk` face, `tray` numerals), never yellow. Navigation state is white; yellow is reserved for the story's numbers.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Inks Rule",
+        "body": "No fourth hue. Team identity is shape (O versus X), not colour; Barça and Athletic are both white chalk.",
+        "section": "colors"
+      },
+      {
+        "name": "The Who-Is-Speaking Rule",
+        "body": "If the coach would write it on the board, it is Kalam and carries the chalk-grain mask. If you read it, it is Barlow. If it is part of the board's hardware, it is Barlow Condensed. Never set prose in Kalam or a headline in Barlow.",
+        "section": "typography"
+      },
+      {
+        "name": "The Chalk Grain Rule",
+        "body": "Every Kalam element in the DOM is masked with the same grain board.js publishes as `--chalk-grain` (96px tile), so DOM lettering and canvas chalk read as one material.",
+        "section": "typography"
+      },
+      {
+        "name": "The Real Objects Only Rule",
+        "body": "A shadow is allowed only on something you could pick up off a real tactics board. Text, chalk strokes, the pitch and the notes column stay flat.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep every new element inside the three inks: `slate` family, `chalk` at its graded strengths, and `yellow-chalk` only for the ball, precision figures and focus.",
+      "Do set anything the coach writes in Kalam with the `--chalk-grain` mask, and reading prose in Barlow at 1.6+ line height within 64ch.",
+      "Do introduce new chapters by drawing them on and leave them by wiping with the eraser; respect `prefers-reduced-motion` by showing the finished drawing and notes without the write-in.",
+      "Do distinguish teams by mark (O and X), not by colour.",
+      "Do use dashed chalk rules to separate content and outline buttons in chalk at 34-40%."
+    ],
+    "donts": [
+      "Don't add neon, glow, gradients-as-decoration or 3D camera moves; this world refuses the dark \"tech flight\".",
+      "Don't turn the surface white or paper-like; the white data-explainer page is the other refused default.",
+      "Don't use yellow for navigation state, headings or decoration; the active magnet and active tab are white chalk.",
+      "Don't shadow chalk, text or the pitch; shadows belong only to the tray, magnets, eraser and the lifted sheet.",
+      "Don't add club crests, logos or official colours for either team."
+    ]
+  }
+}

@@ -1,0 +1,382 @@
+=== LOADING CACHED V7 PREDICTIONS & DATA FROM EXP_LAB (READ-ONLY) ===
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 1A: Sportec v3 (7-Fold LOMO) — v7 6-Fam Local-Newton + XDX + 9-Model SpellReranker
+=====================================================================================
+  Headline spell_f1_mean = 0.7509 | Total GT Spells = 3061 | Total Pred Spells = 2578 (Diff = -483)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.8248 |  0.9009 |  0.7627 |  2321 |   257 |   740 |              ---
+        0.4 |  0.7972 |  0.8709 |  0.7371 |  2242 |   336 |   819 |          -0.0276
+        0.5 |  0.7576 |  0.8275 |  0.7005 |  2129 |   449 |   932 |          -0.0396
+        0.6 |  0.7123 |  0.7781 |  0.6587 |  2002 |   576 |  1059 |          -0.0452
+        0.7 |  0.6625 |  0.7234 |  0.6128 |  1860 |   718 |  1201 |          -0.0498
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 740 / 3061 GT spells = 24.2%):
+      FN1a_opp_swallow_ultrashort_lt25        :  148 ( 20.0% of FN@0.3 |  4.8% of all GT)
+      FN1b_opp_swallow_short_25_50            :  125 ( 16.9% of FN@0.3 |  4.1% of all GT)
+      FN1c_opp_swallow_med_51_125             :  102 ( 13.8% of FN@0.3 |  3.3% of all GT)
+      FN1d_opp_swallow_long_gt125             :   15 (  2.0% of FN@0.3 |  0.5% of all GT)
+      FN2_dead_swallow                        :   89 ( 12.0% of FN@0.3 |  2.9% of all GT)
+      FN3_merged_across_missed_D              :    2 (  0.3% of FN@0.3 |  0.1% of all GT)
+      FN4_merged_across_missed_opp            :  196 ( 26.5% of FN@0.3 |  6.4% of all GT)
+      FN5_low_iou_fragment_or_shift           :   63 (  8.5% of FN@0.3 |  2.1% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 257 / 2578 Pred spells = 10.0%):
+      FP1_hallucinated_opp_blip_YXY           :   82 ( 31.9% of FP@0.3 |  3.2% of all Pred)
+      FP2a_split_fragment_by_false_D          :    4 (  1.6% of FP@0.3 |  0.2% of all Pred)
+      FP2b_split_fragment_by_false_opp        :   42 ( 16.3% of FP@0.3 |  1.6% of all Pred)
+      FP3_false_live_inside_DEAD              :   19 (  7.4% of FP@0.3 |  0.7% of all Pred)
+      FP4_wrong_team_on_live                  :   90 ( 35.0% of FP@0.3 |  3.5% of all Pred)
+      FP5_other_boundary_spill                :   20 (  7.8% of FP@0.3 |  0.8% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 2321):
+      Fail@0.4 =  79 | Fail@0.5 = 192 | Fail@0.6 = 319 | Fail@0.7 = 461 (19.9% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=32, Opp_entry=186, D_exit=36, Opp_exit=207
+      Start Error after DEAD (D->Live)  : mean|err|= 10.4f, signed= +4.5f, p90= 15.0f
+      Start Error after OPP  (Y->X)     : mean|err|= 16.1f, signed= -4.6f, p90= 49.0f
+      End Error before DEAD  (Live->D)  : mean|err|=  8.4f, signed= -3.8f, p90= 23.0f
+      End Error before OPP   (X->Y)     : mean|err|= 18.8f, signed= +7.9f, p90= 51.0f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_recover_short_turnovers_25_125f     : +0.0917 -> 0.8426
+      orc_kill_fp_opp_yxy                     : +0.0569 -> 0.8078
+      orc_recover_ultrashort_lt25f            : +0.0495 -> 0.8004
+      orc_snap_35f                            : +0.0491 -> 0.8000
+      orc_snap_HA_bounds_35f                  : +0.0415 -> 0.7924
+      orc_snap_15f                            : +0.0159 -> 0.7668
+      orc_snap_D_bounds_35f                   : +0.0093 -> 0.7602
+      orc_perfect_alive_dead_mask             : +0.0073 -> 0.7582
+      orc_kill_fp_dead                        : +0.0027 -> 0.7536
+      orc_insert_missed_D_in_XDX              : +0.0010 -> 0.7519
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 1A: Sportec v3 (7-Fold LOMO) — v7 Super-Champion Grand MBR
+=====================================================================================
+  Headline spell_f1_mean = 0.7509 | Total GT Spells = 3061 | Total Pred Spells = 2578 (Diff = -483)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.8248 |  0.9009 |  0.7627 |  2321 |   257 |   740 |              ---
+        0.4 |  0.7972 |  0.8709 |  0.7371 |  2242 |   336 |   819 |          -0.0276
+        0.5 |  0.7576 |  0.8275 |  0.7005 |  2129 |   449 |   932 |          -0.0396
+        0.6 |  0.7123 |  0.7781 |  0.6587 |  2002 |   576 |  1059 |          -0.0452
+        0.7 |  0.6625 |  0.7234 |  0.6128 |  1860 |   718 |  1201 |          -0.0498
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 740 / 3061 GT spells = 24.2%):
+      FN1a_opp_swallow_ultrashort_lt25        :  148 ( 20.0% of FN@0.3 |  4.8% of all GT)
+      FN1b_opp_swallow_short_25_50            :  125 ( 16.9% of FN@0.3 |  4.1% of all GT)
+      FN1c_opp_swallow_med_51_125             :  102 ( 13.8% of FN@0.3 |  3.3% of all GT)
+      FN1d_opp_swallow_long_gt125             :   15 (  2.0% of FN@0.3 |  0.5% of all GT)
+      FN2_dead_swallow                        :   89 ( 12.0% of FN@0.3 |  2.9% of all GT)
+      FN3_merged_across_missed_D              :    2 (  0.3% of FN@0.3 |  0.1% of all GT)
+      FN4_merged_across_missed_opp            :  196 ( 26.5% of FN@0.3 |  6.4% of all GT)
+      FN5_low_iou_fragment_or_shift           :   63 (  8.5% of FN@0.3 |  2.1% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 257 / 2578 Pred spells = 10.0%):
+      FP1_hallucinated_opp_blip_YXY           :   82 ( 31.9% of FP@0.3 |  3.2% of all Pred)
+      FP2a_split_fragment_by_false_D          :    4 (  1.6% of FP@0.3 |  0.2% of all Pred)
+      FP2b_split_fragment_by_false_opp        :   42 ( 16.3% of FP@0.3 |  1.6% of all Pred)
+      FP3_false_live_inside_DEAD              :   19 (  7.4% of FP@0.3 |  0.7% of all Pred)
+      FP4_wrong_team_on_live                  :   90 ( 35.0% of FP@0.3 |  3.5% of all Pred)
+      FP5_other_boundary_spill                :   20 (  7.8% of FP@0.3 |  0.8% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 2321):
+      Fail@0.4 =  79 | Fail@0.5 = 192 | Fail@0.6 = 319 | Fail@0.7 = 461 (19.9% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=32, Opp_entry=186, D_exit=36, Opp_exit=207
+      Start Error after DEAD (D->Live)  : mean|err|= 10.4f, signed= +4.5f, p90= 15.0f
+      Start Error after OPP  (Y->X)     : mean|err|= 16.1f, signed= -4.6f, p90= 49.0f
+      End Error before DEAD  (Live->D)  : mean|err|=  8.4f, signed= -3.8f, p90= 23.0f
+      End Error before OPP   (X->Y)     : mean|err|= 18.8f, signed= +7.9f, p90= 51.0f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_recover_short_turnovers_25_125f     : +0.0917 -> 0.8426
+      orc_kill_fp_opp_yxy                     : +0.0569 -> 0.8078
+      orc_recover_ultrashort_lt25f            : +0.0495 -> 0.8004
+      orc_snap_35f                            : +0.0491 -> 0.8000
+      orc_snap_HA_bounds_35f                  : +0.0415 -> 0.7924
+      orc_snap_15f                            : +0.0159 -> 0.7668
+      orc_snap_D_bounds_35f                   : +0.0093 -> 0.7602
+      orc_perfect_alive_dead_mask             : +0.0073 -> 0.7582
+      orc_kill_fp_dead                        : +0.0027 -> 0.7536
+      orc_insert_missed_D_in_XDX              : +0.0010 -> 0.7519
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 1B-Std: Sportec v6 Ghost-Ball (7-Fold LOMO) — v7 Rerank
+=====================================================================================
+  Headline spell_f1_mean = 0.7403 | Total GT Spells = 3061 | Total Pred Spells = 2585 (Diff = -476)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.8171 |  0.8909 |  0.7563 |  2303 |   282 |   758 |              ---
+        0.4 |  0.7885 |  0.8596 |  0.7298 |  2221 |   364 |   840 |          -0.0286
+        0.5 |  0.7496 |  0.8171 |  0.6939 |  2110 |   475 |   951 |          -0.0389
+        0.6 |  0.6996 |  0.7626 |  0.6476 |  1969 |   616 |  1092 |          -0.0500
+        0.7 |  0.6468 |  0.7048 |  0.5989 |  1818 |   767 |  1243 |          -0.0528
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 758 / 3061 GT spells = 24.8%):
+      FN1a_opp_swallow_ultrashort_lt25        :  152 ( 20.1% of FN@0.3 |  5.0% of all GT)
+      FN1b_opp_swallow_short_25_50            :  120 ( 15.8% of FN@0.3 |  3.9% of all GT)
+      FN1c_opp_swallow_med_51_125             :  114 ( 15.0% of FN@0.3 |  3.7% of all GT)
+      FN1d_opp_swallow_long_gt125             :   15 (  2.0% of FN@0.3 |  0.5% of all GT)
+      FN2_dead_swallow                        :   90 ( 11.9% of FN@0.3 |  2.9% of all GT)
+      FN3_merged_across_missed_D              :    3 (  0.4% of FN@0.3 |  0.1% of all GT)
+      FN4_merged_across_missed_opp            :  195 ( 25.7% of FN@0.3 |  6.4% of all GT)
+      FN5_low_iou_fragment_or_shift           :   69 (  9.1% of FN@0.3 |  2.3% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 282 / 2585 Pred spells = 10.9%):
+      FP1_hallucinated_opp_blip_YXY           :   93 ( 33.0% of FP@0.3 |  3.6% of all Pred)
+      FP2a_split_fragment_by_false_D          :    3 (  1.1% of FP@0.3 |  0.1% of all Pred)
+      FP2b_split_fragment_by_false_opp        :   51 ( 18.1% of FP@0.3 |  2.0% of all Pred)
+      FP3_false_live_inside_DEAD              :   19 (  6.7% of FP@0.3 |  0.7% of all Pred)
+      FP4_wrong_team_on_live                  :   94 ( 33.3% of FP@0.3 |  3.6% of all Pred)
+      FP5_other_boundary_spill                :   22 (  7.8% of FP@0.3 |  0.9% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 2303):
+      Fail@0.4 =  82 | Fail@0.5 = 193 | Fail@0.6 = 334 | Fail@0.7 = 485 (21.1% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=31, Opp_entry=201, D_exit=38, Opp_exit=215
+      Start Error after DEAD (D->Live)  : mean|err|= 10.7f, signed= +4.9f, p90= 14.0f
+      Start Error after OPP  (Y->X)     : mean|err|= 16.2f, signed= -5.5f, p90= 47.0f
+      End Error before DEAD  (Live->D)  : mean|err|=  9.6f, signed= -4.6f, p90= 26.1f
+      End Error before OPP   (X->Y)     : mean|err|= 20.0f, signed= +7.6f, p90= 52.0f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_recover_short_turnovers_25_125f     : +0.0976 -> 0.8379
+      orc_kill_fp_opp_yxy                     : +0.0610 -> 0.8013
+      orc_snap_35f                            : +0.0506 -> 0.7909
+      orc_recover_ultrashort_lt25f            : +0.0493 -> 0.7896
+      orc_snap_HA_bounds_35f                  : +0.0441 -> 0.7844
+      orc_snap_15f                            : +0.0193 -> 0.7596
+      orc_snap_D_bounds_35f                   : +0.0086 -> 0.7489
+      orc_perfect_alive_dead_mask             : +0.0084 -> 0.7487
+      orc_kill_fp_dead                        : +0.0026 -> 0.7429
+      orc_insert_missed_D_in_XDX              : +0.0014 -> 0.7417
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 1B-Gen: Sportec v6 100% Genuine Native-v6 (7-Fold LOMO) — v7 Rerank
+=====================================================================================
+  Headline spell_f1_mean = 0.6903 | Total GT Spells = 3061 | Total Pred Spells = 2824 (Diff = -237)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.7812 |  0.8133 |  0.7548 |  2297 |   527 |   764 |              ---
+        0.4 |  0.7439 |  0.7742 |  0.7189 |  2187 |   637 |   874 |          -0.0373
+        0.5 |  0.6995 |  0.7280 |  0.6760 |  2055 |   769 |  1006 |          -0.0444
+        0.6 |  0.6449 |  0.6711 |  0.6234 |  1895 |   929 |  1166 |          -0.0546
+        0.7 |  0.5818 |  0.6054 |  0.5624 |  1708 |  1116 |  1353 |          -0.0631
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 764 / 3061 GT spells = 25.0%):
+      FN1a_opp_swallow_ultrashort_lt25        :  166 ( 21.7% of FN@0.3 |  5.4% of all GT)
+      FN1b_opp_swallow_short_25_50            :  126 ( 16.5% of FN@0.3 |  4.1% of all GT)
+      FN1c_opp_swallow_med_51_125             :  107 ( 14.0% of FN@0.3 |  3.5% of all GT)
+      FN1d_opp_swallow_long_gt125             :   18 (  2.4% of FN@0.3 |  0.6% of all GT)
+      FN2_dead_swallow                        :   87 ( 11.4% of FN@0.3 |  2.8% of all GT)
+      FN3_merged_across_missed_D              :    3 (  0.4% of FN@0.3 |  0.1% of all GT)
+      FN4_merged_across_missed_opp            :  177 ( 23.2% of FN@0.3 |  5.8% of all GT)
+      FN5_low_iou_fragment_or_shift           :   80 ( 10.5% of FN@0.3 |  2.6% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 527 / 2824 Pred spells = 18.7%):
+      FP1_hallucinated_opp_blip_YXY           :  211 ( 40.0% of FP@0.3 |  7.5% of all Pred)
+      FP2a_split_fragment_by_false_D          :    3 (  0.6% of FP@0.3 |  0.1% of all Pred)
+      FP2b_split_fragment_by_false_opp        :  130 ( 24.7% of FP@0.3 |  4.6% of all Pred)
+      FP3_false_live_inside_DEAD              :   26 (  4.9% of FP@0.3 |  0.9% of all Pred)
+      FP4_wrong_team_on_live                  :  116 ( 22.0% of FP@0.3 |  4.1% of all Pred)
+      FP5_other_boundary_spill                :   41 (  7.8% of FP@0.3 |  1.5% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 2297):
+      Fail@0.4 = 110 | Fail@0.5 = 242 | Fail@0.6 = 402 | Fail@0.7 = 589 (25.6% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=38, Opp_entry=237, D_exit=51, Opp_exit=263
+      Start Error after DEAD (D->Live)  : mean|err|= 12.4f, signed= +5.5f, p90= 22.5f
+      Start Error after OPP  (Y->X)     : mean|err|= 21.2f, signed= -4.4f, p90= 55.0f
+      End Error before DEAD  (Live->D)  : mean|err|= 13.5f, signed= -7.3f, p90= 37.0f
+      End Error before OPP   (X->Y)     : mean|err|= 22.0f, signed= +1.6f, p90= 53.0f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_kill_fp_opp_yxy                     : +0.1010 -> 0.7913
+      orc_recover_short_turnovers_25_125f     : +0.0936 -> 0.7838
+      orc_snap_35f                            : +0.0647 -> 0.7550
+      orc_snap_HA_bounds_35f                  : +0.0562 -> 0.7465
+      orc_recover_ultrashort_lt25f            : +0.0523 -> 0.7426
+      orc_snap_15f                            : +0.0221 -> 0.7124
+      orc_snap_D_bounds_35f                   : +0.0110 -> 0.7012
+      orc_perfect_alive_dead_mask             : +0.0073 -> 0.6976
+      orc_kill_fp_dead                        : +0.0031 -> 0.6934
+      orc_insert_missed_D_in_XDX              : +0.0015 -> 0.6918
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 2 (Raw): Metrica Sample 3 Games — v7 Rerank
+=====================================================================================
+  Headline spell_f1_mean = 0.8376 | Total GT Spells = 1115 | Total Pred Spells = 990 (Diff = -125)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.8901 |  0.9488 |  0.8403 |   939 |    51 |   176 |              ---
+        0.4 |  0.8714 |  0.9283 |  0.8230 |   920 |    70 |   195 |          -0.0187
+        0.5 |  0.8496 |  0.9051 |  0.8024 |   897 |    93 |   218 |          -0.0218
+        0.6 |  0.8133 |  0.8665 |  0.7682 |   859 |   131 |   256 |          -0.0363
+        0.7 |  0.7637 |  0.8135 |  0.7214 |   807 |   183 |   308 |          -0.0496
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 176 / 1115 GT spells = 15.8%):
+      FN1a_opp_swallow_ultrashort_lt25        :   33 ( 18.8% of FN@0.3 |  3.0% of all GT)
+      FN1b_opp_swallow_short_25_50            :   16 (  9.1% of FN@0.3 |  1.4% of all GT)
+      FN1c_opp_swallow_med_51_125             :   13 (  7.4% of FN@0.3 |  1.2% of all GT)
+      FN1d_opp_swallow_long_gt125             :    2 (  1.1% of FN@0.3 |  0.2% of all GT)
+      FN2_dead_swallow                        :   66 ( 37.5% of FN@0.3 |  5.9% of all GT)
+      FN3_merged_across_missed_D              :    2 (  1.1% of FN@0.3 |  0.2% of all GT)
+      FN4_merged_across_missed_opp            :   39 ( 22.2% of FN@0.3 |  3.5% of all GT)
+      FN5_low_iou_fragment_or_shift           :    5 (  2.8% of FN@0.3 |  0.4% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 51 / 990 Pred spells = 5.2%):
+      FP1_hallucinated_opp_blip_YXY           :   15 ( 29.4% of FP@0.3 |  1.5% of all Pred)
+      FP2a_split_fragment_by_false_D          :    3 (  5.9% of FP@0.3 |  0.3% of all Pred)
+      FP2b_split_fragment_by_false_opp        :   11 ( 21.6% of FP@0.3 |  1.1% of all Pred)
+      FP3_false_live_inside_DEAD              :    6 ( 11.8% of FP@0.3 |  0.6% of all Pred)
+      FP4_wrong_team_on_live                  :    4 (  7.8% of FP@0.3 |  0.4% of all Pred)
+      FP5_other_boundary_spill                :   12 ( 23.5% of FP@0.3 |  1.2% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 939):
+      Fail@0.4 =  19 | Fail@0.5 =  42 | Fail@0.6 =  80 | Fail@0.7 = 132 (14.1% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=9, Opp_entry=41, D_exit=42, Opp_exit=40
+      Start Error after DEAD (D->Live)  : mean|err|= 15.5f, signed= +7.1f, p90= 11.3f
+      Start Error after OPP  (Y->X)     : mean|err|= 17.6f, signed= +8.6f, p90= 31.5f
+      End Error before DEAD  (Live->D)  : mean|err|= 10.6f, signed= -6.8f, p90= 18.1f
+      End Error before OPP   (X->Y)     : mean|err|= 10.3f, signed= +5.4f, p90= 22.2f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_snap_35f                            : +0.0372 -> 0.8748
+      orc_recover_short_turnovers_25_125f     : +0.0330 -> 0.8706
+      orc_recover_ultrashort_lt25f            : +0.0281 -> 0.8657
+      orc_snap_HA_bounds_35f                  : +0.0233 -> 0.8609
+      orc_snap_D_bounds_35f                   : +0.0221 -> 0.8597
+      orc_snap_15f                            : +0.0186 -> 0.8563
+      orc_kill_fp_opp_yxy                     : +0.0172 -> 0.8548
+      orc_insert_missed_D_in_XDX              : +0.0025 -> 0.8401
+      orc_kill_fp_dead                        : +0.0024 -> 0.8400
+      orc_perfect_alive_dead_mask             : -0.0150 -> 0.8226
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 2 (without_dead_margin ±3s): Metrica Sample 3 Games — v7 Rerank
+=====================================================================================
+  Headline spell_f1_mean = 0.8750 | Total GT Spells = 915 | Total Pred Spells = 848 (Diff = -67)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.9120 |  0.9501 |  0.8780 |   805 |    43 |   110 |              ---
+        0.4 |  0.8980 |  0.9353 |  0.8646 |   793 |    55 |   122 |          -0.0140
+        0.5 |  0.8853 |  0.9220 |  0.8525 |   782 |    66 |   133 |          -0.0127
+        0.6 |  0.8569 |  0.8925 |  0.8252 |   757 |    91 |   158 |          -0.0284
+        0.7 |  0.8227 |  0.8568 |  0.7923 |   727 |   121 |   188 |          -0.0342
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 110 / 915 GT spells = 12.0%):
+      FN1a_opp_swallow_ultrashort_lt25        :   25 ( 22.7% of FN@0.3 |  2.7% of all GT)
+      FN1b_opp_swallow_short_25_50            :   14 ( 12.7% of FN@0.3 |  1.5% of all GT)
+      FN1c_opp_swallow_med_51_125             :   11 ( 10.0% of FN@0.3 |  1.2% of all GT)
+      FN1d_opp_swallow_long_gt125             :    1 (  0.9% of FN@0.3 |  0.1% of all GT)
+      FN2_dead_swallow                        :   22 ( 20.0% of FN@0.3 |  2.4% of all GT)
+      FN3_merged_across_missed_D              :    0 (  0.0% of FN@0.3 |  0.0% of all GT)
+      FN4_merged_across_missed_opp            :   33 ( 30.0% of FN@0.3 |  3.6% of all GT)
+      FN5_low_iou_fragment_or_shift           :    4 (  3.6% of FN@0.3 |  0.4% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 43 / 848 Pred spells = 5.1%):
+      FP1_hallucinated_opp_blip_YXY           :   13 ( 30.2% of FP@0.3 |  1.5% of all Pred)
+      FP2a_split_fragment_by_false_D          :    3 (  7.0% of FP@0.3 |  0.4% of all Pred)
+      FP2b_split_fragment_by_false_opp        :   10 ( 23.3% of FP@0.3 |  1.2% of all Pred)
+      FP3_false_live_inside_DEAD              :    0 (  0.0% of FP@0.3 |  0.0% of all Pred)
+      FP4_wrong_team_on_live                  :    7 ( 16.3% of FP@0.3 |  0.8% of all Pred)
+      FP5_other_boundary_spill                :   10 ( 23.3% of FP@0.3 |  1.2% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 805):
+      Fail@0.4 =  12 | Fail@0.5 =  23 | Fail@0.6 =  48 | Fail@0.7 =  78 (9.7% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=0, Opp_entry=39, D_exit=0, Opp_exit=39
+      Start Error after DEAD (D->Live)  : mean|err|=  0.0f, signed= +0.0f, p90=  0.0f
+      Start Error after OPP  (Y->X)     : mean|err|= 18.6f, signed= +8.2f, p90= 35.0f
+      End Error before DEAD  (Live->D)  : mean|err|=  0.0f, signed= +0.0f, p90=  0.0f
+      End Error before OPP   (X->Y)     : mean|err|= 10.4f, signed= +4.9f, p90= 24.0f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_recover_short_turnovers_25_125f     : +0.0344 -> 0.9094
+      orc_snap_35f                            : +0.0288 -> 0.9038
+      orc_recover_ultrashort_lt25f            : +0.0281 -> 0.9031
+      orc_snap_HA_bounds_35f                  : +0.0268 -> 0.9018
+      orc_kill_fp_opp_yxy                     : +0.0207 -> 0.8957
+      orc_snap_15f                            : +0.0142 -> 0.8891
+      orc_snap_D_bounds_35f                   : +0.0000 -> 0.8750
+      orc_kill_fp_dead                        : +0.0000 -> 0.8750
+      orc_insert_missed_D_in_XDX              : +0.0000 -> 0.8750
+      orc_perfect_alive_dead_mask             : -0.0354 -> 0.8396
+
+=====================================================================================
+FORENSIC AUTOPSY REPORT: JUDGE 3 (BAR-ATH Public Window Repaired): v7 6-Fam Local-Newton + XDX + Rerank
+=====================================================================================
+  Headline spell_f1_mean = 0.8000 | Total GT Spells = 17 | Total Pred Spells = 14 (Diff = -3)
+
+  [1] Per-IoU Threshold Breakdown:
+        IoU |      F1 |    Prec |  Recall |    TP |    FP |    FN | Drop vs Prev IoU
+        0.3 |  0.8387 |  0.9286 |  0.7647 |    13 |     1 |     4 |              ---
+        0.4 |  0.8387 |  0.9286 |  0.7647 |    13 |     1 |     4 |          +0.0000
+        0.5 |  0.7742 |  0.8571 |  0.7059 |    12 |     2 |     5 |          -0.0645
+        0.6 |  0.7742 |  0.8571 |  0.7059 |    12 |     2 |     5 |          +0.0000
+        0.7 |  0.7742 |  0.8571 |  0.7059 |    12 |     2 |     5 |          +0.0000
+
+  [2] False Negative Taxonomy at IoU=0.3 (Total FN@0.3 = 4 / 17 GT spells = 23.5%):
+      FN1a_opp_swallow_ultrashort_lt25        :    1 ( 25.0% of FN@0.3 |  5.9% of all GT)
+      FN1b_opp_swallow_short_25_50            :    1 ( 25.0% of FN@0.3 |  5.9% of all GT)
+      FN1c_opp_swallow_med_51_125             :    0 (  0.0% of FN@0.3 |  0.0% of all GT)
+      FN1d_opp_swallow_long_gt125             :    0 (  0.0% of FN@0.3 |  0.0% of all GT)
+      FN2_dead_swallow                        :    0 (  0.0% of FN@0.3 |  0.0% of all GT)
+      FN3_merged_across_missed_D              :    0 (  0.0% of FN@0.3 |  0.0% of all GT)
+      FN4_merged_across_missed_opp            :    2 ( 50.0% of FN@0.3 | 11.8% of all GT)
+      FN5_low_iou_fragment_or_shift           :    0 (  0.0% of FN@0.3 |  0.0% of all GT)
+
+  [3] False Positive Taxonomy at IoU=0.3 (Total FP@0.3 = 1 / 14 Pred spells = 7.1%):
+      FP1_hallucinated_opp_blip_YXY           :    0 (  0.0% of FP@0.3 |  0.0% of all Pred)
+      FP2a_split_fragment_by_false_D          :    0 (  0.0% of FP@0.3 |  0.0% of all Pred)
+      FP2b_split_fragment_by_false_opp        :    0 (  0.0% of FP@0.3 |  0.0% of all Pred)
+      FP3_false_live_inside_DEAD              :    1 (100.0% of FP@0.3 |  7.1% of all Pred)
+      FP4_wrong_team_on_live                  :    0 (  0.0% of FP@0.3 |  0.0% of all Pred)
+      FP5_other_boundary_spill                :    0 (  0.0% of FP@0.3 |  0.0% of all Pred)
+
+  [4] Boundary & Cliff-Drop Anatomy on Matched Spells (Matched@0.3 = 13):
+      Fail@0.4 =   0 | Fail@0.5 =   1 | Fail@0.6 =   1 | Fail@0.7 =   1 (7.7% of Matched@0.3)
+      Why Matched@0.3 fail @0.7: D_entry=0, Opp_entry=0, D_exit=0, Opp_exit=1
+      Start Error after DEAD (D->Live)  : mean|err|= 10.8f, signed= -2.2f, p90= 16.0f
+      Start Error after OPP  (Y->X)     : mean|err|= 18.6f, signed=+11.6f, p90= 34.7f
+      End Error before DEAD  (Live->D)  : mean|err|=  4.7f, signed= +4.0f, p90=  7.4f
+      End Error before OPP   (X->Y)     : mean|err|= 89.0f, signed=+82.8f, p90=163.2f
+
+  [5] Exact Oracle Marginal Gain (+Delta spell_f1_mean if bucket is surgically fixed):
+      orc_recover_ultrashort_lt25f            : +0.0970 -> 0.8970
+      orc_recover_short_turnovers_25_125f     : +0.0485 -> 0.8485
+      orc_kill_fp_dead                        : +0.0267 -> 0.8267
+      orc_perfect_alive_dead_mask             : +0.0267 -> 0.8267
+      orc_snap_15f                            : +0.0000 -> 0.8000
+      orc_snap_35f                            : +0.0000 -> 0.8000
+      orc_snap_D_bounds_35f                   : +0.0000 -> 0.8000
+      orc_snap_HA_bounds_35f                  : +0.0000 -> 0.8000
+      orc_kill_fp_opp_yxy                     : +0.0000 -> 0.8000
+      orc_insert_missed_D_in_XDX              : +0.0000 -> 0.8000
+
+--- BAR-ATH Public Window (11,185..18,684) Exact Spell-by-Spell Comparison ---
+  GT Spells (17):
+    GT#00 [A] [11185..11351] (len=166f) <-> Pred#00 [11185..11362] IoU=0.938 (da=+0, db=+11)
+    GT#01 [H] [11351..11553] (len=202f) <-> Pred#01 [11362..11547] IoU=0.916 (da=+11, db=-6)
+    GT#02 [A] [11553..11624] (len= 71f) <-> Pred#02 [11547..11609] IoU=0.727 (da=-6, db=-15)
+    GT#03 [H] [11624..12665] (len=1041f) <-> Pred#03 [11609..12706] IoU=0.949 (da=-15, db=+41)
+    GT#04 [A] [12665..12851] (len=186f) <-> Pred#04 [12706..12850] IoU=0.774 (da=+41, db=-1)
+    GT#05 [H] [12989..13704] (len=715f) <-> Pred#05 [12979..13697] IoU=0.977 (da=-10, db=-7)
+    GT#06 [A] [13704..13785] (len= 81f) <-> Pred#06 [13697..13807] IoU=0.736 (da=-7, db=+22)
+    GT#07 [H] [13785..14846] (len=1061f) <-> Pred#07 [13807..14878] IoU=0.951 (da=+22, db=+32)
+    GT#08 [A] [14846..15346] (len=500f) <-> Pred#08 [14878..15998] IoU=0.406 (da=+32, db=+652)
+    GT#09 [H] [15346..15365] (len= 19f) <-> Pred#-1 [   -1..   -1] IoU=0.000 (da=-15347, db=-15366)
+    GT#10 [A] [15365..15766] (len=401f) <-> Pred#08 [14878..15998] IoU=0.358 (da=-487, db=+232)
+    GT#11 [H] [15766..15799] (len= 33f) <-> Pred#-1 [   -1..   -1] IoU=0.000 (da=-15767, db=-15800)
+    GT#12 [A] [15799..15889] (len= 90f) <-> Pred#08 [14878..15998] IoU=0.080 (da=-921, db=+109)
+    GT#13 [A] [16400..17293] (len=893f) <-> Pred#09 [16401..17308] IoU=0.982 (da=+1, db=+15)
+    GT#14 [H] [17293..17380] (len= 87f) <-> Pred#10 [17308..17385] IoU=0.783 (da=+15, db=+5)
+    GT#15 [A] [17838..18027] (len=189f) <-> Pred#12 [17822..18035] IoU=0.887 (da=-16, db=+8)
+    GT#16 [H] [18389..18685] (len=296f) <-> Pred#13 [18405..18685] IoU=0.946 (da=+16, db=+0)
+  Unmatched Pred Spells at IoU=0.3:
+    Pred#11 [A] [17385..17452] (len= 67f) | GT slice counts: H=0, A=0, D=67
+
+Completed full v7 forensic autopsy in 7.5s.

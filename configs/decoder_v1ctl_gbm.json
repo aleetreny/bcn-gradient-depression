@@ -1,0 +1,9 @@
+{
+  "lam_ha": 3.3448544228568466,
+  "lam_ld": 12.046050414832353,
+  "lam_dl": 6.321884926109067,
+  "dmin_team": 12,
+  "dmin_dead": 134,
+  "beta_ha": 5.295778172429498,
+  "_provenance": "s3_8: plateau centre on the 7 nested outer predictions (degrade_v3, v1ctl, gbm)"
+}

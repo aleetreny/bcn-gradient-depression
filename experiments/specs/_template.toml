@@ -1,0 +1,20 @@
+# One hypothesis per spec. Commit this file BEFORE running it: the criteria below are pre-registered.
+# Copy with: python -m harness new <id>      Run with: python -m harness run experiments/specs/<id>.toml
+id = "h999_template"
+owner = ""
+hypothesis = """
+What you expect to change, by how much, and why (cite the log / error bucket that motivates it).
+"""
+
+[predictor]
+name = "staged"            # python -m harness list
+params = { features = "v1", model = "gbm", decoder = "hsmm", decoder_params = { config = "configs/decoder_v1.json" } }
+
+[judges]
+use = ["J1", "J2", "J3"]   # J1 selects, J2 guards (may veto), J3 is report-only
+# J1 = { degrade = "configs/degrade_v3.json", train_seeds = [1], test_seed = 0 }
+
+[criteria]
+champion = ""              # empty: the run named in experiments/runs/CHAMPION
+min_delta = 0.01           # mean paired spellF1 gain on J1 to call it real
+min_folds_improved = 0.7   # fraction of folds that must improve

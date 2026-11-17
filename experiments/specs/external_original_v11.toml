@@ -1,0 +1,15 @@
+id = "external_original_v11"
+owner = "ale"
+hypothesis = "Compare previously reconstructed external v11 predictions on identical cached Sportec and Metrica folds; assess reproducibility and quality without using J3."
+
+[predictor]
+name = "cached_external_report"
+params = { which = "original", bundle_sha256 = "3df17740c4fcedc6184909e0047b24bae65d84e0c4e60676fdf59d6fd78a1276", fingerprints_sha256 = "d91b47f4396a911eb34e24c2c9c8b1f0881576b93876ca35036a70977320d596" }
+
+[judges]
+use = ["J1", "J2"]
+
+[criteria]
+champion = "none"
+min_delta = 0.01
+min_folds_improved = 0.7

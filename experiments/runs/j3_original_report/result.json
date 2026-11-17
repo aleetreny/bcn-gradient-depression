@@ -1,0 +1,52 @@
+{
+ "id": "j3_original_report",
+ "hypothesis": "Report-only evaluation of the fixed original CSV on the public correctness sample; never use for selection or tuning.",
+ "owner": "ale",
+ "spec": "experiments/specs/j3_original_report.toml",
+ "spec_digest": "f567f491bfa010db",
+ "predictor": "public_csv_report",
+ "params": {
+  "which": "original",
+  "sha256": "03a637f62c23510d7900bb1a4895a21f11a5afc9ed2790f4679ba49fa275bc15"
+ },
+ "provenance": {
+  "commit": "4c636a8",
+  "branch": "codex/reproducibilidad-v11",
+  "dirty": [],
+  "source_digest": "2cebeb0a7324a128182afd09",
+  "python": "3.11.16",
+  "platform": "macOS-26.6.2-arm64-arm-64bit"
+ },
+ "started": "2026-11-16T23:24:16",
+ "judges": {
+  "J3": {
+   "role": "report",
+   "params": {},
+   "description": "train on degraded Sportec, score BAR-ATH on the public 5 min (report only)",
+   "status": "ok",
+   "fingerprint": {
+    "degrade_config": "a9cb0f01d0b99e5e",
+    "degradation_params": "ed08956d7d847cb2"
+   },
+   "folds": {
+    "BAR-ATH_public": {
+     "spell_f1": 0.7125,
+     "macro_f1": 0.9591536639492239,
+     "n_gt_spells": 17,
+     "n_pred_spells": 15,
+     "pred_poss_per_min": 2.3228438155070283,
+     "seconds": 0.06
+    }
+   },
+   "summary": {
+    "spell_f1_mean": 0.7125,
+    "spell_f1_std": 0.0,
+    "macro_f1_mean": 0.9591536639492239,
+    "pred_poss_per_min": 2.3228438155070283,
+    "n_folds": 1
+   }
+  }
+ },
+ "champion": "none",
+ "seconds": 7.7
+}

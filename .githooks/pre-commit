@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Enable once per clone:  git config core.hooksPath .githooks
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+PY="$ROOT/.venv311/bin/python"; [ -x "$PY" ] || PY=python3
+"$PY" -m harness guard

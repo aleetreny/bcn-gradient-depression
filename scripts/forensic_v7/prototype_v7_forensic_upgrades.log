@@ -1,0 +1,22 @@
+Inspecting existing w6/w7 SpellReranker configs:
+  Fold J03WMX: mode=physics, max_len=100, tau=0.0, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+  Fold J03WN1: mode=physics, max_len=100, tau=0.0, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+  Fold J03WOH: mode=hybrid, max_len=60, tau=0.34, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+  Fold J03WOY: mode=physics, max_len=100, tau=0.0, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+  Fold J03WPY: mode=physics, max_len=100, tau=0.0, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+  Fold J03WQQ: mode=hybrid, max_len=60, tau=0.45, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+  Fold J03WR9: mode=physics, max_len=100, tau=0.0, hard_keep_p_x=0.62, hard_keep_b4d=0.28
+=========================================================================================================================================
+ABLATION OF FORENSIC SURGICAL UPGRADES ON TOP OF SUPER-CHAMPION V7 ACROSS ALL 4 JUDGES
+=========================================================================================================================================
+  0. Baseline Super-Champion v7 (Rerank)         | J1A=0.7509 | J1B-Std=0.7403 | J1B-Gen=0.6903 | J2-Raw=0.8376 | J2-noD=0.8750 | J3-Rep=0.8000 (MacF1=0.9354, Poss/m=2.46)
+  1. + Fix A (J1B-Gen Newton-Adaptive Smooth)    | J1A=0.7509 | J1B-Std=0.7403 | J1B-Gen=0.6919 | J2-Raw=0.8376 | J2-noD=0.8750 | J3-Rep=0.8000 (MacF1=0.9354, Poss/m=2.46)
+  2. + Fix B (Dead-Wedge Arbitrator YXD/DXY/DXD) | J1A=0.7521 | J1B-Std=0.7403 | J1B-Gen=0.6913 | J2-Raw=0.8382 | J2-noD=0.8750 | J3-Rep=0.8267 (MacF1=0.9480, Poss/m=2.32)
+  3. + Fix C (Recalibrated 9-Fam SpellReranker)  | J1A=0.7509 | J1B-Std=0.7401 | J1B-Gen=0.6919 | J2-Raw=0.8376 | J2-noD=0.8750 | J3-Rep=0.8000 (MacF1=0.9354, Poss/m=2.46)
+  4. + Fix D (Double-Domino Short-Turn Recovery) | J1A=0.7480 | J1B-Std=0.7315 | J1B-Gen=0.6846 | J2-Raw=0.8350 | J2-noD=0.8714 | J3-Rep=0.8606 (MacF1=0.9358, Poss/m=2.48)
+  5. + Fix A + B + C                             | J1A=0.7521 | J1B-Std=0.7401 | J1B-Gen=0.6913 | J2-Raw=0.8382 | J2-noD=0.8750 | J3-Rep=0.8267 (MacF1=0.9480, Poss/m=2.32)
+  6. + Fix A + B + D                             | J1A=0.7492 | J1B-Std=0.7314 | J1B-Gen=0.6840 | J2-Raw=0.8355 | J2-noD=0.8714 | J3-Rep=0.8875 (MacF1=0.9484, Poss/m=2.34)
+  7. + Fix A + B + C + D (Full Forensic v7+)     | J1A=0.7492 | J1B-Std=0.7312 | J1B-Gen=0.6840 | J2-Raw=0.8355 | J2-noD=0.8714 | J3-Rep=0.8875 (MacF1=0.9484, Poss/m=2.34)
+
+H <-> A Equivariance Disagreement Rate on BAR-ATH (195,947 valid frames): 0.000e+00
+Completed in 22.3s.

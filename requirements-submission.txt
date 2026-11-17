@@ -1,0 +1,18 @@
+# Full environment for regenerating the submission (scripts/v10_first_principles/reproduce_best_model.sh).
+#   uv venv --python 3.11 .venv311
+#   uv pip install --python .venv311/bin/python -r requirements-submission.txt
+# requirements-research.txt is the frozen research/v4 environment and is not edited; the packages the
+# v8.5-v11 pipeline needs on top of it are pinned here.
+-r requirements-research.txt
+
+# Versions the byte-for-byte reproduction was verified with
+# (docs/v10_reports/reproducibility_and_d3_report.md).
+catboost==1.2.10
+xgboost==3.2.0
+
+# TODO(Ale): pin these three to the exact versions in the .venv311 that produced the submission:
+#   .venv311/bin/python -m pip freeze | grep -iE 'ultralytics|opencv|modal'
+# The YOLO detections feed the D3 re-teaming, so a different ultralytics/opencv can change the SHA-256.
+ultralytics
+opencv-python
+modal

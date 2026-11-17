@@ -1,0 +1,793 @@
+{
+  "j1a_rerank": {
+    "name": "JUDGE 1A: Sportec v3 (7-Fold LOMO) \u2014 v7 6-Fam Local-Newton + XDX + 9-Model SpellReranker",
+    "spell_f1_mean": 0.7508975583998047,
+    "n_gt": 3061,
+    "n_pred": 2578,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.8247910343913378,
+        "precision": 0.9009196395782748,
+        "recall": 0.7626701632231676,
+        "tp": 2321,
+        "fp": 257,
+        "fn": 740
+      },
+      "0.4": {
+        "f1": 0.7972153992660245,
+        "precision": 0.8709421298446192,
+        "recall": 0.7370547522189147,
+        "tp": 2242,
+        "fp": 336,
+        "fn": 819
+      },
+      "0.5": {
+        "f1": 0.757588035655652,
+        "precision": 0.8275253974361363,
+        "recall": 0.7005278522154857,
+        "tp": 2129,
+        "fp": 449,
+        "fn": 932
+      },
+      "0.6": {
+        "f1": 0.7123473458012773,
+        "precision": 0.7780955101447811,
+        "recall": 0.6586903104451639,
+        "tp": 2002,
+        "fp": 576,
+        "fn": 1059
+      },
+      "0.7": {
+        "f1": 0.6625459768847317,
+        "precision": 0.7234401823167912,
+        "recall": 0.6128014044758778,
+        "tp": 1860,
+        "fp": 718,
+        "fn": 1201
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 148,
+      "FN1b_opp_swallow_short_25_50": 125,
+      "FN1c_opp_swallow_med_51_125": 102,
+      "FN1d_opp_swallow_long_gt125": 15,
+      "FN2_dead_swallow": 89,
+      "FN3_merged_across_missed_D": 2,
+      "FN4_merged_across_missed_opp": 196,
+      "FN5_low_iou_fragment_or_shift": 63
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 82,
+      "FP2a_split_fragment_by_false_D": 4,
+      "FP2b_split_fragment_by_false_opp": 42,
+      "FP3_false_live_inside_DEAD": 19,
+      "FP4_wrong_team_on_live": 90,
+      "FP5_other_boundary_spill": 20
+    },
+    "boundary_stats": {
+      "n_matched_03": 2321,
+      "n_fail_04": 79,
+      "n_fail_05": 192,
+      "n_fail_06": 319,
+      "n_fail_07": 461,
+      "fail07_due_to_D_entry": 32,
+      "fail07_due_to_opp_entry": 186,
+      "fail07_due_to_D_exit": 36,
+      "fail07_due_to_opp_exit": 207,
+      "start_err_from_D_abs_mean": 10.38810641627543,
+      "start_err_from_D_abs_median": 0.0,
+      "start_err_from_D_abs_p90": 15.0,
+      "start_err_from_D_signed_mean": 4.49452269170579,
+      "start_err_from_D_signed_median": 0.0,
+      "start_err_from_D_signed_p90": 15.0,
+      "start_err_from_opp_abs_mean": 16.109850746268656,
+      "start_err_from_opp_abs_median": 1.0,
+      "start_err_from_opp_abs_p90": 49.0,
+      "start_err_from_opp_signed_mean": -4.635223880597015,
+      "start_err_from_opp_signed_median": 0.0,
+      "start_err_from_opp_signed_p90": 49.0,
+      "end_err_to_D_abs_mean": 8.444444444444445,
+      "end_err_to_D_abs_median": 0.0,
+      "end_err_to_D_abs_p90": 23.0,
+      "end_err_to_D_signed_mean": -3.835249042145594,
+      "end_err_to_D_signed_median": 0.0,
+      "end_err_to_D_signed_p90": 23.0,
+      "end_err_to_opp_abs_mean": 18.76598110061145,
+      "end_err_to_opp_abs_median": 2.0,
+      "end_err_to_opp_abs_p90": 51.0,
+      "end_err_to_opp_signed_mean": 7.856586992773763,
+      "end_err_to_opp_signed_median": 0.0,
+      "end_err_to_opp_signed_p90": 51.0
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.015913855128423852,
+      "orc_snap_35f": 0.04912527833137392,
+      "orc_snap_D_bounds_35f": 0.009331109750482553,
+      "orc_snap_HA_bounds_35f": 0.04147545200549848,
+      "orc_kill_fp_opp_yxy": 0.056907001591874576,
+      "orc_kill_fp_dead": 0.0026828204504986924,
+      "orc_recover_short_turnovers_25_125f": 0.09174777549804758,
+      "orc_recover_ultrashort_lt25f": 0.049522017856519364,
+      "orc_insert_missed_D_in_XDX": 0.0010172016655903202,
+      "orc_perfect_alive_dead_mask": 0.007273664922678146
+    }
+  },
+  "j1a_mbr": {
+    "name": "JUDGE 1A: Sportec v3 (7-Fold LOMO) \u2014 v7 Super-Champion Grand MBR",
+    "spell_f1_mean": 0.7508975583998047,
+    "n_gt": 3061,
+    "n_pred": 2578,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.8247910343913378,
+        "precision": 0.9009196395782748,
+        "recall": 0.7626701632231676,
+        "tp": 2321,
+        "fp": 257,
+        "fn": 740
+      },
+      "0.4": {
+        "f1": 0.7972153992660245,
+        "precision": 0.8709421298446192,
+        "recall": 0.7370547522189147,
+        "tp": 2242,
+        "fp": 336,
+        "fn": 819
+      },
+      "0.5": {
+        "f1": 0.757588035655652,
+        "precision": 0.8275253974361363,
+        "recall": 0.7005278522154857,
+        "tp": 2129,
+        "fp": 449,
+        "fn": 932
+      },
+      "0.6": {
+        "f1": 0.7123473458012773,
+        "precision": 0.7780955101447811,
+        "recall": 0.6586903104451639,
+        "tp": 2002,
+        "fp": 576,
+        "fn": 1059
+      },
+      "0.7": {
+        "f1": 0.6625459768847317,
+        "precision": 0.7234401823167912,
+        "recall": 0.6128014044758778,
+        "tp": 1860,
+        "fp": 718,
+        "fn": 1201
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 148,
+      "FN1b_opp_swallow_short_25_50": 125,
+      "FN1c_opp_swallow_med_51_125": 102,
+      "FN1d_opp_swallow_long_gt125": 15,
+      "FN2_dead_swallow": 89,
+      "FN3_merged_across_missed_D": 2,
+      "FN4_merged_across_missed_opp": 196,
+      "FN5_low_iou_fragment_or_shift": 63
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 82,
+      "FP2a_split_fragment_by_false_D": 4,
+      "FP2b_split_fragment_by_false_opp": 42,
+      "FP3_false_live_inside_DEAD": 19,
+      "FP4_wrong_team_on_live": 90,
+      "FP5_other_boundary_spill": 20
+    },
+    "boundary_stats": {
+      "n_matched_03": 2321,
+      "n_fail_04": 79,
+      "n_fail_05": 192,
+      "n_fail_06": 319,
+      "n_fail_07": 461,
+      "fail07_due_to_D_entry": 32,
+      "fail07_due_to_opp_entry": 186,
+      "fail07_due_to_D_exit": 36,
+      "fail07_due_to_opp_exit": 207,
+      "start_err_from_D_abs_mean": 10.38810641627543,
+      "start_err_from_D_abs_median": 0.0,
+      "start_err_from_D_abs_p90": 15.0,
+      "start_err_from_D_signed_mean": 4.49452269170579,
+      "start_err_from_D_signed_median": 0.0,
+      "start_err_from_D_signed_p90": 15.0,
+      "start_err_from_opp_abs_mean": 16.109850746268656,
+      "start_err_from_opp_abs_median": 1.0,
+      "start_err_from_opp_abs_p90": 49.0,
+      "start_err_from_opp_signed_mean": -4.635223880597015,
+      "start_err_from_opp_signed_median": 0.0,
+      "start_err_from_opp_signed_p90": 49.0,
+      "end_err_to_D_abs_mean": 8.444444444444445,
+      "end_err_to_D_abs_median": 0.0,
+      "end_err_to_D_abs_p90": 23.0,
+      "end_err_to_D_signed_mean": -3.835249042145594,
+      "end_err_to_D_signed_median": 0.0,
+      "end_err_to_D_signed_p90": 23.0,
+      "end_err_to_opp_abs_mean": 18.76598110061145,
+      "end_err_to_opp_abs_median": 2.0,
+      "end_err_to_opp_abs_p90": 51.0,
+      "end_err_to_opp_signed_mean": 7.856586992773763,
+      "end_err_to_opp_signed_median": 0.0,
+      "end_err_to_opp_signed_p90": 51.0
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.015913855128423852,
+      "orc_snap_35f": 0.04912527833137392,
+      "orc_snap_D_bounds_35f": 0.009331109750482553,
+      "orc_snap_HA_bounds_35f": 0.04147545200549848,
+      "orc_kill_fp_opp_yxy": 0.056907001591874576,
+      "orc_kill_fp_dead": 0.0026828204504986924,
+      "orc_recover_short_turnovers_25_125f": 0.09174777549804758,
+      "orc_recover_ultrashort_lt25f": 0.049522017856519364,
+      "orc_insert_missed_D_in_XDX": 0.0010172016655903202,
+      "orc_perfect_alive_dead_mask": 0.007273664922678146
+    }
+  },
+  "j1b_std": {
+    "name": "JUDGE 1B-Std: Sportec v6 Ghost-Ball (7-Fold LOMO) \u2014 v7 Rerank",
+    "spell_f1_mean": 0.7403102435451739,
+    "n_gt": 3061,
+    "n_pred": 2585,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.8171204156831655,
+        "precision": 0.8908964069134263,
+        "recall": 0.7562984778193158,
+        "tp": 2303,
+        "fp": 282,
+        "fn": 758
+      },
+      "0.4": {
+        "f1": 0.7884958986311611,
+        "precision": 0.8596340305077516,
+        "recall": 0.7298250038227663,
+        "tp": 2221,
+        "fp": 364,
+        "fn": 840
+      },
+      "0.5": {
+        "f1": 0.7495681807046283,
+        "precision": 0.8170807578888546,
+        "recall": 0.6938916566390668,
+        "tp": 2110,
+        "fp": 475,
+        "fn": 951
+      },
+      "0.6": {
+        "f1": 0.699604104044741,
+        "precision": 0.7626328750596804,
+        "recall": 0.6476158654136164,
+        "tp": 1969,
+        "fp": 616,
+        "fn": 1092
+      },
+      "0.7": {
+        "f1": 0.6467626186621732,
+        "precision": 0.7047723251973412,
+        "recall": 0.5988744603251686,
+        "tp": 1818,
+        "fp": 767,
+        "fn": 1243
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 152,
+      "FN1b_opp_swallow_short_25_50": 120,
+      "FN1c_opp_swallow_med_51_125": 114,
+      "FN1d_opp_swallow_long_gt125": 15,
+      "FN2_dead_swallow": 90,
+      "FN3_merged_across_missed_D": 3,
+      "FN4_merged_across_missed_opp": 195,
+      "FN5_low_iou_fragment_or_shift": 69
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 93,
+      "FP2a_split_fragment_by_false_D": 3,
+      "FP2b_split_fragment_by_false_opp": 51,
+      "FP3_false_live_inside_DEAD": 19,
+      "FP4_wrong_team_on_live": 94,
+      "FP5_other_boundary_spill": 22
+    },
+    "boundary_stats": {
+      "n_matched_03": 2303,
+      "n_fail_04": 82,
+      "n_fail_05": 193,
+      "n_fail_06": 334,
+      "n_fail_07": 485,
+      "fail07_due_to_D_entry": 31,
+      "fail07_due_to_opp_entry": 201,
+      "fail07_due_to_D_exit": 38,
+      "fail07_due_to_opp_exit": 215,
+      "start_err_from_D_abs_mean": 10.677115987460816,
+      "start_err_from_D_abs_median": 0.0,
+      "start_err_from_D_abs_p90": 14.0,
+      "start_err_from_D_signed_mean": 4.912225705329154,
+      "start_err_from_D_signed_median": 0.0,
+      "start_err_from_D_signed_p90": 14.0,
+      "start_err_from_opp_abs_mean": 16.21773220747889,
+      "start_err_from_opp_abs_median": 2.0,
+      "start_err_from_opp_abs_p90": 47.0,
+      "start_err_from_opp_signed_mean": -5.4951749095295535,
+      "start_err_from_opp_signed_median": 0.0,
+      "start_err_from_opp_signed_p90": 47.0,
+      "end_err_to_D_abs_mean": 9.561538461538461,
+      "end_err_to_D_abs_median": 0.0,
+      "end_err_to_D_abs_p90": 26.100000000000023,
+      "end_err_to_D_signed_mean": -4.638461538461539,
+      "end_err_to_D_signed_median": 0.0,
+      "end_err_to_D_signed_p90": 26.100000000000023,
+      "end_err_to_opp_abs_mean": 20.013460459899047,
+      "end_err_to_opp_abs_median": 2.0,
+      "end_err_to_opp_abs_p90": 52.0,
+      "end_err_to_opp_signed_mean": 7.61749859786876,
+      "end_err_to_opp_signed_median": 0.0,
+      "end_err_to_opp_signed_p90": 52.0
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.019322193763137485,
+      "orc_snap_35f": 0.05062105489570707,
+      "orc_snap_D_bounds_35f": 0.008581750180925583,
+      "orc_snap_HA_bounds_35f": 0.04409194279538082,
+      "orc_kill_fp_opp_yxy": 0.060983782564689046,
+      "orc_kill_fp_dead": 0.0025539320080534755,
+      "orc_recover_short_turnovers_25_125f": 0.09759580658349788,
+      "orc_recover_ultrashort_lt25f": 0.04925594710082753,
+      "orc_insert_missed_D_in_XDX": 0.001373118445061732,
+      "orc_perfect_alive_dead_mask": 0.008439080798050716
+    }
+  },
+  "j1b_gen": {
+    "name": "JUDGE 1B-Gen: Sportec v6 100% Genuine Native-v6 (7-Fold LOMO) \u2014 v7 Rerank",
+    "spell_f1_mean": 0.6902792360340032,
+    "n_gt": 3061,
+    "n_pred": 2824,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.7812036337416035,
+        "precision": 0.8132520508261785,
+        "recall": 0.7547961808097938,
+        "tp": 2297,
+        "fp": 527,
+        "fn": 764
+      },
+      "0.4": {
+        "f1": 0.7438847333494937,
+        "precision": 0.7742442751096045,
+        "recall": 0.7188632903341489,
+        "tp": 2187,
+        "fp": 637,
+        "fn": 874
+      },
+      "0.5": {
+        "f1": 0.6995310833512436,
+        "precision": 0.7280433392220461,
+        "recall": 0.6760458537067047,
+        "tp": 2055,
+        "fp": 769,
+        "fn": 1006
+      },
+      "0.6": {
+        "f1": 0.6449443185371294,
+        "precision": 0.6711147875709889,
+        "recall": 0.623354671068877,
+        "tp": 1895,
+        "fp": 929,
+        "fn": 1166
+      },
+      "0.7": {
+        "f1": 0.5818324111905457,
+        "precision": 0.6053621028529015,
+        "recall": 0.5624242031666938,
+        "tp": 1708,
+        "fp": 1116,
+        "fn": 1353
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 166,
+      "FN1b_opp_swallow_short_25_50": 126,
+      "FN1c_opp_swallow_med_51_125": 107,
+      "FN1d_opp_swallow_long_gt125": 18,
+      "FN2_dead_swallow": 87,
+      "FN3_merged_across_missed_D": 3,
+      "FN4_merged_across_missed_opp": 177,
+      "FN5_low_iou_fragment_or_shift": 80
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 211,
+      "FP2a_split_fragment_by_false_D": 3,
+      "FP2b_split_fragment_by_false_opp": 130,
+      "FP3_false_live_inside_DEAD": 26,
+      "FP4_wrong_team_on_live": 116,
+      "FP5_other_boundary_spill": 41
+    },
+    "boundary_stats": {
+      "n_matched_03": 2297,
+      "n_fail_04": 110,
+      "n_fail_05": 242,
+      "n_fail_06": 402,
+      "n_fail_07": 589,
+      "fail07_due_to_D_entry": 38,
+      "fail07_due_to_opp_entry": 237,
+      "fail07_due_to_D_exit": 51,
+      "fail07_due_to_opp_exit": 263,
+      "start_err_from_D_abs_mean": 12.426100628930818,
+      "start_err_from_D_abs_median": 0.0,
+      "start_err_from_D_abs_p90": 22.5,
+      "start_err_from_D_signed_mean": 5.520440251572327,
+      "start_err_from_D_signed_median": 0.0,
+      "start_err_from_D_signed_p90": 22.5,
+      "start_err_from_opp_abs_mean": 21.21415607985481,
+      "start_err_from_opp_abs_median": 3.0,
+      "start_err_from_opp_abs_p90": 55.0,
+      "start_err_from_opp_signed_mean": -4.382940108892922,
+      "start_err_from_opp_signed_median": 0.0,
+      "start_err_from_opp_signed_p90": 55.0,
+      "end_err_to_D_abs_mean": 13.494208494208495,
+      "end_err_to_D_abs_median": 1.0,
+      "end_err_to_D_abs_p90": 37.0,
+      "end_err_to_D_signed_mean": -7.277992277992278,
+      "end_err_to_D_signed_median": 0.0,
+      "end_err_to_D_signed_p90": 37.0,
+      "end_err_to_opp_abs_mean": 22.02585722315908,
+      "end_err_to_opp_abs_median": 3.0,
+      "end_err_to_opp_abs_p90": 53.0,
+      "end_err_to_opp_signed_mean": 1.554806070826307,
+      "end_err_to_opp_signed_median": 0.0,
+      "end_err_to_opp_signed_p90": 53.0
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.022093862446767223,
+      "orc_snap_35f": 0.06471441111824508,
+      "orc_snap_D_bounds_35f": 0.010964950560343713,
+      "orc_snap_HA_bounds_35f": 0.056225703288568386,
+      "orc_kill_fp_opp_yxy": 0.10102262871386312,
+      "orc_kill_fp_dead": 0.0031468265811530932,
+      "orc_recover_short_turnovers_25_125f": 0.09355692297874116,
+      "orc_recover_ultrashort_lt25f": 0.0522832512336257,
+      "orc_insert_missed_D_in_XDX": 0.0015180291813143049,
+      "orc_perfect_alive_dead_mask": 0.007339761450718288
+    }
+  },
+  "j2_raw": {
+    "name": "JUDGE 2 (Raw): Metrica Sample 3 Games \u2014 v7 Rerank",
+    "spell_f1_mean": 0.8376197610608465,
+    "n_gt": 1115,
+    "n_pred": 990,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.890101883375307,
+        "precision": 0.9487530857421879,
+        "recall": 0.8402994146622538,
+        "tp": 939,
+        "fp": 51,
+        "fn": 176
+      },
+      "0.4": {
+        "f1": 0.8713556726673507,
+        "precision": 0.9282792511573948,
+        "recall": 0.8229676163082575,
+        "tp": 920,
+        "fp": 70,
+        "fn": 195
+      },
+      "0.5": {
+        "f1": 0.8495909507819545,
+        "precision": 0.9051334076042646,
+        "recall": 0.8023819506417479,
+        "tp": 897,
+        "fp": 93,
+        "fn": 218
+      },
+      "0.6": {
+        "f1": 0.8133401540590119,
+        "precision": 0.8664723985795355,
+        "recall": 0.7681784963917054,
+        "tp": 859,
+        "fp": 131,
+        "fn": 256
+      },
+      "0.7": {
+        "f1": 0.7637101444206076,
+        "precision": 0.8134665664820077,
+        "recall": 0.7214065204610559,
+        "tp": 807,
+        "fp": 183,
+        "fn": 308
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 33,
+      "FN1b_opp_swallow_short_25_50": 16,
+      "FN1c_opp_swallow_med_51_125": 13,
+      "FN1d_opp_swallow_long_gt125": 2,
+      "FN2_dead_swallow": 66,
+      "FN3_merged_across_missed_D": 2,
+      "FN4_merged_across_missed_opp": 39,
+      "FN5_low_iou_fragment_or_shift": 5
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 15,
+      "FP2a_split_fragment_by_false_D": 3,
+      "FP2b_split_fragment_by_false_opp": 11,
+      "FP3_false_live_inside_DEAD": 6,
+      "FP4_wrong_team_on_live": 4,
+      "FP5_other_boundary_spill": 12
+    },
+    "boundary_stats": {
+      "n_matched_03": 939,
+      "n_fail_04": 19,
+      "n_fail_05": 42,
+      "n_fail_06": 80,
+      "n_fail_07": 132,
+      "fail07_due_to_D_entry": 9,
+      "fail07_due_to_opp_entry": 41,
+      "fail07_due_to_D_exit": 42,
+      "fail07_due_to_opp_exit": 40,
+      "start_err_from_D_abs_mean": 15.495967741935484,
+      "start_err_from_D_abs_median": 2.0,
+      "start_err_from_D_abs_p90": 11.300000000000011,
+      "start_err_from_D_signed_mean": 7.133064516129032,
+      "start_err_from_D_signed_median": 2.0,
+      "start_err_from_D_signed_p90": 11.300000000000011,
+      "start_err_from_opp_abs_mean": 17.602040816326532,
+      "start_err_from_opp_abs_median": 2.0,
+      "start_err_from_opp_abs_p90": 31.5,
+      "start_err_from_opp_signed_mean": 8.61661807580175,
+      "start_err_from_opp_signed_median": 2.0,
+      "start_err_from_opp_signed_p90": 31.5,
+      "end_err_to_D_abs_mean": 10.647619047619047,
+      "end_err_to_D_abs_median": 9.0,
+      "end_err_to_D_abs_p90": 18.099999999999994,
+      "end_err_to_D_signed_mean": -6.8,
+      "end_err_to_D_signed_median": -7.0,
+      "end_err_to_D_signed_p90": 18.099999999999994,
+      "end_err_to_opp_abs_mean": 10.281207133058984,
+      "end_err_to_opp_abs_median": 2.0,
+      "end_err_to_opp_abs_p90": 22.200000000000045,
+      "end_err_to_opp_signed_mean": 5.430727023319616,
+      "end_err_to_opp_signed_median": 2.0,
+      "end_err_to_opp_signed_p90": 22.200000000000045
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.01864259111852673,
+      "orc_snap_35f": 0.0372046483212756,
+      "orc_snap_D_bounds_35f": 0.022052050450493483,
+      "orc_snap_HA_bounds_35f": 0.023325364420335098,
+      "orc_kill_fp_opp_yxy": 0.017196251882379165,
+      "orc_kill_fp_dead": 0.0024230446328542543,
+      "orc_recover_short_turnovers_25_125f": 0.03300462939544069,
+      "orc_recover_ultrashort_lt25f": 0.028054640495325356,
+      "orc_insert_missed_D_in_XDX": 0.002504943376851957,
+      "orc_perfect_alive_dead_mask": -0.015027174482453906
+    }
+  },
+  "j2_nod": {
+    "name": "JUDGE 2 (without_dead_margin \u00b13s): Metrica Sample 3 Games \u2014 v7 Rerank",
+    "spell_f1_mean": 0.874973364874711,
+    "n_gt": 915,
+    "n_pred": 848,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.9119817396283249,
+        "precision": 0.9501173999546357,
+        "recall": 0.877963266718437,
+        "tp": 805,
+        "fp": 43,
+        "fn": 110
+      },
+      "0.4": {
+        "f1": 0.8979646504897546,
+        "precision": 0.9353322228624522,
+        "recall": 0.8646187321661577,
+        "tp": 793,
+        "fp": 55,
+        "fn": 122
+      },
+      "0.5": {
+        "f1": 0.8852759977085,
+        "precision": 0.921990499131585,
+        "recall": 0.8525033224434168,
+        "tp": 782,
+        "fp": 66,
+        "fn": 133
+      },
+      "0.6": {
+        "f1": 0.8569056747985128,
+        "precision": 0.8924516770953441,
+        "recall": 0.8251778761870048,
+        "tp": 757,
+        "fp": 91,
+        "fn": 158
+      },
+      "0.7": {
+        "f1": 0.8227387617484626,
+        "precision": 0.8568310601575565,
+        "recall": 0.7923077605184293,
+        "tp": 727,
+        "fp": 121,
+        "fn": 188
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 25,
+      "FN1b_opp_swallow_short_25_50": 14,
+      "FN1c_opp_swallow_med_51_125": 11,
+      "FN1d_opp_swallow_long_gt125": 1,
+      "FN2_dead_swallow": 22,
+      "FN3_merged_across_missed_D": 0,
+      "FN4_merged_across_missed_opp": 33,
+      "FN5_low_iou_fragment_or_shift": 4
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 13,
+      "FP2a_split_fragment_by_false_D": 3,
+      "FP2b_split_fragment_by_false_opp": 10,
+      "FP3_false_live_inside_DEAD": 0,
+      "FP4_wrong_team_on_live": 7,
+      "FP5_other_boundary_spill": 10
+    },
+    "boundary_stats": {
+      "n_matched_03": 805,
+      "n_fail_04": 12,
+      "n_fail_05": 23,
+      "n_fail_06": 48,
+      "n_fail_07": 78,
+      "fail07_due_to_D_entry": 0,
+      "fail07_due_to_opp_entry": 39,
+      "fail07_due_to_D_exit": 0,
+      "fail07_due_to_opp_exit": 39,
+      "start_err_from_D_abs_mean": 0.0,
+      "start_err_from_D_abs_median": 0.0,
+      "start_err_from_D_abs_p90": 0.0,
+      "start_err_from_D_signed_mean": 0.0,
+      "start_err_from_D_signed_median": 0.0,
+      "start_err_from_D_signed_p90": 0.0,
+      "start_err_from_opp_abs_mean": 18.62778730703259,
+      "start_err_from_opp_abs_median": 2.0,
+      "start_err_from_opp_abs_p90": 35.0,
+      "start_err_from_opp_signed_mean": 8.20926243567753,
+      "start_err_from_opp_signed_median": 2.0,
+      "start_err_from_opp_signed_p90": 35.0,
+      "end_err_to_D_abs_mean": 0.0,
+      "end_err_to_D_abs_median": 0.0,
+      "end_err_to_D_abs_p90": 0.0,
+      "end_err_to_D_signed_mean": 0.0,
+      "end_err_to_D_signed_median": 0.0,
+      "end_err_to_D_signed_p90": 0.0,
+      "end_err_to_opp_abs_mean": 10.449225473321858,
+      "end_err_to_opp_abs_median": 2.0,
+      "end_err_to_opp_abs_p90": 24.0,
+      "end_err_to_opp_signed_mean": 4.89328743545611,
+      "end_err_to_opp_signed_median": 2.0,
+      "end_err_to_opp_signed_p90": 24.0
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.014169261999817273,
+      "orc_snap_35f": 0.02880213756184502,
+      "orc_snap_D_bounds_35f": 0.0,
+      "orc_snap_HA_bounds_35f": 0.026787242755395197,
+      "orc_kill_fp_opp_yxy": 0.02067882121083527,
+      "orc_kill_fp_dead": 0.0,
+      "orc_recover_short_turnovers_25_125f": 0.034447758015547225,
+      "orc_recover_ultrashort_lt25f": 0.028105730999639162,
+      "orc_insert_missed_D_in_XDX": 0.0,
+      "orc_perfect_alive_dead_mask": -0.03540173144262323
+    }
+  },
+  "j3_rep": {
+    "name": "JUDGE 3 (BAR-ATH Public Window Repaired): v7 6-Fam Local-Newton + XDX + Rerank",
+    "spell_f1_mean": 0.8,
+    "n_gt": 17,
+    "n_pred": 14,
+    "per_iou": {
+      "0.3": {
+        "f1": 0.8387096774193549,
+        "precision": 0.9285714285714286,
+        "recall": 0.7647058823529411,
+        "tp": 13,
+        "fp": 1,
+        "fn": 4
+      },
+      "0.4": {
+        "f1": 0.8387096774193549,
+        "precision": 0.9285714285714286,
+        "recall": 0.7647058823529411,
+        "tp": 13,
+        "fp": 1,
+        "fn": 4
+      },
+      "0.5": {
+        "f1": 0.7741935483870968,
+        "precision": 0.8571428571428571,
+        "recall": 0.7058823529411765,
+        "tp": 12,
+        "fp": 2,
+        "fn": 5
+      },
+      "0.6": {
+        "f1": 0.7741935483870968,
+        "precision": 0.8571428571428571,
+        "recall": 0.7058823529411765,
+        "tp": 12,
+        "fp": 2,
+        "fn": 5
+      },
+      "0.7": {
+        "f1": 0.7741935483870968,
+        "precision": 0.8571428571428571,
+        "recall": 0.7058823529411765,
+        "tp": 12,
+        "fp": 2,
+        "fn": 5
+      }
+    },
+    "fn03_buckets": {
+      "FN1a_opp_swallow_ultrashort_lt25": 1,
+      "FN1b_opp_swallow_short_25_50": 1,
+      "FN1c_opp_swallow_med_51_125": 0,
+      "FN1d_opp_swallow_long_gt125": 0,
+      "FN2_dead_swallow": 0,
+      "FN3_merged_across_missed_D": 0,
+      "FN4_merged_across_missed_opp": 2,
+      "FN5_low_iou_fragment_or_shift": 0
+    },
+    "fp03_buckets": {
+      "FP1_hallucinated_opp_blip_YXY": 0,
+      "FP2a_split_fragment_by_false_D": 0,
+      "FP2b_split_fragment_by_false_opp": 0,
+      "FP3_false_live_inside_DEAD": 1,
+      "FP4_wrong_team_on_live": 0,
+      "FP5_other_boundary_spill": 0
+    },
+    "boundary_stats": {
+      "n_matched_03": 13,
+      "n_fail_04": 0,
+      "n_fail_05": 1,
+      "n_fail_06": 1,
+      "n_fail_07": 1,
+      "fail07_due_to_D_entry": 0,
+      "fail07_due_to_opp_entry": 0,
+      "fail07_due_to_D_exit": 0,
+      "fail07_due_to_opp_exit": 1,
+      "start_err_from_D_abs_mean": 10.75,
+      "start_err_from_D_abs_median": 13.0,
+      "start_err_from_D_abs_p90": 16.0,
+      "start_err_from_D_signed_mean": -2.25,
+      "start_err_from_D_signed_median": -4.5,
+      "start_err_from_D_signed_p90": 16.0,
+      "start_err_from_opp_abs_mean": 18.625,
+      "start_err_from_opp_abs_median": 15.0,
+      "start_err_from_opp_abs_p90": 34.699999999999996,
+      "start_err_from_opp_signed_mean": 11.625,
+      "start_err_from_opp_signed_median": 13.0,
+      "start_err_from_opp_signed_p90": 34.699999999999996,
+      "end_err_to_D_abs_mean": 4.666666666666667,
+      "end_err_to_D_abs_median": 5.0,
+      "end_err_to_D_abs_p90": 7.4,
+      "end_err_to_D_signed_mean": 4.0,
+      "end_err_to_D_signed_median": 5.0,
+      "end_err_to_D_signed_p90": 7.4,
+      "end_err_to_opp_abs_mean": 89.0,
+      "end_err_to_opp_abs_median": 15.0,
+      "end_err_to_opp_abs_p90": 163.2000000000001,
+      "end_err_to_opp_signed_mean": 82.77777777777777,
+      "end_err_to_opp_signed_median": 15.0,
+      "end_err_to_opp_signed_p90": 163.2000000000001
+    },
+    "oracle_gains": {
+      "orc_snap_15f": 0.0,
+      "orc_snap_35f": 0.0,
+      "orc_snap_D_bounds_35f": 0.0,
+      "orc_snap_HA_bounds_35f": 0.0,
+      "orc_kill_fp_opp_yxy": 0.0,
+      "orc_kill_fp_dead": 0.026666666666666727,
+      "orc_recover_short_turnovers_25_125f": 0.04848484848484835,
+      "orc_recover_ultrashort_lt25f": 0.09696969696969682,
+      "orc_insert_missed_D_in_XDX": 0.0,
+      "orc_perfect_alive_dead_mask": 0.026666666666666727
+    }
+  }
+}

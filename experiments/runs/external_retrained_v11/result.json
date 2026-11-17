@@ -1,0 +1,189 @@
+{
+ "id": "external_retrained_v11",
+ "hypothesis": "Compare previously reconstructed external v11 predictions on identical cached Sportec and Metrica folds; assess reproducibility and quality without using J3.",
+ "owner": "ale",
+ "spec": "experiments/specs/external_retrained_v11.toml",
+ "spec_digest": "70c544a5c9c98226",
+ "predictor": "cached_external_report",
+ "params": {
+  "which": "retrained",
+  "bundle_sha256": "73bd2b9d80d23b790ede3b47dd54d78e0c3941440309a37ddf49933a6d483067",
+  "fingerprints_sha256": "d91b47f4396a911eb34e24c2c9c8b1f0881576b93876ca35036a70977320d596"
+ },
+ "provenance": {
+  "commit": "b6edb1c",
+  "branch": "codex/reproducibilidad-v11",
+  "dirty": [],
+  "source_digest": "d67ba807abf8410c390fc535",
+  "python": "3.11.16",
+  "platform": "macOS-26.6.2-arm64-arm-64bit"
+ },
+ "started": "2026-11-16T23:35:10",
+ "judges": {
+  "J1": {
+   "role": "select",
+   "params": {},
+   "description": "LOMO on 7 degraded Sportec matches (primary selection judge)",
+   "status": "ok",
+   "fingerprint": {
+    "degrade_config": "a9cb0f01d0b99e5e",
+    "degradation_params": "ed08956d7d847cb2"
+   },
+   "folds": {
+    "J03WMX": {
+     "spell_f1": 0.7197309417040358,
+     "macro_f1": 0.9313745783163059,
+     "n_gt_spells": 511,
+     "n_pred_spells": 381,
+     "pred_poss_per_min": 3.915268519596895,
+     "gt_poss_per_min": 5.251186912110271,
+     "seconds": 0.1
+    },
+    "J03WN1": {
+     "spell_f1": 0.7586206896551724,
+     "macro_f1": 0.9343388341368444,
+     "n_gt_spells": 500,
+     "n_pred_spells": 399,
+     "pred_poss_per_min": 4.227859368046284,
+     "gt_poss_per_min": 5.298069383516647,
+     "seconds": 0.09
+    },
+    "J03WOH": {
+     "spell_f1": 0.8079893475366179,
+     "macro_f1": 0.9469228066687189,
+     "n_gt_spells": 402,
+     "n_pred_spells": 349,
+     "pred_poss_per_min": 3.8152083606629055,
+     "gt_poss_per_min": 4.394595303686212,
+     "seconds": 0.09
+    },
+    "J03WOY": {
+     "spell_f1": 0.7425149700598802,
+     "macro_f1": 0.9329199673997097,
+     "n_gt_spells": 456,
+     "n_pred_spells": 379,
+     "pred_poss_per_min": 3.9884660717292477,
+     "gt_poss_per_min": 4.79878767469271,
+     "seconds": 0.09
+    },
+    "J03WPY": {
+     "spell_f1": 0.786475942782835,
+     "macro_f1": 0.9469791035486823,
+     "n_gt_spells": 421,
+     "n_pred_spells": 348,
+     "pred_poss_per_min": 3.5701828179822317,
+     "gt_poss_per_min": 4.319100478076205,
+     "seconds": 0.09
+    },
+    "J03WQQ": {
+     "spell_f1": 0.7729591836734695,
+     "macro_f1": 0.9453814078525986,
+     "n_gt_spells": 401,
+     "n_pred_spells": 383,
+     "pred_poss_per_min": 4.035968948681021,
+     "gt_poss_per_min": 4.225648951491095,
+     "seconds": 0.09
+    },
+    "J03WR9": {
+     "spell_f1": 0.7839080459770116,
+     "macro_f1": 0.9466472668288408,
+     "n_gt_spells": 370,
+     "n_pred_spells": 326,
+     "pred_poss_per_min": 3.3308357741298282,
+     "gt_poss_per_min": 3.780396430760848,
+     "seconds": 0.09
+    }
+   },
+   "summary": {
+    "spell_f1_mean": 0.7674570173412889,
+    "spell_f1_std": 0.02747327064317469,
+    "macro_f1_mean": 0.9406519949645286,
+    "pred_poss_per_min": 3.840541408689773,
+    "n_folds": 7
+   }
+  },
+  "J2": {
+   "role": "guard",
+   "params": {},
+   "description": "train on degraded Sportec, test on Metrica Sample 1-3 (transfer guard)",
+   "status": "ok",
+   "fingerprint": {
+    "degrade_config": "a9cb0f01d0b99e5e",
+    "degradation_params": "ed08956d7d847cb2"
+   },
+   "folds": {
+    "sample1": {
+     "spell_f1": 0.8634560906515582,
+     "macro_f1": 0.9280223612937814,
+     "n_gt_spells": 369,
+     "n_pred_spells": 337,
+     "pred_poss_per_min": 3.486062645683627,
+     "gt_poss_per_min": 3.8170834310304405,
+     "seconds": 0.08
+    },
+    "sample2": {
+     "spell_f1": 0.8219092331768388,
+     "macro_f1": 0.9179869965496273,
+     "n_gt_spells": 356,
+     "n_pred_spells": 283,
+     "pred_poss_per_min": 3.007311060103715,
+     "gt_poss_per_min": 3.7830485420385958,
+     "seconds": 0.07
+    },
+    "sample3": {
+     "spell_f1": 0.9031746031746032,
+     "macro_f1": 0.9356097035903925,
+     "n_gt_spells": 390,
+     "n_pred_spells": 366,
+     "pred_poss_per_min": 3.818838210641273,
+     "gt_poss_per_min": 4.069253831011192,
+     "seconds": 0.08
+    }
+   },
+   "summary": {
+    "spell_f1_mean": 0.8628466423343334,
+    "spell_f1_std": 0.0331792471348875,
+    "macro_f1_mean": 0.927206353811267,
+    "pred_poss_per_min": 3.4374039721428713,
+    "n_folds": 3
+   }
+  }
+ },
+ "champion": "external_original_v11",
+ "verdicts": {
+  "J1": {
+   "decision": "REJECT",
+   "n_folds": 7,
+   "mean_delta": -0.00619113041171347,
+   "ci_low": -0.00868407498293782,
+   "ci_high": -0.003955701531776112,
+   "folds_improved": 0,
+   "folds_needed": 5,
+   "deltas": {
+    "J03WMX": -0.002864,
+    "J03WN1": -0.006424,
+    "J03WOH": -0.003728,
+    "J03WOY": -0.002527,
+    "J03WPY": -0.004727,
+    "J03WQQ": -0.013843,
+    "J03WR9": -0.009225
+   }
+  },
+  "J2": {
+   "decision": "REJECT",
+   "n_folds": 3,
+   "mean_delta": -0.003636018002854735,
+   "ci_low": -0.004692429765721558,
+   "ci_high": -0.002579606239987912,
+   "folds_improved": 0,
+   "folds_needed": 3,
+   "deltas": {
+    "sample1": -0.004062,
+    "sample2": -0.005008,
+    "sample3": -0.001839
+   }
+  }
+ },
+ "decision": "REJECT",
+ "seconds": 8.0
+}

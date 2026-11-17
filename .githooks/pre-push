@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Enable once per clone:  git config core.hooksPath .githooks
+# Blocks the push on FAIL. REVIEW (protected files changed) is allowed through: a human reviews the PR.
+set -uo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+PY="$ROOT/.venv311/bin/python"; [ -x "$PY" ] || PY=python3
+"$PY" -m harness check --fast
+code=$?
+[ "$code" = 1 ] && exit 1
+exit 0
