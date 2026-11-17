@@ -431,3 +431,17 @@ def export_v11_official_kickoff(root, output_path):
     """Export v11 using the organiser's published second-half timing boundary."""
     from src.v11_big_leap.export_official_kickoff import export_official_kickoff
     return export_official_kickoff(root, output_path)
+
+
+@register("reconstruction", "b4d_public_fold", requires=("src/v9_swarm/rebuild_b4d_fold.py",))
+def rebuild_b4d_public_fold(root, output_path):
+    """Build one public Sportec boundary-model fold required by v11."""
+    from src.v9_swarm.rebuild_b4d_fold import rebuild_b4d_fold
+    return rebuild_b4d_fold(root, output_path)
+
+
+@register("reconstruction", "phys_tree_public_fold", requires=("src/v9_swarm/rebuild_phys_tree_oof.py",))
+def rebuild_phys_tree_public_fold(root, output_path):
+    """Build one public Sportec physics-tree fold required by v11."""
+    from src.v9_swarm.rebuild_phys_tree_oof import rebuild_phys_tree_oof
+    return rebuild_phys_tree_oof(root, output_path)

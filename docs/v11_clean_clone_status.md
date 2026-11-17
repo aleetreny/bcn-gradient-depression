@@ -1,15 +1,70 @@
 # Retrained v11: clean-clone reconstruction status
 
-The retrained candidate is not yet reproducible from a clean clone. After applying
-the published second-half kickoff boundary, its local CSV SHA-256 is
-`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`.
-The pre-boundary candidate had SHA-256
-`7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.
-These are targets for verification, not a claim that the historical submission
-or an independently trained model is identical. The pre-boundary candidate's
-registered external gate is REJECT; this document does not select a model using J3.
+The delivery candidate is the retrained v11 CSV with SHA-256
+`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`
+(published second-half kickoff boundary applied). The pre-boundary candidate had
+SHA-256 `7b893cecb18121f459bfa04d2035b61a10884089287eeb4b98a951be20f5834d`.
+The pre-boundary candidate's registered external gate is REJECT against the
+historical v11 reference; it is not an improvement. Nothing in this document
+selects a model using J3.
 
-## Checked on the local clean clone
+**Summary.** The complete registered chain, from the v8.5 candidates to the
+official-kickoff export, regenerates the delivery CSV byte for byte in a fresh
+clone. The chain still consumes a declared set of retained intermediate
+predictions (listed below) that cannot be regenerated bit for bit by retraining.
+An outside party with only this repository and the data bundle therefore cannot
+yet obtain the identical file; retraining those pieces would yield a different
+candidate.
+
+## End-to-end chain in a fresh clone
+
+On 2026-11-17 a new clone of the source branch was created on the development
+Mac (Apple M5 Pro, macOS, Python 3.11 research environment with CatBoost and
+XGBoost from a local package directory). Every product of the chain (45 cached
+files, including historical submission folders) was removed from its
+`experiments/outputs/` before running, so none could be reused. The remaining
+inputs were staged explicitly and recorded with SHA-256 hashes in a private local
+manifest. `scripts/v11_big_leap/run_v11_chain.py` (and an earlier equivalent
+local driver) then ran, in order, `v85_candidates`, `v85_streams`,
+`v9_diagnostic_streams`, `v9_duel_candidates`, `v9_mbr_candidates`,
+`v9_enriched_candidates`, `d3_verified_streams` (main and count),
+`v85_baseline`, `v9_baseline`, `v10_b1_candidates`, `v10_b2_candidates`,
+`v11_enriched_candidates`, `v11_local_synthesis` and
+`v11_official_kickoff_export`. The whole chain takes about six minutes on CPU.
+
+Three runs produced the same synthesis bundle
+(`73bd2b9d80d23b790ede3b47dd54d78e0c3941440309a37ddf49933a6d483067`) and the
+same CSV (`b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`),
+which passed the official format validator. No public-window score was computed.
+
+### Inputs rebuilt from data in clean clones
+
+- PlayerSet, trajectory and `v6_genuine` held-out folds (7 each), retrained from
+  public Sportec data and regenerated tensors/features.
+- Match and Metrica-sample inference of the L1 tree, PlayerSet, trajectory and
+  PhysConformer heads, recomputed on CPU from the retained local full-model
+  weights and regenerated inputs.
+- Plus, ghost and physics-v2 tree held-out folds (7 each): each array identical
+  to the retained reference.
+- Boundary-model (`b4d`) folds (7): three identical; four differ numerically
+  (in three by at most 2e-4 in a handful of values, in one substantially). With
+  all seven rebuilt folds the CSV is unchanged.
+
+### Inputs still retained (not regenerable bit for bit)
+
+- PhysConformer held-out folds: retraining from identical inputs gives
+  different outputs, also between repeats.
+- Earlier neural heads (symmetric TCN and BiGRU, physics-v2 TCN/BiGRU) and their
+  Metrica/match inference, originally trained on Apple MPS; no per-fold weights
+  survive.
+- The D3 count-variant streams, built from those earlier heads on the
+  video-reteamed tracking.
+- Other earlier cached intermediates in `experiments/outputs/` (calibration and
+  re-ranker summaries, W8 candidates) that the chain reads.
+
+These are model predictions or match-derived caches and are not published.
+
+## Earlier clean-clone checks (superseded by the run above)
 
 The clone was made from local commit `4a52b66`; it is ahead of the published
 branch. It used the existing local Python 3.11 environment, the original tactical
@@ -30,27 +85,12 @@ computed feature caches were copied into the clone for this check.
    verified synthesis bundle. The documented historical fast script checks for
    a system OpenMP installation and targets the historical CSV, not this one.
 
-## Remaining work
+## What would close the gap
 
-- Build every required tensor and feature realization, and the earlier model
-  and out-of-fold predictions used by the v8.5/v9 chain, from accessible data.
-- Connect these artifacts, the new three-family models and the D3 inputs to a
-  complete reproducible local workflow; remove reliance on ad-hoc local scripts
-  and manifests. Test whether retraining can reproduce the frozen candidate's
-  actual weights and output on a separately installed environment.
-- Run the complete chain in a clean clone with the permitted original inputs,
-  validate the generated CSV with the official validator and compare its hash.
-  An exact hash match, not partial tensor equality, is the acceptance evidence.
-- Document installation, pinned dependencies, runtime, and permitted inputs for
-  another participant; make the necessary code available in the delivery repo.
-  Match data must not be redistributed, and derived tracking data must not be
-  published if it would reconstruct that data (RULES.md). A public model is
-  allowed, but whether any particular weights are distributable depends on
-  their training inputs and applicable terms; no match-derived model or cache
-  should be published on the basis of this partial check.
-
-The historical fast replay and the two matching local candidate exports reused
-intermediate artifacts. Neither establishes this clean-clone requirement.
+Make PhysConformer and the earlier neural heads deterministic (CPU, fixed
+threads and seeds), retrain them and their full models, regenerate the D3 count
+streams, rerun this chain and register the resulting candidate with the harness
+gate. That candidate would be a different file from the current one.
 
 ## Follow-up clean-clone execution
 
@@ -70,7 +110,7 @@ and matched the corresponding local candidate inputs. The first PhysConformer
 held-out output did **not** match the candidate input, despite identical
 feature tables. The remaining PhysConformer training queue stopped on that
 mismatch. A repeat of that fold also produced different predictions. These are
-intermediate checks only; no clean end-to-end CSV has been produced.
+intermediate checks; the end-to-end run above supersedes them.
 
 ## Third-party detector licensing
 
