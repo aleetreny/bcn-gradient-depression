@@ -1,11 +1,11 @@
 # Source snapshot provenance
 
 This local release draft is a working-tree snapshot of commit
-`6a138ba9b450f405debb502510b13590f2ead973` from the team's private
+`b18664bc1a9bdcdd0c3bdb2621ed34d8cc6dc23a` from the team's private
 `bcn-gradient-depression` repository. It intentionally does not include that
 repository's history or local data. The original repository and its history
-remain intact. This snapshot has not been published and is not evidence that
-reproduction requirements have been met.
+remain intact. This public snapshot is not evidence that the reproduction requirements
+have been met.
 
 The competition starter and challenge materials retain their stated upstream
 notices and licenses. See `LICENSE`, `CITATION.cff`, `RULES.md`, and `DATA.md`.
