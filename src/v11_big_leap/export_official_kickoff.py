@@ -56,9 +56,9 @@ def export_official_kickoff(root: Path, output_path: Path) -> Path:
         bundle = pickle.load(handle)
     atd = load_atd()
     pred = np.asarray(bundle[config["variant"]]["pred_atd_rep"])
-    # The organiser's FAQ identifies first play as the frame following the
-    # zero-based timestamp anchor in games.py. Keep this metadata convention
-    # explicit instead of fitting a boundary to match possession labels.
+    # The organiser's FAQ places first play one frame after the numerical
+    # games.py anchor. The latter describes the anchor as the strike frame,
+    # so these published descriptions differ; this export follows the FAQ.
     first_play = anchor_video_frame(GAMES["BAR-ATH"]["kickoff_2nd"]) + 1
     pred = apply_second_half_kickoff(pred, atd.half, first_play)
     if len(pred) != len(atd.half) or not np.isin(pred, (0, 1, 2)).all():

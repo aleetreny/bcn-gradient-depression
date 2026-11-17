@@ -30,6 +30,8 @@ full historical selection history remains under review.
 
 The candidate was produced by an automatic export using the published
 second-half timing boundary and passed the official submission-format validator.
+The organiser's FAQ and `games.py` describe that boundary one frame apart;
+this export follows the FAQ's stated first-play frame.
 Two local exports from the same synthesis input produced the same hash above.
 The synthesis input was rebuilt using the retained local models and reused
 historical intermediate caches. The prior candidate, before applying the
