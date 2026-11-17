@@ -5,7 +5,7 @@
 **Possession file:** `gradient_depression.csv`, SHA-256
 `b19368564f1e031986d6003117dfc085a343960468186a5ced141d602f001db5`
 (199,319 rows; passes `evaluation/validate_submission.py`).  
-**Code:** https://github.com/aleetreny/gradient-depression-barca-2027 (commit `__PUBLIC_COMMIT__`).
+**Code:** https://github.com/aleetreny/gradient-depression-barca-2027 (commit `8567d6188c7020070702d67e6edc99fe94b6db75`).
 
 ## 1. Approach
 
