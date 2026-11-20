@@ -1,8 +1,9 @@
-# Storyline presentation
+# Who has the ball?
 
-An 18-slide deck for the judges that tells the whole project story in plain language: the challenge, the scoring traps, how we tested ourselves, each stage of the system, what didn't work, and the final results.
+[Open the interactive tactics board](https://aleetreny.github.io/bcn-gradient-depression/)
 
-- **Open locally:** open `index.html` in any browser. Use the arrow keys or the buttons at the bottom to change slides. Printing to PDF gives one slide per page.
-- **Online version:** https://claude.ai/artifact/4uaicgVEzn7CSGFeGTbh4K (private; the owner shares it from the page's Share menu).
+Bernardo Guterres created the original chalkboard presentation with Claude. This edition follows the early possession models through the retrained v11 delivery and the organisers’ Initial Challenge scoreboard, published on 20 November 2026.
 
-The numbers come from the team's committed reports (`experiments/RESULTADOS.md`, `ENTREGA_FINAL_HACKATHON/LEEME_2…` and `LEEME_3…`), and each slide cites its source. None of them come from a `python -m harness run`.
+Use the arrow keys, the possession bar or the on-screen controls to navigate. Press **R** to replay a drawing, **N** for presenter notes, or **End** for the official result. Each board has a direct link. Open `index.html` in a browser to read locally.
+
+The source lives in this directory. GitHub Pages serves its contents from the root of the `gh-pages` branch. To publish an update after committing it on `main`, run `git subtree push --prefix=presentation origin gh-pages` from the repository root.
